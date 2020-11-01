@@ -2,7 +2,6 @@ package com.ucasoft.kcron.builders
 
 import com.ucasoft.kcron.common.*
 import com.ucasoft.kcron.extensions.*
-import com.ucasoft.kcron.parsers.PartResult
 import kotlinx.datetime.*
 
 class Builder {
@@ -30,7 +29,7 @@ class Builder {
     val nextRun : LocalDateTime?
         get() = nextRunList(1).firstOrNull()
 
-    fun build(parts: Map<CronPart, PartResult>): Builder {
+    fun build(parts: Map<CronPart, PartValue>): Builder {
         parts.forEach { entry -> partBuilders[entry.key]?.commonBuild(entry.value.type, entry.value.value) }
         return this
     }

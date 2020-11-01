@@ -1,9 +1,6 @@
 package com.ucasoft.kcron.parsers
 
-import com.ucasoft.kcron.common.CronGroups
-import com.ucasoft.kcron.common.CronPart
-import com.ucasoft.kcron.common.DayGroups
-import com.ucasoft.kcron.common.DayOfWeekGroups
+import com.ucasoft.kcron.common.*
 import com.ucasoft.kcron.exceptions.*
 
 class Parser {
@@ -66,12 +63,12 @@ class Parser {
 
         val result = ParseResult()
         for ((index, parser) in partParsers.withIndex()) {
-            result.parts[parser.part] = PartResult(parser.group as CronGroups, expressionParts[index])
+            result.parts[parser.part] = PartValue(parser.group as CronGroups, expressionParts[index])
         }
         return result
     }
 
-    private fun ensureCombinationRules(parts: MutableMap<CronPart, PartResult>) {
+    private fun ensureCombinationRules(parts: MutableMap<CronPart, PartValue>) {
         val combinationExceptions = mutableListOf<WrongPartCombination>()
         for (part in parts) {
             val rule = combinationRules.firstOrNull { r -> r.part == part.key && r.type == part.value.type }
