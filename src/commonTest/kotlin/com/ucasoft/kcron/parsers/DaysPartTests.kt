@@ -5,7 +5,7 @@ import kotlin.test.*
 
 class DaysPartTests {
 
-    lateinit var parser: DaysParser
+    private lateinit var parser: DaysParser
 
     private val allowedValues = listOf(
         DayValueGroup("?", DayGroups.Any),

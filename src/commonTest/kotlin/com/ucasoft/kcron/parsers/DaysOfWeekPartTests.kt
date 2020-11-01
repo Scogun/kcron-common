@@ -26,7 +26,7 @@ class DaysOfWeekPartTests {
         DayOfWeekValueGroup("6#2", DayOfWeekGroups.OfMonth)
     )
 
-    val deniedValues = listOf(
+    private val deniedValues = listOf(
         "**",
         "??",
         "?*",
