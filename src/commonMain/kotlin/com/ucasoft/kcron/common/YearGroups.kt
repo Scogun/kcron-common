@@ -1,6 +1,6 @@
 package com.ucasoft.kcron.common
 
-enum class YearGroup(override val index: Int) : CronGroups {
+enum class YearGroups(override val index: Int) : CronGroups {
 
     Unknown(0),
     Any(1),

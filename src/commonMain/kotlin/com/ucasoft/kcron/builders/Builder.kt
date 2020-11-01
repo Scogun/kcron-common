@@ -128,14 +128,14 @@ class Builder {
     }
 
     fun anyYears() : Builder {
-        return years(YearGroup.Any, "*")
+        return years(YearGroups.Any, "*")
     }
 
     fun years(value: Int): Builder {
-        return years(YearGroup.Specific, value.toString())
+        return years(YearGroups.Specific, value.toString())
     }
 
-    fun years(type: YearGroup, value: String) : Builder {
+    fun years(type: YearGroups, value: String) : Builder {
         partBuilders.getValue(CronPart.Years).commonBuild(type, value)
         return this
     }

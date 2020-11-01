@@ -1,6 +1,6 @@
 package com.ucasoft.kcron.builders
 
-import com.ucasoft.kcron.common.YearGroup
+import com.ucasoft.kcron.common.YearGroups
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -22,14 +22,14 @@ class YearsBuilderTests {
 
     @Test
     fun buildSeconds() {
-        builder.build(YearGroup.Any, "*")
+        builder.build(YearGroups.Any, "*")
         assertEquals(currentYear, builder.years[0])
         assertEquals(2099, builder.years.last())
-        builder.build(YearGroup.Specific, "2020,2045,2060,2079,2099")
+        builder.build(YearGroups.Specific, "2020,2045,2060,2079,2099")
         assertEquals(listOf(2020, 2045, 2060, 2079, 2099), builder.years)
-        builder.build(YearGroup.EveryStartingAt, "2021/35")
+        builder.build(YearGroups.EveryStartingAt, "2021/35")
         assertEquals(listOf(2021, 2056, 2091), builder.years)
-        builder.build(YearGroup.EveryBetween, "2021-2025")
+        builder.build(YearGroups.EveryBetween, "2021-2025")
         assertEquals(listOf(2021, 2022, 2023, 2024, 2025), builder.years)
     }
 }
