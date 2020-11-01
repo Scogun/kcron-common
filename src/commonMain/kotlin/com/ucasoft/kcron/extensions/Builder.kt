@@ -40,7 +40,7 @@ fun Builder.lastWorkDay() : Builder {
 }
 
 fun Builder.nearestWorkDay(value: Int) : Builder {
-    return days(DayGroups.NearestWeekday, value.toString())
+    return days(DayGroups.NearestWeekday, "${value}W")
 }
 
 fun Builder.anyMonths() : Builder {
