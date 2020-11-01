@@ -7,28 +7,32 @@ fun Builder.anySeconds() : Builder {
     return seconds(TimeGroups.Any, "*")
 }
 
-fun Builder.seconds(value: Int) : Builder {
-    return seconds(TimeGroups.Specific, value.toString())
+fun Builder.seconds(vararg values: Int) : Builder {
+    return seconds(TimeGroups.Specific, values.joinToString(","))
 }
 
 fun Builder.anyMinutes() : Builder {
     return minutes(TimeGroups.Any, "*")
 }
 
-fun Builder.minutes(value: Int) : Builder {
-    return minutes(TimeGroups.Specific, value.toString())
+fun Builder.minutes(vararg values: Int) : Builder {
+    return minutes(TimeGroups.Specific, values.joinToString(","))
 }
 
 fun Builder.anyHours() : Builder {
     return hours(TimeGroups.Any, "*")
 }
 
-fun Builder.hours(value: Int) : Builder {
-    return hours(TimeGroups.Specific, value.toString())
+fun Builder.hours(vararg values: Int) : Builder {
+    return hours(TimeGroups.Specific, values.joinToString(","))
 }
 
 fun Builder.anyDays() : Builder {
     return days(DayGroups.Any, "*")
+}
+
+fun Builder.days(vararg values: Int) : Builder {
+    return days(DayGroups.Specific, values.joinToString(","))
 }
 
 fun Builder.lastDay() : Builder {
@@ -47,8 +51,8 @@ fun Builder.anyMonths() : Builder {
     return months(MonthGroups.Any, "*")
 }
 
-fun Builder.months(value: Int) : Builder {
-    return months(MonthGroups.Specific, value.toString())
+fun Builder.months(vararg values: Int) : Builder {
+    return months(MonthGroups.Specific, values.joinToString(","))
 }
 
 fun Builder.anyDaysOfWeek() : Builder {
@@ -63,6 +67,6 @@ fun Builder.anyYears() : Builder {
     return years(YearGroups.Any, "*")
 }
 
-fun Builder.years(value: Int): Builder {
-    return years(YearGroups.Specific, value.toString())
+fun Builder.years(vararg values: Int): Builder {
+    return years(YearGroups.Specific, values.joinToString(","))
 }
