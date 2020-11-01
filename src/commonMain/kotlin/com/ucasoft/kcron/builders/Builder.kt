@@ -34,25 +34,9 @@ class Builder {
         return this
     }
 
-    fun anySeconds() : Builder {
-        return seconds(TimeGroups.Any, "*")
-    }
-
-    fun seconds(value: Int) : Builder {
-        return seconds(TimeGroups.Specific, value.toString())
-    }
-
     fun seconds(type: TimeGroups, value: String) : Builder {
         partBuilders.getValue(CronPart.Seconds).commonBuild(type, value)
         return this
-    }
-
-    fun anyMinutes() : Builder {
-        return minutes(TimeGroups.Any, "*")
-    }
-
-    fun minutes(value: Int) : Builder {
-        return minutes(TimeGroups.Specific, value.toString())
     }
 
     fun minutes(type: TimeGroups, value: String) : Builder {
@@ -60,33 +44,9 @@ class Builder {
         return this
     }
 
-    fun anyHours() : Builder {
-        return hours(TimeGroups.Any, "*")
-    }
-
-    fun hours(value: Int) : Builder {
-        return hours(TimeGroups.Specific, value.toString())
-    }
-
     fun hours(type: TimeGroups, value: String) : Builder {
         partBuilders.getValue(CronPart.Hours).commonBuild(type, value)
         return this
-    }
-
-    fun anyDays() : Builder {
-        return days(DayGroups.Any, "*")
-    }
-
-    fun lastDay() : Builder {
-        return days(DayGroups.LastDay, "L")
-    }
-
-    fun lastWorkDay() : Builder {
-        return days(DayGroups.LastWeekday, "LW")
-    }
-
-    fun nearestWorkDay(value: Int) : Builder {
-        return days(DayGroups.NearestWeekday, value.toString())
     }
 
     fun days(type: DayGroups, value: String) : Builder {
@@ -97,25 +57,9 @@ class Builder {
         return this
     }
 
-    fun anyMonths() : Builder {
-        return months(MonthGroups.Any, "*")
-    }
-
-    fun months(value: Int) : Builder {
-        return months(MonthGroups.Specific, value.toString())
-    }
-
     fun months(type: MonthGroups, value: String) : Builder {
         partBuilders.getValue(CronPart.Months).commonBuild(type, value)
         return this
-    }
-
-    fun anyDaysOfWeek() : Builder {
-        return daysOfWeek(DayOfWeekGroups.Any, "*")
-    }
-
-    fun daysOfWeek(vararg values: Int) : Builder {
-        return daysOfWeek(DayOfWeekGroups.Specific, values.joinToString(",") )
     }
 
     fun daysOfWeek(type: DayOfWeekGroups, value: String) : Builder {
@@ -124,14 +68,6 @@ class Builder {
         }
         partBuilders.getValue(CronPart.DaysOfWeek).commonBuild(type, value)
         return this
-    }
-
-    fun anyYears() : Builder {
-        return years(YearGroups.Any, "*")
-    }
-
-    fun years(value: Int): Builder {
-        return years(YearGroups.Specific, value.toString())
     }
 
     fun years(type: YearGroups, value: String) : Builder {

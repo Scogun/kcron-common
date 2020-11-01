@@ -1,8 +1,7 @@
 package com.ucasoft.kcron.builders
 
 import com.ucasoft.kcron.common.DayOfWeekGroups
-import com.ucasoft.kcron.extensions.plusDays
-import com.ucasoft.kcron.extensions.plusHours
+import com.ucasoft.kcron.extensions.*
 import kotlinx.datetime.*
 import kotlin.test.BeforeTest
 import kotlin.test.Test
