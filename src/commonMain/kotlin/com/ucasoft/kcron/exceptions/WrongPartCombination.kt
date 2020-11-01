@@ -1,17 +1,18 @@
 package com.ucasoft.kcron.exceptions
 
+import com.ucasoft.kcron.common.CronPart
 import com.ucasoft.kcron.parsers.CombinationRule
 import com.ucasoft.kcron.parsers.PartResult
 
 class WrongPartCombination(
-    private val part: MutableMap.MutableEntry<String, PartResult>,
+    private val part: MutableMap.MutableEntry<CronPart, PartResult>,
     private val dependency: CombinationRule,
     secondPart: PartResult
-) : Throwable("Wrong part combination: part ${part.key} with ${part.value.type} type requires that part ${dependency.partName} has ${dependency.type} type but it was ${secondPart.type}!") {
+) : Throwable("Wrong part combination: part ${part.key.partName} with ${part.value.type} type requires that part ${dependency.part.partName} has ${dependency.type} type but it was ${secondPart.type}!") {
 
     val firstPartName : String
-        get() = part.key
+        get() = part.key.partName
 
     val secondPartName : String
-        get() = dependency.partName
+        get() = dependency.part.partName
 }
