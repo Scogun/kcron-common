@@ -1,3 +1,5 @@
 package com.ucasoft.kcron.parsers
 
-class SecondsMinutesParser(partName: String) : TimeParser(partName,"[0-9]|[1-5][0-9]", "[0-9]|[1-5][0-9]|60")
+import com.ucasoft.kcron.common.CronPart
+
+class SecondsMinutesParser(part: CronPart) : TimeParser(part,"[0-9]|[1-5][0-9]", "[0-9]|[1-5][0-9]|60")

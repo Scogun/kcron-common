@@ -1,5 +1,6 @@
 package com.ucasoft.kcron.parsers
 
+import com.ucasoft.kcron.common.CronPart
 import com.ucasoft.kcron.common.DayGroups
 
 class DaysParser : AnySpecificEveryAtParser<DayGroups>("\\?", "[1-9]|[1-2][0-9]|3[0-1]") {
@@ -11,5 +12,5 @@ class DaysParser : AnySpecificEveryAtParser<DayGroups>("\\?", "[1-9]|[1-2][0-9]|
 
     override val groups = DayGroups.values()
 
-    override val partName = "days"
+    override val part = CronPart.Days
 }

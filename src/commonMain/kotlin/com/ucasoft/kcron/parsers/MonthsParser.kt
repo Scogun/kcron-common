@@ -1,5 +1,6 @@
 package com.ucasoft.kcron.parsers
 
+import com.ucasoft.kcron.common.CronPart
 import com.ucasoft.kcron.common.MonthGroups
 
 class MonthsParser : AnySpecificEveryParser<MonthGroups>("\\*", "[1-9]|1[0-2]", listOf("JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC").joinToString("|")) {
@@ -8,5 +9,5 @@ class MonthsParser : AnySpecificEveryParser<MonthGroups>("\\*", "[1-9]|1[0-2]", 
 
     override val groups = MonthGroups.values()
 
-    override val partName = "months"
+    override val part = CronPart.Months
 }

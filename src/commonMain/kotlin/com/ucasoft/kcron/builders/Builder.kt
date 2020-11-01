@@ -7,14 +7,14 @@ import kotlinx.datetime.*
 
 class Builder {
 
-    private val partBuilders = listOf(
-        SecondsBuilder(),
-        MinutesBuilder(),
-        HoursBuilder(),
-        DaysBuilder(),
-        MonthsBuilder(),
-        DaysOfWeekBuilder(),
-        YearsBuilder()
+    private val partBuilders = mapOf(
+        CronPart.Seconds to SecondsBuilder(),
+        CronPart.Minutes to MinutesBuilder(),
+        CronPart.Hours to HoursBuilder(),
+        CronPart.Days to DaysBuilder(),
+        CronPart.Months to MonthsBuilder(),
+        CronPart.DaysOfWeek to DaysOfWeekBuilder(),
+        CronPart.Years to YearsBuilder()
     )
 
     init {
@@ -30,8 +30,8 @@ class Builder {
     val nextRun : LocalDateTime?
         get() = nextRunList(1).firstOrNull()
 
-    fun build(parts: Map<String, PartResult>): Builder {
-        parts.onEachIndexed { index, part -> partBuilders[index].commonBuild(part.value.type, part.value.value) }
+    fun build(parts: Map<CronPart, PartResult>): Builder {
+        parts.forEach { entry -> partBuilders[entry.key]?.commonBuild(entry.value.type, entry.value.value) }
         return this
     }
 
@@ -44,7 +44,7 @@ class Builder {
     }
 
     fun seconds(type: TimeGroups, value: String) : Builder {
-        partBuilders[0].commonBuild(type, value)
+        partBuilders.getValue(CronPart.Seconds).commonBuild(type, value)
         return this
     }
 
@@ -57,7 +57,7 @@ class Builder {
     }
 
     fun minutes(type: TimeGroups, value: String) : Builder {
-        partBuilders[1].commonBuild(type, value)
+        partBuilders.getValue(CronPart.Minutes).commonBuild(type, value)
         return this
     }
 
@@ -70,7 +70,7 @@ class Builder {
     }
 
     fun hours(type: TimeGroups, value: String) : Builder {
-        partBuilders[2].commonBuild(type, value)
+        partBuilders.getValue(CronPart.Hours).commonBuild(type, value)
         return this
     }
 
@@ -94,7 +94,7 @@ class Builder {
         if (type != DayGroups.Any) {
             anyDaysOfWeek()
         }
-        partBuilders[3].commonBuild(type, value)
+        partBuilders.getValue(CronPart.Days).commonBuild(type, value)
         return this
     }
 
@@ -107,7 +107,7 @@ class Builder {
     }
 
     fun months(type: MonthGroups, value: String) : Builder {
-        partBuilders[4].commonBuild(type, value)
+        partBuilders.getValue(CronPart.Months).commonBuild(type, value)
         return this
     }
 
@@ -123,7 +123,7 @@ class Builder {
         if (type != DayOfWeekGroups.Any) {
             anyDays()
         }
-        partBuilders[5].commonBuild(type, value)
+        partBuilders.getValue(CronPart.DaysOfWeek).commonBuild(type, value)
         return this
     }
 
@@ -136,19 +136,19 @@ class Builder {
     }
 
     fun years(type: YearGroup, value: String) : Builder {
-        partBuilders[6].commonBuild(type, value)
+        partBuilders.getValue(CronPart.Years).commonBuild(type, value)
         return this
     }
 
     fun nextRunList(maxCount: Int = 10) : List<LocalDateTime> {
         val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
         val result = mutableListOf<LocalDateTime>()
-        for (year in (partBuilders[6] as YearsBuilder).years.filter { y -> y >= now.year }) {
-            for (month in (partBuilders[4] as MonthsBuilder).months.filter { m -> m >= now.monthNumber || year > now.year}) {
-                for (day in calculateDays(year, month, (partBuilders[5] as DaysOfWeekBuilder).daysOfWeek, (partBuilders[3] as DaysBuilder).days, now)) {
-                    for (hour in (partBuilders[2] as HoursBuilder).hours.filter { h -> h >= now.hour || day > now.dayOfMonth || month > now.monthNumber || year > now.year }) {
-                        for (minute in (partBuilders[1] as MinutesBuilder).minutes.filter { m -> m >= now.minute || hour > now.hour || day > now.dayOfMonth || month > now.monthNumber || year > now.year }) {
-                            for (seconds in (partBuilders[0] as SecondsBuilder).seconds.filter { s -> s > now.second || minute > now.minute || hour > now.hour || day > now.dayOfMonth || month > now.monthNumber || year > now.year }) {
+        for (year in (partBuilders.getValue(CronPart.Years) as YearsBuilder).years.filter { y -> y >= now.year }) {
+            for (month in (partBuilders.getValue(CronPart.Months) as MonthsBuilder).months.filter { m -> m >= now.monthNumber || year > now.year}) {
+                for (day in calculateDays(year, month, (partBuilders.getValue(CronPart.DaysOfWeek) as DaysOfWeekBuilder).daysOfWeek, (partBuilders.getValue(CronPart.Days) as DaysBuilder).days, now)) {
+                    for (hour in (partBuilders.getValue(CronPart.Hours) as HoursBuilder).hours.filter { h -> h >= now.hour || day > now.dayOfMonth || month > now.monthNumber || year > now.year }) {
+                        for (minute in (partBuilders.getValue(CronPart.Minutes) as MinutesBuilder).minutes.filter { m -> m >= now.minute || hour > now.hour || day > now.dayOfMonth || month > now.monthNumber || year > now.year }) {
+                            for (seconds in (partBuilders.getValue(CronPart.Seconds) as SecondsBuilder).seconds.filter { s -> s > now.second || minute > now.minute || hour > now.hour || day > now.dayOfMonth || month > now.monthNumber || year > now.year }) {
                                 result.add(LocalDateTime(year, month, day, hour, minute, seconds))
                                 if (result.size == maxCount) {
                                     return result

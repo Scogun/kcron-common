@@ -1,5 +1,6 @@
 package com.ucasoft.kcron.parsers
 
+import com.ucasoft.kcron.common.CronPart
 import com.ucasoft.kcron.common.TimeGroups
 import kotlin.test.*
 
@@ -39,7 +40,7 @@ class SecondsPartTests {
 
     @BeforeTest
     fun setupOnce() {
-        parser = SecondsMinutesParser("seconds and minutes")
+        parser = SecondsMinutesParser(CronPart.Seconds)
     }
 
     @Test

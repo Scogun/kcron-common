@@ -1,10 +1,11 @@
 package com.ucasoft.kcron.parsers
 
 import com.ucasoft.kcron.common.CronGroups
+import com.ucasoft.kcron.common.CronPart
 
 abstract class BaseParser<T> where T : Enum<T>, T: CronGroups {
 
-    internal abstract val partName: String
+    internal abstract val part: CronPart
 
     protected abstract val pattern: String
 

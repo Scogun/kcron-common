@@ -1,6 +1,7 @@
 package com.ucasoft.kcron.parsers
 
 import com.ucasoft.kcron.common.CronGroups
+import com.ucasoft.kcron.common.CronPart
 import com.ucasoft.kcron.common.DayGroups
 import com.ucasoft.kcron.common.DayOfWeekGroups
 import com.ucasoft.kcron.exceptions.*
@@ -8,8 +9,8 @@ import com.ucasoft.kcron.exceptions.*
 class Parser {
 
     private val partParsers = listOf(
-        SecondsMinutesParser("seconds"),
-        SecondsMinutesParser("minutes"),
+        SecondsMinutesParser(CronPart.Seconds),
+        SecondsMinutesParser(CronPart.Minutes),
         HoursParser(),
         DaysParser(),
         MonthsParser(),
@@ -18,16 +19,16 @@ class Parser {
     )
 
     private val combinationRules = listOf(
-        CombinationRule("days", DayGroups.Specific, listOf(CombinationRule("days of the week", DayOfWeekGroups.Any))),
-        CombinationRule("days", DayGroups.EveryStartingAt, listOf(CombinationRule("days of the week", DayOfWeekGroups.Any))),
-        CombinationRule("days", DayGroups.LastDay, listOf(CombinationRule("days of the week", DayOfWeekGroups.Any))),
-        CombinationRule("days", DayGroups.LastWeekday, listOf(CombinationRule("days of the week", DayOfWeekGroups.Any))),
-        CombinationRule("days", DayGroups.BeforeTheEnd, listOf(CombinationRule("days of the week", DayOfWeekGroups.Any))),
-        CombinationRule("days", DayGroups.NearestWeekday, listOf(CombinationRule("days of the week", DayOfWeekGroups.Any))),
-        CombinationRule("days of the week", DayOfWeekGroups.Specific, listOf(CombinationRule("days", DayGroups.Any))),
-        CombinationRule("days of the week", DayOfWeekGroups.EveryStartingAt, listOf(CombinationRule("days", DayGroups.Any))),
-        CombinationRule("days of the week", DayOfWeekGroups.Last, listOf(CombinationRule("days", DayGroups.Any))),
-        CombinationRule("days of the week", DayOfWeekGroups.OfMonth, listOf(CombinationRule("days", DayGroups.Any)))
+        CombinationRule(CronPart.Days, DayGroups.Specific, listOf(CombinationRule(CronPart.DaysOfWeek, DayOfWeekGroups.Any))),
+        CombinationRule(CronPart.Days, DayGroups.EveryStartingAt, listOf(CombinationRule(CronPart.DaysOfWeek, DayOfWeekGroups.Any))),
+        CombinationRule(CronPart.Days, DayGroups.LastDay, listOf(CombinationRule(CronPart.DaysOfWeek, DayOfWeekGroups.Any))),
+        CombinationRule(CronPart.Days, DayGroups.LastWeekday, listOf(CombinationRule(CronPart.DaysOfWeek, DayOfWeekGroups.Any))),
+        CombinationRule(CronPart.Days, DayGroups.BeforeTheEnd, listOf(CombinationRule(CronPart.DaysOfWeek, DayOfWeekGroups.Any))),
+        CombinationRule(CronPart.Days, DayGroups.NearestWeekday, listOf(CombinationRule(CronPart.DaysOfWeek, DayOfWeekGroups.Any))),
+        CombinationRule(CronPart.DaysOfWeek, DayOfWeekGroups.Specific, listOf(CombinationRule(CronPart.Days, DayGroups.Any))),
+        CombinationRule(CronPart.DaysOfWeek, DayOfWeekGroups.EveryStartingAt, listOf(CombinationRule(CronPart.Days, DayGroups.Any))),
+        CombinationRule(CronPart.DaysOfWeek, DayOfWeekGroups.Last, listOf(CombinationRule(CronPart.Days, DayGroups.Any))),
+        CombinationRule(CronPart.DaysOfWeek, DayOfWeekGroups.OfMonth, listOf(CombinationRule(CronPart.Days, DayGroups.Any)))
     )
 
     fun parse(expression: String): ParseResult {
@@ -47,11 +48,11 @@ class Parser {
 
     private fun parsePartsAndEnsureValid(expressionParts: List<String>): ParseResult {
         val partExceptions = mutableListOf<WrongPartExpression>()
-        for ((index, part) in expressionParts.withIndex()) {
+        for ((index, partValue) in expressionParts.withIndex()) {
             val specificParser = partParsers[index]
-            specificParser.parse(part)
+            specificParser.parse(partValue)
             if (!specificParser.isValid) {
-                partExceptions.add(WrongPartExpression(part, specificParser))
+                partExceptions.add(WrongPartExpression(partValue, specificParser))
             }
         }
 
@@ -65,18 +66,18 @@ class Parser {
 
         val result = ParseResult()
         for ((index, parser) in partParsers.withIndex()) {
-            result.parts[parser.partName] = PartResult(parser.group as CronGroups, expressionParts[index])
+            result.parts[parser.part] = PartResult(parser.group as CronGroups, expressionParts[index])
         }
         return result
     }
 
-    private fun ensureCombinationRules(parts: MutableMap<String, PartResult>) {
+    private fun ensureCombinationRules(parts: MutableMap<CronPart, PartResult>) {
         val combinationExceptions = mutableListOf<WrongPartCombination>()
         for (part in parts) {
-            val rule = combinationRules.firstOrNull { r -> r.partName == part.key && r.type == part.value.type }
+            val rule = combinationRules.firstOrNull { r -> r.part == part.key && r.type == part.value.type }
             if (rule != null) {
                 for (dependency in rule.dependencies!!) {
-                    val secondPart = parts[dependency.partName]
+                    val secondPart = parts[dependency.part]
                     if (secondPart!!.type != dependency.type) {
                         combinationExceptions.add(WrongPartCombination(part, dependency, secondPart))
                     }

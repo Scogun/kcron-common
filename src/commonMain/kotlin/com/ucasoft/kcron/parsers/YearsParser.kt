@@ -1,5 +1,6 @@
 package com.ucasoft.kcron.parsers
 
+import com.ucasoft.kcron.common.CronPart
 import com.ucasoft.kcron.common.YearGroup
 
 class YearsParser: AnySpecificEveryParser<YearGroup>("\\*", "20[2-9][0-9]", "", "[0-9]|[1-9][1-9]|100") {
@@ -8,5 +9,5 @@ class YearsParser: AnySpecificEveryParser<YearGroup>("\\*", "20[2-9][0-9]", "", 
 
     override val groups = YearGroup.values()
 
-    override val partName = "years"
+    override val part = CronPart.Years
 }
