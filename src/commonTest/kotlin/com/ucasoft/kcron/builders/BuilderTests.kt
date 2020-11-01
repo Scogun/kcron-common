@@ -43,5 +43,6 @@ class BuilderTests {
         assertEquals(expected.plusDays(148), builder.nextRun)
         builder.months(10)
         assertEquals(expected.plusDays(302), builder.nextRun)
+        assertEquals("0 0 0 31 10 * 2099", builder.expression)
     }
 }
