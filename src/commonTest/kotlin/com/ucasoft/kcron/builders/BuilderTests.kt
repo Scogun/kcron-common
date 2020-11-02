@@ -65,5 +65,8 @@ class BuilderTests {
         result = builder.nextRunList(2)
         assertEquals(expected.plusDays(1), result[0])
         assertEquals(expected.plusDays(8), result[1])
+        builder.daysOfWeek(7 on 5)
+        assertEquals("0 0 0 ? 1 7#5 2099", builder.expression)
+        assertEquals(expected.plusDays(30), builder.nextRun)
     }
 }
