@@ -103,6 +103,10 @@ fun Builder.daysOfWeek(at: At) : Builder {
     return daysOfWeek(DayOfWeekGroups.EveryStartingAt, at.toString())
 }
 
+fun Builder.lastDayOfWeek(value: Int) : Builder {
+    return daysOfWeek(DayOfWeekGroups.Last, "${value}L")
+}
+
 fun Builder.daysOfWeek(on: On) : Builder {
     return daysOfWeek(DayOfWeekGroups.OfMonth, on.toString())
 }
