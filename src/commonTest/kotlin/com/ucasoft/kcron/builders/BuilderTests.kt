@@ -53,5 +53,17 @@ class BuilderTests {
         builder.hours(0).months(1..6)
         assertEquals("0 0 0 31W 1-6 * 2099", builder.expression)
         assertEquals(expected.plusDays(29), builder.nextRun)
+        builder.months(10).seconds(0 at 10)
+        assertEquals("0/10 0 0 31W 10 * 2099", builder.expression)
+        builder.seconds(0).months(1).daysOfWeek(6 at 1)
+        assertEquals("0 0 0 ? 1 6/1 2099", builder.expression)
+        result = builder.nextRunList(2)
+        assertEquals(expected.plusDays(1), result[0])
+        assertEquals(expected.plusDays(2), result[1])
+        builder.daysOfWeek(6 at 3)
+        assertEquals("0 0 0 ? 1 6/3 2099", builder.expression)
+        result = builder.nextRunList(2)
+        assertEquals(expected.plusDays(1), result[0])
+        assertEquals(expected.plusDays(8), result[1])
     }
 }
