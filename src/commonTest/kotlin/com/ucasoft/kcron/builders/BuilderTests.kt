@@ -44,5 +44,14 @@ class BuilderTests {
         builder.months(10)
         assertEquals(expected.plusDays(302), builder.nextRun)
         assertEquals("0 0 0 31W 10 * 2099", builder.expression)
+        builder.seconds(0..50)
+        assertEquals("0-50 0 0 31W 10 * 2099", builder.expression)
+        builder.seconds(0).minutes(0..25)
+        assertEquals("0 0-25 0 31W 10 * 2099", builder.expression)
+        builder.minutes(0).hours(0..18)
+        assertEquals("0 0 0-18 31W 10 * 2099", builder.expression)
+        builder.hours(0).months(1..6)
+        assertEquals("0 0 0 31W 1-6 * 2099", builder.expression)
+        assertEquals(expected.plusDays(29), builder.nextRun)
     }
 }
