@@ -33,7 +33,7 @@ println(builder.expression) // 0/10 5-25 5,12 ? * 7#5 2050
 ***Parse Cron expression***
 ```kotlin
 val builder = KCron.parseAndBuild("0/10 5-25 5,12 ? * 7#5 2050")
-println(builder.nextRunList()) // 10 is as default list size
+println(builder.nextRunList()) // 10 is a default list size
 /* Result:
 [
     2050-01-29T05:05,
@@ -49,6 +49,20 @@ println(builder.nextRunList()) // 10 is as default list size
 ]
 */ 
 ```
+***Days of week and months can be defined in a parsed expression as numbers as well as short names***
+```kotlin
+builder = KCron.parseAndBuild("15/10 5-25 5 ? JAN,MAR 2,3,4,5 2050")
+println(builder.nextRun) // 2050-01-03T05:05:15
+// OR
+builder = KCron.parseAndBuild("15/10 5-25 5 ? 2-4 MON 2050")
+println(builder.nextRun) // 2050-02-07T05:05:15
+```
+***Easy change any part of expression***
+```kotlin
+val builder = KCron.parseAndBuild("0/10 5-25 5,12 ? * 7#5 2050")
+builder.years(2021..2025)
+println(builder.expression) // 0/10 5-25 5,12 ? * 7#5 2021-2025
+``` 
 ##### Current status
 This library is on alpha version `0.0.9`.
 However, it will be a part of another cool library.
