@@ -9,8 +9,8 @@ Cron realization for Kotlin Multiplatform
 ```kotlin
 builder
     .seconds(0 at 10) //Every 10 seconds starting at 0 seconds
-    .minutes(5..25) // Every minute between 0 and 25
-    .hours(5, 12) // Specific hours: 0, 5 and 15
+    .minutes(5..25) // Every minute between 5 and 25
+    .hours(5, 12) // Specific hours: 5 and 15
     .daysOfWeek(7 on 5) // On the 5th Saturday of the month
     .years(2050) // Specific year: 2050
 ```
