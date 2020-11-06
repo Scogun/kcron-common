@@ -1,7 +1,7 @@
 # KCron
 Cron realization for Kotlin Multiplatform
 
-##### Features
+#### Features
 * Kotlin Multiplatform library
 * Parse Cron expressions
   * Include L, W, LW, '?' and #
@@ -16,7 +16,7 @@ builder
 ```
 * Parsing validation includes combination rules
   * 'days' and 'days of week' could not be setup simultaneously
-##### Usage
+#### Usage
 ***Build Cron expression***
 ```kotlin
 val builder = KCron.builder()
@@ -63,7 +63,7 @@ val builder = KCron.parseAndBuild("0/10 5-25 5,12 ? * 7#5 2050")
 builder.years(2021..2025)
 println(builder.expression) // 0/10 5-25 5,12 ? * 7#5 2021-2025
 ``` 
-##### Current status
+#### Current status
 This library is on alpha version `0.0.10`.
 However, it will be a part of another cool library.
 Check the news! 
