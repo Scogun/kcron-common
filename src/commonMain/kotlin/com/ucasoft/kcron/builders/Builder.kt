@@ -149,32 +149,18 @@ class Builder {
             return listOf(lastMonthDay.minusDays(difference).dayOfMonth)
         }
         val lastDayInt = lastMonthDay.dayOfMonth
+        val firstInMonth = LocalDateTime(year, month, 1, 0, 0)
+        val startDay = if (now.monthNumber == month && now.year == year) { now } else { firstInMonth }
         if (firstValue >= 10) {
             val dayOfWeek = toIsoDayOfWeek(firstValue / 10)
             val index = daysOfWeek[1] / 10
-            val firstInMonth = LocalDateTime(year, month, 1, 0, 0)
-            var difference = dayOfWeek - firstInMonth.dayOfWeek.isoDayNumber
-            if (difference < 0) {
-                difference += 7
-            }
-            val inMonth = firstInMonth.plusDays(difference).dayOfMonth + 7 * (index - 1)
-            if (inMonth > lastDayInt) {
+            val inMonth = dayOfWeekByIndex(dayOfWeek, index, firstInMonth, lastDayInt) ?: return emptyList()
+            if (inMonth < startDay.dayOfMonth) {
                 return emptyList()
             }
             return listOf(inMonth)
         }
-        val firstDay = if (now.monthNumber < month || now.year < year) { 1 } else { now.dayOfMonth + 1 }
-        val result = mutableListOf<Int>()
-        val isoDaysOfWeek = daysOfWeek.map { d -> toIsoDayOfWeek(d) }
-        for (day in firstDay..lastDayInt) {
-            val weekDay = LocalDateTime(year, month, day, 0, 0).dayOfWeek.isoDayNumber
-            if (isoDaysOfWeek.contains(weekDay)) {
-                result.add(day)
-            }
-            if (result.size == daysOfWeek.size) {
-                break
-            }
-        }
+        val result = daysOfWeek.mapNotNull { d -> dayOfWeekByIndex(toIsoDayOfWeek(d), 1, startDay, lastDayInt) }.toMutableList()
         while (result.isNotEmpty()) {
             var index = result.size - daysOfWeek.size
             if (index < 0) {
@@ -187,6 +173,18 @@ class Builder {
             result.add(nextDay)
         }
         return result
+    }
+
+    private fun dayOfWeekByIndex(dayOfWeek: Int, index: Int, startDay: LocalDateTime, lastDayInt: Int): Int? {
+        var difference = dayOfWeek - startDay.dayOfWeek.isoDayNumber
+        if (difference < 0) {
+            difference += 7
+        }
+        val inMonth = startDay.dayOfMonth + difference + 7 * (index - 1)
+        if (inMonth <= lastDayInt) {
+            return inMonth
+        }
+        return null
     }
 
     private fun nearestWorkDayTo(year: Int, month: Int, lastMonthDay: Int, day: Int) : Int {

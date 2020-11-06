@@ -2,7 +2,7 @@ plugins {
     id 'org.jetbrains.kotlin.multiplatform' version '1.4.10'
 }
 group = 'com.ucasoft.kcron'
-version = '0.0.9'
+version = '0.0.10'
 
 repositories {
     mavenCentral()
