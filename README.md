@@ -1,6 +1,8 @@
 # KCron
 Cron realization for Kotlin Multiplatform
 
+[![Maven Central with version prefix filter](https://img.shields.io/maven-central/v/com.ucasoft.kcron/KCron/0.1.1)](https://search.maven.org/artifact/com.ucasoft.kcron/KCron/0.1.1/jar)
+
 ### Features
 * Kotlin Multiplatform library
 * Parse Cron expressions
@@ -17,6 +19,18 @@ builder
 * Parsing validation includes combination rules
   * 'days' and 'days of week' could not be setup simultaneously
 ### Usage
+***Add with Gradle***
+```groovy
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation 'com.ucasoft.kcron:KCron:0.1.1'
+            }
+        }
+    }
+}
+```
 ***Build Cron expression***
 ```kotlin
 val builder = KCron.builder()
@@ -64,6 +78,6 @@ builder.years(2021..2025)
 println(builder.expression) // 0/10 5-25 5,12 ? * 7#5 2021-2025
 ``` 
 ### Current status
-This library is on alpha version `0.0.10`.
+This library is on alpha version `0.1.1`.
 However, it will be a part of another cool library.
 Check the news! 
