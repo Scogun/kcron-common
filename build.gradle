@@ -1,12 +1,15 @@
 plugins {
     id 'org.jetbrains.kotlin.multiplatform' version '1.4.10'
+    id 'maven-publish'
+    id 'signing'
 }
+
 group = 'com.ucasoft.kcron'
-version = '0.0.10'
+version = '0.1.1'
 
 repositories {
     mavenCentral()
-    maven{ url "https://kotlin.bintray.com/kotlinx/" }
+    maven { url "https://kotlin.bintray.com/kotlinx/" }
 }
 kotlin {
     jvm {
@@ -27,12 +30,70 @@ kotlin {
             }
         }
         jvmMain {
-
         }
         jvmTest {
-            dependencies {
-                implementation kotlin('test-junit')
+        }
+    }
+}
+
+task stubSources(type: Jar) {
+    classifier = 'sources'
+}
+
+task stubJavadoc(type: Jar) {
+    classifier = 'javadoc'
+}
+
+artifacts {
+    archives stubSources
+    archives stubJavadoc
+}
+
+publishing {
+    publications{
+        kCronProject(MavenPublication) {
+            artifacts {
+                artifact stubSources
+                artifact stubJavadoc
+                artifact file("build/libs/${rootProject.name}-jvm-${version}.jar")
+            }
+            pom {
+                name = 'KCron'
+                description = 'Cron realization for Kotlin Multiplatform'
+                url = 'https://github.com/Scogun/KCron'
+                licenses {
+                    license {
+                        name = 'GPL-3.0 License'
+                        url = 'https://www.gnu.org/licenses/gpl-3.0.en.html'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'Scogun'
+                        name = 'Sergey Antonov'
+                        email = 'SAntonov@ucasoft.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/Scogun/KCron.git'
+                    developerConnection = 'scm:git:ssh://github.com:Scogun/KCron.git'
+                    url = 'https://github.com/Scogun/KCron'
+                }
             }
         }
     }
+    repositories {
+        maven {
+            name = 'MavenCentral'
+            url = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+            credentials {
+                username = System.getenv('MAVEN_USERNAME')
+                password = System.getenv('MAVEN_PASSWORD')
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.kCronProject
 }
