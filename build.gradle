@@ -60,7 +60,7 @@ publishing {
             pom {
                 name = 'KCron'
                 description = 'Cron realization for Kotlin Multiplatform'
-                url = 'https://github.com/Scogun/KCron'
+                url = 'https://github.com/Scogun/kcron-common'
                 licenses {
                     license {
                         name = 'GPL-3.0 License'
@@ -75,9 +75,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection = 'scm:git:git://github.com/Scogun/KCron.git'
-                    developerConnection = 'scm:git:ssh://github.com:Scogun/KCron.git'
-                    url = 'https://github.com/Scogun/KCron'
+                    connection = 'scm:git:git://github.com/Scogun/kcron-common.git'
+                    developerConnection = 'scm:git:ssh://github.com:Scogun/kcron-common.git'
+                    url = 'https://github.com/Scogun/kcron-common'
                 }
             }
         }

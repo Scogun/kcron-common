@@ -1,4 +1,4 @@
-# KCron
+# KCron Common
 Cron realization for Kotlin Multiplatform
 
 [![Maven Central with version prefix filter](https://img.shields.io/maven-central/v/com.ucasoft.kcron/KCron/0.1.1)](https://search.maven.org/artifact/com.ucasoft.kcron/KCron/0.1.1/jar)
@@ -25,7 +25,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation 'com.ucasoft.kcron:KCron:0.1.1'
+                implementation 'com.ucasoft.kcron:kcron-common:0.1.1'
             }
         }
     }
