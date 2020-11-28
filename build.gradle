@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.ucasoft.kcron'
-version = '0.1.2'
+version = '0.1.4'
 
 repositories {
     mavenCentral()
@@ -17,6 +17,9 @@ kotlin {
             kotlinOptions.jvmTarget = '1.8'
         }
     }
+    linuxX64()
+    mingwX64()
+    macosX64()
     sourceSets {
         commonMain {
             dependencies {
@@ -28,8 +31,6 @@ kotlin {
                 implementation kotlin('test-common')
                 implementation kotlin('test-annotations-common')
             }
-        }
-        jvmMain {
         }
         jvmTest {
             dependencies {
@@ -47,42 +48,50 @@ task stubJavadoc(type: Jar) {
     classifier = 'javadoc'
 }
 
-artifacts {
-    archives stubSources
-    archives stubJavadoc
+task sourceJar(type: Jar){
+    classifier = 'sources'
+    from kotlin.sourceSets.commonMain.kotlin
 }
 
 publishing {
-    publications{
-        kCronProject(MavenPublication) {
-            artifacts {
-                artifact stubSources
-                artifact stubJavadoc
-                artifact file("build/libs/${rootProject.name}-jvm-${version}.jar")
+    publications.all {
+        def libraryType = it.name
+        switch (libraryType) {
+            case 'jvm':
+                it.artifactId = "${project.name}-jvm"
+                break
+            case 'kotlinMultiplatform':
+                it.artifactId = "${project.name}-native"
+                break
+            case 'metadata':
+                it.artifactId = "${project.name}-metadata"
+                break
+        }
+        pom {
+            name = 'KCron Common'
+            description = 'Cron realization for Kotlin Multiplatform'
+            url = 'https://github.com/Scogun/kcron-common'
+            licenses {
+                license {
+                    name = 'GPL-3.0 License'
+                    url = 'https://www.gnu.org/licenses/gpl-3.0.en.html'
+                }
             }
-            pom {
-                name = 'KCron'
-                description = 'Cron realization for Kotlin Multiplatform'
+            developers {
+                developer {
+                    id = 'Scogun'
+                    name = 'Sergey Antonov'
+                    email = 'SAntonov@ucasoft.com'
+                }
+            }
+            scm {
+                connection = 'scm:git:git://github.com/Scogun/kcron-common.git'
+                developerConnection = 'scm:git:ssh://github.com:Scogun/kcron-common.git'
                 url = 'https://github.com/Scogun/kcron-common'
-                licenses {
-                    license {
-                        name = 'GPL-3.0 License'
-                        url = 'https://www.gnu.org/licenses/gpl-3.0.en.html'
-                    }
-                }
-                developers {
-                    developer {
-                        id = 'Scogun'
-                        name = 'Sergey Antonov'
-                        email = 'SAntonov@ucasoft.com'
-                    }
-                }
-                scm {
-                    connection = 'scm:git:git://github.com/Scogun/kcron-common.git'
-                    developerConnection = 'scm:git:ssh://github.com:Scogun/kcron-common.git'
-                    url = 'https://github.com/Scogun/kcron-common'
-                }
             }
+        }
+        if (libraryType != 'kotlinMultiplatform') {
+            artifact stubJavadoc
         }
     }
     repositories {
@@ -98,5 +107,5 @@ publishing {
 }
 
 signing {
-    sign publishing.publications.kCronProject
+    sign publishing.publications
 }
