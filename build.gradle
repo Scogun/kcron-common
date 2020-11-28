@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.ucasoft.kcron'
-version = '0.1.4'
+version = '0.1.5'
 
 repositories {
     mavenCentral()
@@ -58,7 +58,7 @@ publishing {
         def libraryType = it.name
         switch (libraryType) {
             case 'jvm':
-                it.artifactId = "${project.name}-jvm"
+                it.artifactId = "${project.name}"
                 break
             case 'kotlinMultiplatform':
                 it.artifactId = "${project.name}-native"
