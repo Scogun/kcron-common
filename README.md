@@ -10,7 +10,7 @@ Cron realization for Kotlin Multiplatform
 * Build Cron expression by smart builder functions:
 ```kotlin
 builder
-    .seconds(0 at 10) //Every 10 seconds starting at 0 seconds
+    .seconds(10 at 0) //Every 10 seconds starting at 0 seconds
     .minutes(5..25) // Every minute between 5 and 25
     .hours(5, 12) // Specific hours: 5 and 12
     .daysOfWeek(7 on 5) // On the 5th Saturday of the month
@@ -37,7 +37,7 @@ val builder = KCron.builder()
 // By default builder contains any expression for every part
 println(builder.expression) // * * * ? * * *
 builder
-    .seconds(0 at 10)
+    .seconds(10 at 0)
     .minutes(5..25)
     .hours(5, 12)
     .daysOfWeek(7 on 5)

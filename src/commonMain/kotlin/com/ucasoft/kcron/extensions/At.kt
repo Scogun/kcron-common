@@ -1,8 +1,8 @@
 package com.ucasoft.kcron.extensions
 
-class At(private val starting: Int, private val every: Int) {
+class At(private val every: Int, private val starting: Int) {
 
     override fun toString() = "$starting/$every"
 }
 
-infix fun Int.at(every: Int) : At = At(this, every)
+infix fun Int.at(starting: Int) : At = At(this, starting)
