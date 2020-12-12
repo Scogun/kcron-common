@@ -20,6 +20,7 @@ kotlin {
     linuxX64()
     mingwX64()
     macosX64()
+    js()
     sourceSets {
         commonMain {
             dependencies {
@@ -57,14 +58,15 @@ publishing {
     publications.all {
         def libraryType = it.name
         switch (libraryType) {
+            case 'js':
+            case 'metadata':
+                it.artifactId = "${project.name}-${libraryType}"
+                break
             case 'jvm':
                 it.artifactId = "${project.name}"
                 break
             case 'kotlinMultiplatform':
                 it.artifactId = "${project.name}-native"
-                break
-            case 'metadata':
-                it.artifactId = "${project.name}-metadata"
                 break
         }
         pom {
