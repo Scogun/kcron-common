@@ -51,8 +51,8 @@ fun Builder.hours(between: IntRange) : Builder {
     return hours(TimeGroups.EveryBetween, "${between.first}-${between.last}")
 }
 
-fun Builder.anyDays(any: String = "*") : Builder {
-    return days(DayGroups.Any, any)
+fun Builder.anyDays() : Builder {
+    return days(DayGroups.Any, "?")
 }
 
 fun Builder.days(vararg values: Int) : Builder {
@@ -91,8 +91,8 @@ fun Builder.months(between: IntRange) : Builder {
     return months(MonthGroups.EveryBetween, "${between.first}-${between.last}")
 }
 
-fun Builder.anyDaysOfWeek() : Builder {
-    return daysOfWeek(DayOfWeekGroups.Any, "*")
+fun Builder.anyDaysOfWeek(any: String = "*") : Builder {
+    return daysOfWeek(DayOfWeekGroups.Any, any)
 }
 
 fun Builder.daysOfWeek(vararg values: Int) : Builder {

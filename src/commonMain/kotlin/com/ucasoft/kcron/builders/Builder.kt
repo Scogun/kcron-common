@@ -55,6 +55,8 @@ class Builder {
     fun days(type: DayGroups, value: String) : Builder {
         if (type != DayGroups.Any) {
             daysOfWeek(DayOfWeekGroups.Any, "?")
+        } else if (partBuilders.getValue(CronPart.DaysOfWeek).value == "?") {
+            daysOfWeek(DayOfWeekGroups.Any, "*")
         }
         partBuilders.getValue(CronPart.Days).commonBuild(type, value)
         return this
