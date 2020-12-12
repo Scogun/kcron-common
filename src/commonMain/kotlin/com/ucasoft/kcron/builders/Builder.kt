@@ -17,13 +17,13 @@ class Builder {
     )
 
     init {
-        anySeconds()
-        anyMinutes()
-        anyHours()
-        anyDays()
-        anyMonths()
-        anyDaysOfWeek()
-        anyYears()
+        seconds(TimeGroups.Any, "*")
+        minutes(TimeGroups.Any, "*")
+        hours(TimeGroups.Any, "*")
+        days(DayGroups.Any, "?")
+        months(MonthGroups.Any, "*")
+        daysOfWeek(DayOfWeekGroups.Any, "*")
+        years(YearGroups.Any, "*")
     }
 
     val nextRun : LocalDateTime?
@@ -54,7 +54,7 @@ class Builder {
 
     fun days(type: DayGroups, value: String) : Builder {
         if (type != DayGroups.Any) {
-            anyDaysOfWeek()
+            daysOfWeek(DayOfWeekGroups.Any, "?")
         }
         partBuilders.getValue(CronPart.Days).commonBuild(type, value)
         return this
@@ -67,7 +67,7 @@ class Builder {
 
     fun daysOfWeek(type: DayOfWeekGroups, value: String) : Builder {
         if (type != DayOfWeekGroups.Any) {
-            anyDays("?")
+            days(DayGroups.Any, "?")
         }
         partBuilders.getValue(CronPart.DaysOfWeek).commonBuild(type, value)
         return this
