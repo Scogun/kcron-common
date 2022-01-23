@@ -5,4 +5,3 @@
 /build/classes/kotlin/jvm/main/
 /build/classes/kotlin/jvm/test/
 /gradle/wrapper/*.jar
-/gradlew*
