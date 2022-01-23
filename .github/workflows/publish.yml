@@ -1,8 +1,6 @@
 name: Publish to Maven
 
 on:
-  push:
-    branches: [feature/actions]
   workflow_dispatch:
   release:
     types: [created]
