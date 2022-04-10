@@ -7,7 +7,7 @@ import kotlin.test.assertEquals
 
 class HoursBuilderTests {
 
-    lateinit var builder: HoursBuilder
+    private lateinit var builder: HoursBuilder
 
     @BeforeTest
     fun setupOnce() {

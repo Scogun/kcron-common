@@ -27,7 +27,7 @@ class DaysPartTests {
         DayValueGroup("31W", DayGroups.NearestWeekday)
     )
 
-    val deniedValues = listOf(
+    private val deniedValues = listOf(
         "*",
         "??",
         "0",

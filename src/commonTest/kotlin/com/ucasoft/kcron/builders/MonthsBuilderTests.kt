@@ -7,7 +7,7 @@ import kotlin.test.assertEquals
 
 class MonthsBuilderTests {
 
-    lateinit var builder: MonthsBuilder
+    private lateinit var builder: MonthsBuilder
 
     @BeforeTest
     fun setupOnce() {

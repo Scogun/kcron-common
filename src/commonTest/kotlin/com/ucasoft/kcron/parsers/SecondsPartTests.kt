@@ -6,7 +6,7 @@ import kotlin.test.*
 
 class SecondsPartTests {
 
-    lateinit var parser: SecondsMinutesParser
+    private lateinit var parser: SecondsMinutesParser
 
     private val allowedValues = listOf(
         TimeValueGroup("*", TimeGroups.Any),
