@@ -10,5 +10,5 @@ abstract class AnySpecificEveryAtParser<T>(
         : AnySpecificParser<T>(anyPattern, specificNumberPattern, specificNamePattern)
         where T: Enum<T>, T: CronGroups {
 
-    override val additionalParts: String = "|((?:${specificNumberPattern})/(?:${if (secondLimitPattern.isNotEmpty()){secondLimitPattern} else {specificNumberPattern}}))"
+    override val additionalParts: String = "|((?:${specificNumberPattern})/(?:${secondLimitPattern.ifEmpty { specificNumberPattern }}))"
 }
