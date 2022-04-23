@@ -67,7 +67,6 @@ class DaysOfWeekPartTests {
             parser.parse(value)
             assertFalse(parser.isValid)
             assertEquals(DayOfWeekGroups.Unknown, parser.group)
-            assertTrue(false)
         }
     }
 }
