@@ -31,5 +31,8 @@ class YearsBuilderTests {
         assertEquals(listOf(2021, 2056, 2091), builder.years)
         builder.build(YearGroups.EveryBetween, "2021-2025")
         assertEquals(listOf(2021, 2022, 2023, 2024, 2025), builder.years)
+        builder.build(YearGroups.Any, "*")
+        assertEquals(currentYear, builder.years[0])
+        assertEquals(2099, builder.years.last())
     }
 }
