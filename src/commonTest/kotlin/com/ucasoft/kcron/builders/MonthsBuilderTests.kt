@@ -26,5 +26,7 @@ class MonthsBuilderTests {
         assertEquals(listOf(3, 5, 7, 9, 11), builder.months)
         builder.build(MonthGroups.EveryBetween, "6-8")
         assertEquals(listOf(6, 7, 8), builder.months)
+        builder.build(MonthGroups.Any, "*")
+        assertEquals(listOf(1..12).flatten(), builder.months)
     }
 }

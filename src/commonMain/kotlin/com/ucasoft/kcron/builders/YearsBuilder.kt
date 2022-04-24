@@ -5,29 +5,24 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
-class YearsBuilder : PartBuilder<YearGroups>() {
+class YearsBuilder : EveryAtBuilder<YearGroups>() {
 
-    lateinit var years : List<Int>
-
-    override fun build(type: YearGroups, value: String) {
-        val now = Clock.System.now()
-        val currentYear = now.toLocalDateTime(TimeZone.currentSystemDefault()).year
-        if (type == YearGroups.Specific) {
-            years = value.split(',').map { d -> d.toInt() }.sorted()
-        } else {
-            var start = currentYear
-            var end = 2099
-            var step = 1
-            if (type == YearGroups.EveryStartingAt || type == YearGroups.EveryBetween) {
-                val data = value.split(if (type == YearGroups.EveryStartingAt) { '/' } else { '-' }).map { v -> v.toInt() }
-                start = data[0]
-                if (type == YearGroups.EveryStartingAt) {
-                    step = data[1]
-                } else {
-                    end = data[1]
-                }
-            }
-            years = listOf(start..end step step).flatten()
+    val years : List<Int>
+        get() {
+            return values
         }
-    }
+
+    override val defaultStart: Int
+        get() {
+            val now = Clock.System.now()
+            return now.toLocalDateTime(TimeZone.currentSystemDefault()).year
+        }
+
+    override val defaultEnd = 2099
+
+    override val specific: YearGroups = YearGroups.Specific
+
+    override val everyBetween = YearGroups.EveryBetween
+
+    override val everyStartingAt = YearGroups.EveryStartingAt
 }

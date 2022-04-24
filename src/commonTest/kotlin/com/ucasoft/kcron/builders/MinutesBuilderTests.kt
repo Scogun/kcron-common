@@ -24,5 +24,7 @@ class MinutesBuilderTests {
         assertEquals(listOf(13, 30, 47), builder.minutes)
         builder.build(TimeGroups.EveryBetween, "29-37")
         assertEquals(listOf(29..37).flatten(), builder.minutes)
+        builder.build(TimeGroups.Any, "*")
+        assertEquals(listOf(0..59).flatten(), builder.minutes)
     }
 }
