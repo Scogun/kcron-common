@@ -10,7 +10,7 @@ import kotlin.test.assertEquals
 
 class YearsBuilderTests {
 
-    lateinit var builder : YearsBuilder
+    private lateinit var builder : YearsBuilder
 
     private var currentYear : Int = 2020
 

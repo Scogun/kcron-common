@@ -5,7 +5,7 @@ import kotlin.test.*
 
 class MonthPartTests {
 
-    lateinit var parser: MonthsParser
+    private lateinit var parser: MonthsParser
 
     private val allowedValues = listOf(
         MonthValueGroup("*", MonthGroups.Any),

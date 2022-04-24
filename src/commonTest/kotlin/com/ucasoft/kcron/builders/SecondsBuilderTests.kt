@@ -7,7 +7,7 @@ import kotlin.test.assertEquals
 
 class SecondsBuilderTests {
 
-    lateinit var builder: SecondsBuilder
+    private lateinit var builder: SecondsBuilder
 
     @BeforeTest
     fun setupOnce() {
