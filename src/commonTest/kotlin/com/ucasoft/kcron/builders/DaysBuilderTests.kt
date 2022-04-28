@@ -15,7 +15,7 @@ class DaysBuilderTests {
     }
 
     @Test
-    fun buildSeconds() {
+    fun buildDays() {
         builder.build(DayGroups.Any, "?")
         assertEquals(listOf(1..31).flatten(), builder.days)
         builder.build(DayGroups.Specific, "1,5,10,15,20,23,31")

@@ -15,7 +15,7 @@ class DaysOfWeekBuilderTests {
     }
 
     @Test
-    fun buildSeconds() {
+    fun buildDaysOfWeek() {
         builder.build(DayOfWeekGroups.Any, "*")
         assertEquals(listOf(1..7).flatten(), builder.daysOfWeek)
         builder.build(DayOfWeekGroups.Specific, "MON,TUE,THU,FRI")

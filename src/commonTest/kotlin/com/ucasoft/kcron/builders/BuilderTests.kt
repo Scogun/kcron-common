@@ -18,7 +18,7 @@ class BuilderTests {
     }
 
     @Test
-    fun buildSeconds() {
+    fun buildMany() {
         assertEquals("* * * ? * * *", builder.expression)
         builder.days(1)
         assertEquals("* * * 1 * ? *", builder.expression)

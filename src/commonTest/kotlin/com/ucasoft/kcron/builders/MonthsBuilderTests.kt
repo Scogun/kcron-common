@@ -15,7 +15,7 @@ class MonthsBuilderTests {
     }
 
     @Test
-    fun buildSeconds() {
+    fun buildMonths() {
         builder.build(MonthGroups.Any, "*")
         assertEquals(listOf(1..12).flatten(), builder.months)
         builder.build(MonthGroups.Specific, "1,2,6,10,12")

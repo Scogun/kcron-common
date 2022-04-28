@@ -21,7 +21,7 @@ class YearsBuilderTests {
     }
 
     @Test
-    fun buildSeconds() {
+    fun buildYears() {
         builder.build(YearGroups.Any, "*")
         assertEquals(currentYear, builder.years[0])
         assertEquals(2099, builder.years.last())
