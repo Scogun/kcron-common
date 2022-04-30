@@ -29,14 +29,14 @@ class DaysOfWeekBuilderTests {
     @Test
     fun firstDaySunday() {
         builder = DaysOfWeekBuilder(WeekDays.Sunday)
-        builder.build(DayOfWeekGroups.Specific, "MON,TUE,THU,FRI,SUN")
-        assertEquals(listOf(1, 2, 3, 5, 6), builder.daysOfWeek)
+        builder.build(DayOfWeekGroups.Specific, "TUE,THU,FRI,SUN")
+        assertEquals(listOf(1, 3, 5, 6), builder.daysOfWeek)
     }
 
     @Test
     fun firstDayWednesday() {
         builder = DaysOfWeekBuilder(WeekDays.Wednesday)
-        builder.build(DayOfWeekGroups.Specific, "MON,TUE,THU,FRI,SUN")
-        assertEquals(listOf(2, 3, 5, 6, 7), builder.daysOfWeek)
+        builder.build(DayOfWeekGroups.Specific, "MON,TUE,THU,FRI")
+        assertEquals(listOf(2, 3, 6, 7), builder.daysOfWeek)
     }
 }
