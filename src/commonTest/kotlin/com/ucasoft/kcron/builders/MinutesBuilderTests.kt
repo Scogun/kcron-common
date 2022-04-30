@@ -15,7 +15,7 @@ class MinutesBuilderTests {
     }
 
     @Test
-    fun buildSeconds() {
+    fun buildMinutes() {
         builder.build(TimeGroups.Any, "*")
         assertEquals(listOf(0..59).flatten(), builder.minutes)
         builder.build(TimeGroups.Specific, "0,5,10,15,20,30,45,59")

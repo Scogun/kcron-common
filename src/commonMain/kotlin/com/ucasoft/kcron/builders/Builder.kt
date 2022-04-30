@@ -4,7 +4,7 @@ import com.ucasoft.kcron.common.*
 import com.ucasoft.kcron.extensions.*
 import kotlinx.datetime.*
 
-class Builder {
+class Builder(firstDayOfWeek: WeekDays = WeekDays.Monday) {
 
     private val partBuilders = mapOf(
         CronPart.Seconds to SecondsBuilder(),
@@ -12,7 +12,7 @@ class Builder {
         CronPart.Hours to HoursBuilder(),
         CronPart.Days to DaysBuilder(),
         CronPart.Months to MonthsBuilder(),
-        CronPart.DaysOfWeek to DaysOfWeekBuilder(),
+        CronPart.DaysOfWeek to DaysOfWeekBuilder(firstDayOfWeek),
         CronPart.Years to YearsBuilder()
     )
 
@@ -31,6 +31,8 @@ class Builder {
 
     val expression: String
         get() = partBuilders.values.joinToString(" ") { builder -> builder.value }
+
+    private val firstDayOfWeekIndex = WeekDays.values().indexOf(firstDayOfWeek)
 
     fun build(parts: Map<CronPart, PartValue>): Builder {
         parts.forEach { entry -> partBuilders[entry.key]?.commonBuild(entry.value.type, entry.value.value) }
@@ -162,7 +164,7 @@ class Builder {
             }
             return listOf(inMonth)
         }
-        val result = daysOfWeek.mapNotNull { d -> dayOfWeekByIndex(toIsoDayOfWeek(d), 1, startDay, lastDayInt) }.toMutableList()
+        val result = daysOfWeek.mapNotNull { d -> dayOfWeekByIndex(toIsoDayOfWeek(d), 1, startDay, lastDayInt) }.sorted().toMutableList()
         while (result.isNotEmpty()) {
             var index = result.size - daysOfWeek.size
             if (index < 0) {
@@ -208,10 +210,11 @@ class Builder {
     }
 
     private fun toIsoDayOfWeek(dayOfWeek: Int) : Int {
-        if (dayOfWeek == 1) {
-            return 7
+        var index = dayOfWeek + firstDayOfWeekIndex
+        if (index > 7) {
+            index -= 7
         }
-        return dayOfWeek - 1
+        return index
     }
 
     private fun lastMonthDay(year: Int, month: Int): LocalDateTime {
