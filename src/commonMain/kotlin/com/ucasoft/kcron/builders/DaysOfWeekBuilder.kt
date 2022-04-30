@@ -1,12 +1,13 @@
 package com.ucasoft.kcron.builders
 
 import com.ucasoft.kcron.common.DayOfWeekGroups
+import com.ucasoft.kcron.common.WeekDays
 
-class DaysOfWeekBuilder : PartBuilder<DayOfWeekGroups>() {
+class DaysOfWeekBuilder(private val firstWeekDay: WeekDays = WeekDays.Monday) : PartBuilder<DayOfWeekGroups>() {
 
     lateinit var daysOfWeek: List<Int>
 
-    private val dayWeekNames = listOf("SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT")
+    private val dayWeekNames = WeekDays.values().map { v -> v.shortName }
 
     override fun build(type: DayOfWeekGroups, value: String)
     {
@@ -17,7 +18,8 @@ class DaysOfWeekBuilder : PartBuilder<DayOfWeekGroups>() {
             DayOfWeekGroups.Specific -> {
                 val data = value.split(',')
                 daysOfWeek = if (data.all { d -> dayWeekNames.contains(d) }) {
-                    data.map { d -> dayWeekNames.indexOf(d) + 1 }.sorted()
+                    val firstWeekDayIndex = WeekDays.values().indexOf(firstWeekDay)
+                    data.map { d -> dayShift(firstWeekDayIndex, dayWeekNames.indexOf(d)) }.sorted()
                 } else {
                     data.map { d -> d.toInt() }.sorted()
                 }
@@ -33,5 +35,16 @@ class DaysOfWeekBuilder : PartBuilder<DayOfWeekGroups>() {
                 daysOfWeek = value.split('#').map { v -> v.toInt() * 10 }
             }
         }
+    }
+
+    private fun dayShift(firstWeekDayIndex: Int, currentDayIndex: Int) : Int
+    {
+        var index = currentDayIndex - firstWeekDayIndex
+        if (index < 0)
+        {
+            index += 7
+        }
+
+        return index + 1
     }
 }
