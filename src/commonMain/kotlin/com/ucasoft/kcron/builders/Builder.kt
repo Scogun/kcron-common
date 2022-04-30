@@ -164,6 +164,7 @@ class Builder(firstDayOfWeek: WeekDays = WeekDays.Monday) {
             }
             return listOf(inMonth)
         }
+        val result = daysOfWeek.mapNotNull { d -> dayOfWeekByIndex(toIsoDayOfWeek(d), 1, startDay, lastDayInt) }.sorted().toMutableList()
         while (result.isNotEmpty()) {
             var index = result.size - daysOfWeek.size
             if (index < 0) {
