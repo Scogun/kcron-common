@@ -26,6 +26,8 @@ class DaysOfWeekBuilderTests {
         assertEquals(listOf(-2), builder.daysOfWeek)
         builder.build(DayOfWeekGroups.OfMonth, "1#5")
         assertEquals(listOf(10, 50), builder.daysOfWeek)
+        builder.build(DayOfWeekGroups.OfMonth, "SAT#5")
+        assertEquals(listOf(60, 50), builder.daysOfWeek)
     }
 
     @Test

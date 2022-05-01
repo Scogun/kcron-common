@@ -91,8 +91,8 @@ class BuilderTests {
         result = builder.nextRunList(2)
         assertEquals(expected.plusDays(1), result[0])
         assertEquals(expected.plusDays(8), result[1])
-        builder.daysOfWeek(7 on 5)
-        assertEquals("0 0 0 ? 1 7#5 2099", builder.expression)
+        builder.daysOfWeek(WeekDays.Saturday on 5)
+        assertEquals("0 0 0 ? 1 SAT#5 2099", builder.expression)
         assertEquals(expected.plusDays(30), builder.nextRun)
     }
 
@@ -117,8 +117,8 @@ class BuilderTests {
         result = builder.nextRunList(2)
         assertEquals(expected.plusDays(4), result[0])
         assertEquals(expected.plusDays(11), result[1])
-        builder.daysOfWeek(2 on 5)
-        assertEquals("0 0 0 ? 1 2#5 2099", builder.expression)
+        builder.daysOfWeek(WeekDays.Thursday on 5)
+        assertEquals("0 0 0 ? 1 THU#5 2099", builder.expression)
         assertEquals(expected.plusDays(28), builder.nextRun)
     }
 }
