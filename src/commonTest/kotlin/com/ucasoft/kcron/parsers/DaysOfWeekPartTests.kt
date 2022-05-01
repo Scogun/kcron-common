@@ -24,7 +24,9 @@ class DaysOfWeekPartTests {
         DayOfWeekValueGroup("1L", DayOfWeekGroups.Last),
         DayOfWeekValueGroup("7L", DayOfWeekGroups.Last),
         DayOfWeekValueGroup("7#1", DayOfWeekGroups.OfMonth),
+        DayOfWeekValueGroup("SUN#1", DayOfWeekGroups.OfMonth),
         DayOfWeekValueGroup("1#5", DayOfWeekGroups.OfMonth),
+        DayOfWeekValueGroup("MON#5", DayOfWeekGroups.OfMonth),
         DayOfWeekValueGroup("6#2", DayOfWeekGroups.OfMonth)
     )
 
@@ -48,7 +50,9 @@ class DaysOfWeekPartTests {
         "8L",
         "6M",
         "8#1",
-        "6#6"
+        "6#6",
+        "2#TUE",
+        "FRI#6"
     )
 
     @BeforeTest
