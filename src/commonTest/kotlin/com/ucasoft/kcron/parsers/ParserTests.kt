@@ -16,6 +16,7 @@ class ParserTests {
         parser.parse("* * * ? * * *")
         parser.parse("* * * 29 * ? *")
         parser.parse("* * * ? * 1L *")
+        parser.parse("* * * ? * MON/1 *")
     }
 
     @Test
@@ -27,6 +28,7 @@ class ParserTests {
     @Test
     fun badExpressionParts() {
         assertFailsWith<WrongPartExpression>{ parser.parse("62 * * ? * * *") }
+        assertFailsWith<WrongPartExpression> { parser.parse("* * * ? * MON#6 *") }
         assertFailsWith<WrongPartsExpression> { parser.parse("62 * 25 ? * * *") }
     }
 

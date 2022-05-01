@@ -16,13 +16,17 @@ class DaysOfWeekPartTests {
         DayOfWeekValueGroup("1,7", DayOfWeekGroups.Specific),
         DayOfWeekValueGroup("1,3,5,7", DayOfWeekGroups.Specific),
         DayOfWeekValueGroup("1/1", DayOfWeekGroups.EveryStartingAt),
+        DayOfWeekValueGroup("MON/1", DayOfWeekGroups.EveryStartingAt),
         DayOfWeekValueGroup("1/7", DayOfWeekGroups.EveryStartingAt),
         DayOfWeekValueGroup("7/7", DayOfWeekGroups.EveryStartingAt),
+        DayOfWeekValueGroup("SUN/7", DayOfWeekGroups.EveryStartingAt),
         DayOfWeekValueGroup("7/1", DayOfWeekGroups.EveryStartingAt),
         DayOfWeekValueGroup("1L", DayOfWeekGroups.Last),
         DayOfWeekValueGroup("7L", DayOfWeekGroups.Last),
         DayOfWeekValueGroup("7#1", DayOfWeekGroups.OfMonth),
+        DayOfWeekValueGroup("SUN#1", DayOfWeekGroups.OfMonth),
         DayOfWeekValueGroup("1#5", DayOfWeekGroups.OfMonth),
+        DayOfWeekValueGroup("MON#5", DayOfWeekGroups.OfMonth),
         DayOfWeekValueGroup("6#2", DayOfWeekGroups.OfMonth)
     )
 
@@ -37,14 +41,18 @@ class DaysOfWeekPartTests {
         "0,7",
         "1,3,5,8",
         "1/",
+        "TUE/",
         "1/8",
+        "1/SUN",
         "/7",
         "8/2",
         "0L",
         "8L",
         "6M",
         "8#1",
-        "6#6"
+        "6#6",
+        "2#TUE",
+        "FRI#6"
     )
 
     @BeforeTest

@@ -9,8 +9,8 @@ class DaysOfWeekBuilder(private val firstWeekDay: WeekDays = WeekDays.Monday) : 
 
     private val dayWeekNames = WeekDays.values().map { v -> v.shortName }
 
-    override fun build(type: DayOfWeekGroups, value: String)
-    {
+    override fun build(type: DayOfWeekGroups, value: String) {
+        val firstWeekDayIndex = WeekDays.values().indexOf(firstWeekDay)
         when (type) {
             DayOfWeekGroups.Any -> {
                 daysOfWeek = listOf(1..7).flatten()
@@ -18,21 +18,33 @@ class DaysOfWeekBuilder(private val firstWeekDay: WeekDays = WeekDays.Monday) : 
             DayOfWeekGroups.Specific -> {
                 val data = value.split(',')
                 daysOfWeek = if (data.all { d -> dayWeekNames.contains(d) }) {
-                    val firstWeekDayIndex = WeekDays.values().indexOf(firstWeekDay)
                     data.map { d -> dayShift(firstWeekDayIndex, dayWeekNames.indexOf(d)) }.sorted()
                 } else {
                     data.map { d -> d.toInt() }.sorted()
                 }
             }
             DayOfWeekGroups.EveryStartingAt -> {
-                val data = value.split('/').map { v -> v.toInt() }
-                daysOfWeek = listOf(data[0]..7 step data[1]).flatten()
+                val data = value.split('/')
+                daysOfWeek = listOf(
+                    if (dayWeekNames.contains(data[0])) {
+                        dayShift(firstWeekDayIndex, dayWeekNames.indexOf(data[0]))
+                    } else {
+                        data[0].toInt()
+                    }..7 step data[1].toInt()
+                ).flatten()
             }
             DayOfWeekGroups.Last -> {
                 daysOfWeek = listOf(value.removeSuffix("L").toInt() * -1)
             }
             DayOfWeekGroups.OfMonth -> {
-                daysOfWeek = value.split('#').map { v -> v.toInt() * 10 }
+                val data = value.split('#')
+                daysOfWeek = listOf(
+                    if (dayWeekNames.contains(data[0])) {
+                        dayShift(firstWeekDayIndex, dayWeekNames.indexOf(data[0]))
+                    } else {
+                        data[0].toInt()
+                    } * 10, data[1].toInt() * 10
+                )
             }
         }
     }
