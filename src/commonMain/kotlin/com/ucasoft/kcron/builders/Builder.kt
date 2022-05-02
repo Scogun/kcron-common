@@ -118,24 +118,22 @@ class Builder(firstDayOfWeek: WeekDays = WeekDays.Monday) {
         }
         if (days.isNotEmpty()) {
             val firstValue = days[0]
-            if (firstValue == -32) {
-                return listOf(lastDayInt)
-            }
-            if (firstValue < 0) {
-                return listOf(lastDay.minusDays(firstValue).dayOfMonth)
-            }
-            if (firstValue == 32) {
-                if (lastDay.dayOfWeek.isoDayNumber >= 6) {
-                    lastDay = lastDay.minusDays(lastDay.dayOfWeek.isoDayNumber - 5)
+            when {
+                firstValue == -32 -> return listOf(lastDayInt)
+                firstValue < 0 -> return listOf(lastDay.minusDays(firstValue).dayOfMonth)
+                firstValue == 32 -> {
+                    if (lastDay.dayOfWeek.isoDayNumber >= 6) {
+                        lastDay = lastDay.minusDays(lastDay.dayOfWeek.isoDayNumber - 5)
+                    }
+                    return listOf(lastDay.dayOfMonth)
                 }
-                return listOf(lastDay.dayOfMonth)
-            }
-            if (firstValue >= 100) {
-                val nearestTo = firstValue / 100
-                if (nearestTo > lastDayInt) {
-                    return emptyList()
+                firstValue >= 100 -> {
+                    val nearestTo = firstValue / 100
+                    if (nearestTo > lastDayInt) {
+                        return emptyList()
+                    }
+                    return listOf(nearestWorkDayTo(year, month, lastDayInt, nearestTo))
                 }
-                return listOf(nearestWorkDayTo(year, month, lastDayInt, nearestTo))
             }
         }
         return days.filter { d -> (d >= now.dayOfMonth || month > now.monthNumber || year > now.year) && (d <= lastDayInt) }
