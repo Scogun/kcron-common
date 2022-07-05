@@ -1,6 +1,7 @@
 package com.ucasoft.kcron.builders
 
 import com.ucasoft.kcron.common.DayGroups
+import com.ucasoft.kcron.exceptions.UnknownCronPart
 
 class DaysBuilder : PartBuilder<DayGroups>() {
 
@@ -30,6 +31,7 @@ class DaysBuilder : PartBuilder<DayGroups>() {
             DayGroups.NearestWeekday -> {
                 days = listOf(value.removeSuffix("W").toInt() * 100)
             }
+            DayGroups.Unknown -> throw UnknownCronPart("days")
         }
     }
 }
