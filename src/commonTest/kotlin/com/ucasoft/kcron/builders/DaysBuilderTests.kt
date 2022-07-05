@@ -1,9 +1,11 @@
 package com.ucasoft.kcron.builders
 
 import com.ucasoft.kcron.common.DayGroups
+import com.ucasoft.kcron.exceptions.UnknownCronPart
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 class DaysBuilderTests {
 
@@ -30,5 +32,8 @@ class DaysBuilderTests {
         assertEquals(listOf(-3), builder.days)
         builder.build(DayGroups.NearestWeekday, "25W")
         assertEquals(listOf(2500), builder.days)
+        assertFailsWith(UnknownCronPart::class) {
+            builder.build(DayGroups.Unknown, "")
+        }
     }
 }

@@ -1,9 +1,13 @@
 package com.ucasoft.kcron.builders
 
+import com.ucasoft.kcron.common.DayGroups
 import com.ucasoft.kcron.common.DayOfWeekGroups
 import com.ucasoft.kcron.common.WeekDays
+import com.ucasoft.kcron.exceptions.UnknownCronPart
+import com.ucasoft.kcron.exceptions.WrongCronExpression
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 class DaysOfWeekBuilderTests {
 
@@ -28,6 +32,9 @@ class DaysOfWeekBuilderTests {
         assertEquals(listOf(10, 50), builder.daysOfWeek)
         builder.build(DayOfWeekGroups.OfMonth, "SAT#5")
         assertEquals(listOf(60, 50), builder.daysOfWeek)
+        assertFailsWith(UnknownCronPart::class) {
+            builder.build(DayOfWeekGroups.Unknown, "")
+        }
     }
 
     @Test
