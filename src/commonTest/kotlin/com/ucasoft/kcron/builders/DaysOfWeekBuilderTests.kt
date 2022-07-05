@@ -1,10 +1,8 @@
 package com.ucasoft.kcron.builders
 
-import com.ucasoft.kcron.common.DayGroups
 import com.ucasoft.kcron.common.DayOfWeekGroups
 import com.ucasoft.kcron.common.WeekDays
 import com.ucasoft.kcron.exceptions.UnknownCronPart
-import com.ucasoft.kcron.exceptions.WrongCronExpression
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
