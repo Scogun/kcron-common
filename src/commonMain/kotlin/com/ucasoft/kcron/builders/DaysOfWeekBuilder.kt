@@ -2,6 +2,7 @@ package com.ucasoft.kcron.builders
 
 import com.ucasoft.kcron.common.DayOfWeekGroups
 import com.ucasoft.kcron.common.WeekDays
+import com.ucasoft.kcron.exceptions.UnknownCronPart
 
 class DaysOfWeekBuilder(private val firstWeekDay: WeekDays = WeekDays.Monday) : PartBuilder<DayOfWeekGroups>() {
 
@@ -46,6 +47,7 @@ class DaysOfWeekBuilder(private val firstWeekDay: WeekDays = WeekDays.Monday) : 
                     } * 10, data[1].toInt() * 10
                 )
             }
+            DayOfWeekGroups.Unknown -> throw UnknownCronPart("daysOfWeek")
         }
     }
 
