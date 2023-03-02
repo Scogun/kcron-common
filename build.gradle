@@ -9,7 +9,6 @@ version = '0.5.4'
 
 repositories {
     mavenCentral()
-    maven { url "https://kotlin.bintray.com/kotlinx/" }
 }
 kotlin {
     jvm {
