@@ -1,5 +1,5 @@
 plugins {
-    id 'org.jetbrains.kotlin.multiplatform' version '1.7.0'
+    id 'org.jetbrains.kotlin.multiplatform' version '1.8.10'
     id 'maven-publish'
     id 'signing'
 }
@@ -20,7 +20,10 @@ kotlin {
     linuxX64()
     mingwX64()
     macosX64()
-    js()
+    js(IR) {
+        browser()
+        nodejs()
+    }
     ios()
     iosSimulatorArm64()
     sourceSets {
@@ -35,6 +38,11 @@ kotlin {
                 implementation kotlin('test-annotations-common')
             }
         }
+        jsTest {
+            dependencies {
+                implementation kotlin('test-js')
+            }
+        }
         jvmTest {
             dependencies {
                 implementation kotlin('test-junit')
@@ -43,21 +51,21 @@ kotlin {
     }
 }
 
-task stubSources(type: Jar) {
-    classifier = 'sources'
+tasks.register('stubSources', Jar) {
+    archiveClassifier = 'sources'
 }
 
-task stubJavadoc(type: Jar) {
-    classifier = 'javadoc'
+tasks.register('stubJavadoc', Jar) {
+    archiveClassifier = 'javadoc'
 }
 
-task sourceJar(type: Jar){
-    classifier = 'sources'
+tasks.register('sourceJar', Jar) {
+    archiveClassifier = 'sources'
     from kotlin.sourceSets.commonMain.kotlin
 }
 
 publishing {
-    publications.all {
+    publications.configureEach {
         def libraryType = it.name
         switch (libraryType) {
             case 'js':
