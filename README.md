@@ -1,11 +1,10 @@
 # KCron Common
 Cron realization for Kotlin Multiplatform
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Scogun_kcron-common&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Scogun_kcron-common) ![GitHub](https://img.shields.io/github/license/Scogun/kcron-common?color=blue) ![Publish workflow](https://github.com/Scogun/kcron-common/actions/workflows/publish.yml/badge.svg) [![Maven Central with version prefix filter](https://img.shields.io/maven-central/v/com.ucasoft.kcron/kcron-common/0.5.4?color=blue)](https://search.maven.org/artifact/com.ucasoft.kcron/kcron-common/0.5.3/jar)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure? project=Scogun_kcron-common&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Scogun_kcron-common) ![GitHub](https://img.shields.io/github/license/Scogun/kcron-common?color=blue) ![Publish workflow](https://github.com/Scogun/kcron-common/actions/workflows/publish.yml/badge.svg) [![Maven Central with version prefix filter](https://img.shields.io/maven-central/v/com.ucasoft.kcron/kcron-common/0.5.4?color=blue)](https://search.maven.org/artifact/com.ucasoft.kcron/kcron-common/0.5.4/jar)
 
 ### Features
-* Kotlin Multiplatform library (with support for jvm, Linux, Windows 
-  (mingwX64), macOS, javascript and iOS targets)
+* Kotlin Multiplatform library
 * Parse Cron expressions
   * Include L, W, LW, '?' and #
 * Build Cron expression by smart builder functions:
@@ -25,6 +24,13 @@ builder
 ```
 * Parsing validation includes combination rules
   * 'days' and 'days of week' could not be setup simultaneously
+* Support
+  * JVM
+  * Linux
+  * Windows (mingwX64)
+  * macOS
+  * Javascript
+  * iOS
 ### Usage
 ***Add with Gradle***
 ```groovy
