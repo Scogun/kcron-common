@@ -21,6 +21,8 @@ kotlin {
     mingwX64()
     macosX64()
     js()
+    ios()
+    iosSimulatorArm64()
     sourceSets {
         commonMain {
             dependencies {
