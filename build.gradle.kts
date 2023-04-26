@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.ucasoft.kcron"
-version = "0.5.3"
+version = "0.5.4"
 
 repositories {
     mavenCentral()
@@ -23,6 +23,8 @@ kotlin {
         browser()
         nodejs()
     }
+    ios()
+    iosSimulatorArm64()
     sourceSets {
         commonMain {
             dependencies {
