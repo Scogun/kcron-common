@@ -1,4 +1,4 @@
-name: Build and Test
+name: "Build and Test"
 
 on:
   pull_request:
@@ -10,19 +10,27 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set Up JDK
+      - name: "Set Up JDK"
         uses: actions/setup-java@v2
         with:
           distribution: temurin
           java-version: 11
           cache: gradle
 
-      - name: Grant execute permission for gradlew
+      - name: "Grant execute permission for gradlew"
         run: chmod +x gradlew
 
-      - name: Build with Gradle
+      - name: "Build with Gradle"
         run: ./gradlew build
         shell: bash
 
-      - name: Tests
+      - name: "Tests"
         run: ./gradlew cleanJvmTest jvmTest --tests "com.ucasoft.kcron.*"
+
+      - name: "Tests Report"
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: jUnit Tests
+          path: '**/build/test-results/jvmTest/TEST-*.xml'
+          reporter: java-junit
