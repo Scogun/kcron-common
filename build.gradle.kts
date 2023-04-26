@@ -69,8 +69,9 @@ publishing {
             val libraryType = name
             artifactId = when (libraryType) {
                 "js", "metadata" -> "${project.name}-${libraryType}"
+                "jvm" -> project.name
                 "kotlinMultiplatform" -> "${project.name}-native"
-                else -> project.name
+                else -> artifactId
             }
             if (libraryType != "kotlinMultiplatform") {
                 artifact(stubJavadoc)
