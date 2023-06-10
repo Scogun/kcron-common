@@ -74,7 +74,27 @@ println(builder.nextRunList()) // 10 is a default list size
     2050-01-29T05:06:20,
     2050-01-29T05:06:30
 ]
-*/ 
+*/
+```
+You can also specify the `LocalDateTime` from which the list of `LocalDateTime`s will start generating.
+```kotlin
+val builder = KCron.parseAndBuild("0/10 5-25 5,12 ? * 7#5 2050", WeekDays.Sunday)
+val start = LocalDateTime(2050, 1, 29, 5, 5, 15)
+println(builder.nextRunList(10, start))
+/* Result:
+[
+    2050-01-29T05:05:20,
+    2050-01-29T05:05:30,
+    2050-01-29T05:05:40,
+    2050-01-29T05:05:50,
+    2050-01-29T05:06,
+    2050-01-29T05:06:10,
+    2050-01-29T05:06:20,
+    2050-01-29T05:06:30,
+    2050-01-29T05:06:40,
+    2050-01-29T05:06:50
+]
+*/
 ```
 ***Days of week and months can be defined in a parsed expression as numbers as well as short names***
 ```kotlin
