@@ -121,4 +121,14 @@ class BuilderTests {
         assertEquals("0 0 0 ? 1 THU#5 2099", builder.expression)
         assertEquals(expected.plusDays(28), builder.nextRun)
     }
+
+    @Test
+    fun buildManyWithCustomStartTime() {
+        val builder = Builder(WeekDays.Monday)
+        builder.anyYears().months(1).days(1).hours(0).minutes(0).seconds(0)
+        println(builder.expression)
+        var result = builder.nextRunList(2, start = LocalDateTime(2050, 2, 1, 0, 0))
+        assertEquals(LocalDate(2051, 1, 1), result[0].date)
+        assertEquals(LocalDate(2052, 1, 1), result[1].date)
+    }
 }
