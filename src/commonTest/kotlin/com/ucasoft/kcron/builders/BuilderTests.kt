@@ -1,5 +1,6 @@
 package com.ucasoft.kcron.builders
 
+import com.ucasoft.kcron.KCron
 import com.ucasoft.kcron.common.DayOfWeekGroups
 import com.ucasoft.kcron.common.WeekDays
 import com.ucasoft.kcron.extensions.*
@@ -127,7 +128,7 @@ class BuilderTests {
         val builder = Builder(WeekDays.Monday)
         builder.anyYears().months(1).days(1).hours(0).minutes(0).seconds(0)
         println(builder.expression)
-        var result = builder.nextRunList(2, start = LocalDateTime(2050, 2, 1, 0, 0))
+        val result = builder.nextRunList(2, start = LocalDateTime(2050, 2, 1, 0, 0))
         assertEquals(LocalDate(2051, 1, 1), result[0].date)
         assertEquals(LocalDate(2052, 1, 1), result[1].date)
     }
