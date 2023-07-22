@@ -67,12 +67,6 @@ publishing {
     publications.configureEach {
         if (this is MavenPublication) {
             val libraryType = name
-            artifactId = when (libraryType) {
-                "js", "metadata" -> "${project.name}-${libraryType}"
-                "jvm" -> project.name
-                "kotlinMultiplatform" -> "${project.name}-native"
-                else -> artifactId
-            }
             if (libraryType != "kotlinMultiplatform") {
                 artifact(stubJavadoc)
             }
