@@ -1,2 +1,2 @@
 
-rootProject.name = "kcron-common"
+rootProject.name = "kcron"

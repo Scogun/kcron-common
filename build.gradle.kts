@@ -67,17 +67,11 @@ publishing {
     publications.configureEach {
         if (this is MavenPublication) {
             val libraryType = name
-            artifactId = when (libraryType) {
-                "js", "metadata" -> "${project.name}-${libraryType}"
-                "jvm" -> project.name
-                "kotlinMultiplatform" -> "${project.name}-native"
-                else -> artifactId
-            }
             if (libraryType != "kotlinMultiplatform") {
                 artifact(stubJavadoc)
             }
             pom {
-                name.set("KCron Common")
+                name.set("KCron")
                 description.set("Cron realization for Kotlin Multiplatform")
                 url.set("https://github.com/Scogun/kcron-common")
                 licenses {
