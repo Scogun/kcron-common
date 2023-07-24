@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.ucasoft.kcron"
-version = "0.6.0"
+version = "0.6.1"
 
 repositories {
     mavenCentral()
@@ -66,14 +66,7 @@ val sourceJar by tasks.creating(Jar::class) {
 publishing {
     publications.configureEach {
         if (this is MavenPublication) {
-            val libraryType = name
-            artifactId = when (libraryType) {
-                "js", "metadata" -> "${project.name}-${libraryType}"
-                "jvm" -> project.name
-                "kotlinMultiplatform" -> "${project.name}-native"
-                else -> artifactId
-            }
-            if (libraryType != "kotlinMultiplatform") {
+            if (name != "kotlinMultiplatform") {
                 artifact(stubJavadoc)
             }
             pom {
