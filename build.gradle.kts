@@ -71,7 +71,7 @@ publishing {
                 artifact(stubJavadoc)
             }
             pom {
-                name.set("KCron")
+                name.set("KCron Common")
                 description.set("Cron realization for Kotlin Multiplatform")
                 url.set("https://github.com/Scogun/kcron-common")
                 licenses {
