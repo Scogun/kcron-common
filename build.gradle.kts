@@ -66,8 +66,7 @@ val sourceJar by tasks.creating(Jar::class) {
 publishing {
     publications.configureEach {
         if (this is MavenPublication) {
-            val libraryType = name
-            if (libraryType != "kotlinMultiplatform") {
+            if (name != "kotlinMultiplatform") {
                 artifact(stubJavadoc)
             }
             pom {
