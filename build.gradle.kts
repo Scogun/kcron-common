@@ -1,5 +1,5 @@
 plugins {
-    kotlin("multiplatform") version "1.9.0"
+    kotlin("multiplatform") version "1.9.20"
     id("maven-publish")
     id("signing")
 }
@@ -23,7 +23,8 @@ kotlin {
         browser()
         nodejs()
     }
-    ios()
+    iosX64()
+    iosArm64()
     iosSimulatorArm64()
     sourceSets {
         commonMain {
