@@ -1,11 +1,11 @@
 plugins {
-    kotlin("multiplatform") version "1.9.0"
+    kotlin("multiplatform") version "1.9.20"
     id("maven-publish")
     id("signing")
 }
 
 group = "com.ucasoft.kcron"
-version = "0.6.3"
+version = "0.7.2"
 
 repositories {
     mavenCentral()
@@ -23,12 +23,13 @@ kotlin {
         browser()
         nodejs()
     }
-    ios()
+    iosX64()
+    iosArm64()
     iosSimulatorArm64()
     sourceSets {
         commonMain {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
             }
         }
         commonTest {

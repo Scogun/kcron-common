@@ -6,7 +6,10 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
 
@@ -18,6 +21,7 @@ jobs:
           cache: gradle
 
       - name: "Grant execute permission for gradlew"
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: chmod +x gradlew
 
       - name: "Build with Gradle"
@@ -25,12 +29,17 @@ jobs:
         shell: bash
 
       - name: "Tests"
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: ./gradlew cleanJvmTest jvmTest --tests "com.ucasoft.kcron.*"
+
+      - name: "Tests"
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: ./gradlew cleanMingwX64Test mingwX64Tes --tests "com.ucasoft.kcron.*"
 
       - name: "Tests Report"
         uses: dorny/test-reporter@v1
         if: success() || failure()
         with:
           name: jUnit Tests
-          path: '**/build/test-results/jvmTest/TEST-*.xml'
+          path: '**/build/test-results/*Test/TEST-*.xml'
           reporter: java-junit
