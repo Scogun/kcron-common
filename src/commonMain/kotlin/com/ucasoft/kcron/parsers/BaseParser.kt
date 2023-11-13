@@ -2,6 +2,7 @@ package com.ucasoft.kcron.parsers
 
 import com.ucasoft.kcron.common.CronGroups
 import com.ucasoft.kcron.common.CronPart
+import kotlin.enums.EnumEntries
 
 abstract class BaseParser<T> where T : Enum<T>, T: CronGroups {
 
@@ -15,7 +16,7 @@ abstract class BaseParser<T> where T : Enum<T>, T: CronGroups {
 
     abstract val unknownGroup : T
 
-    abstract val groups: Array<T>
+    abstract val groups: EnumEntries<T>
 
     val isValid : Boolean
         get() {

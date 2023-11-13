@@ -7,7 +7,7 @@ class YearsParser: AnySpecificEveryParser<YearGroups>("\\*", "20[2-9][0-9]", "",
 
     override val unknownGroup = YearGroups.Unknown
 
-    override val groups = YearGroups.values()
+    override val groups = YearGroups.entries
 
     override val part = CronPart.Years
 }

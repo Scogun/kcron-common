@@ -10,7 +10,7 @@ class DaysOfWeekParser : AnySpecificEveryAtParser<DayOfWeekGroups>("[*?]", "[1-7
 
     override val unknownGroup = DayOfWeekGroups.Unknown
 
-    override val groups = DayOfWeekGroups.values()
+    override val groups = DayOfWeekGroups.entries
 
     override val part = CronPart.DaysOfWeek
 }

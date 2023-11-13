@@ -7,5 +7,5 @@ abstract class TimeParser(override val part: CronPart, startingPattern: String, 
 
     override val unknownGroup = TimeGroups.Unknown
 
-    override val groups = TimeGroups.values()
+    override val groups = TimeGroups.entries
 }

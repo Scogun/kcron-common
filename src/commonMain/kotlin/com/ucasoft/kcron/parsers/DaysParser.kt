@@ -10,7 +10,7 @@ class DaysParser : AnySpecificEveryAtParser<DayGroups>("\\?", "[1-9]|[1-2][0-9]|
 
     override val unknownGroup = DayGroups.Unknown
 
-    override val groups = DayGroups.values()
+    override val groups = DayGroups.entries
 
     override val part = CronPart.Days
 }

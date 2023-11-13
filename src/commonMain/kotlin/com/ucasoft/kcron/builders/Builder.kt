@@ -32,7 +32,7 @@ class Builder(firstDayOfWeek: WeekDays = WeekDays.Monday) {
     val expression: String
         get() = partBuilders.values.joinToString(" ") { builder -> builder.value }
 
-    private val firstDayOfWeekIndex = WeekDays.values().indexOf(firstDayOfWeek)
+    private val firstDayOfWeekIndex = WeekDays.entries.indexOf(firstDayOfWeek)
 
     fun build(parts: Map<CronPart, PartValue>): Builder {
         parts.forEach { entry -> partBuilders[entry.key]?.commonBuild(entry.value.type, entry.value.value) }

@@ -8,10 +8,10 @@ class DaysOfWeekBuilder(private val firstWeekDay: WeekDays = WeekDays.Monday) : 
 
     lateinit var daysOfWeek: List<Int>
 
-    private val dayWeekNames = WeekDays.values().map { v -> v.shortName }
+    private val dayWeekNames = WeekDays.entries.map { v -> v.shortName }
 
     override fun build(type: DayOfWeekGroups, value: String) {
-        val firstWeekDayIndex = WeekDays.values().indexOf(firstWeekDay)
+        val firstWeekDayIndex = WeekDays.entries.indexOf(firstWeekDay)
         when (type) {
             DayOfWeekGroups.Any -> {
                 daysOfWeek = listOf(1..7).flatten()

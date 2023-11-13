@@ -7,7 +7,7 @@ class MonthsParser : AnySpecificEveryParser<MonthGroups>("\\*", "[1-9]|1[0-2]", 
 
     override val unknownGroup = MonthGroups.Unknown
 
-    override val groups = MonthGroups.values()
+    override val groups = MonthGroups.entries
 
     override val part = CronPart.Months
 }
