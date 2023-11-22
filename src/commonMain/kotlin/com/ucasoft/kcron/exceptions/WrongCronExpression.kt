@@ -1,3 +1,5 @@
 package com.ucasoft.kcron.exceptions
 
-class WrongCronExpression(expression: String) : Throwable("Expression $expression is not Cron one!")
+import com.ucasoft.kcron.settings.Version
+
+class WrongCronExpression(expression: String, version: Version) : Throwable("Expression $expression is not ${if (version != Version.Auto) "$version " else ""}Cron one!")

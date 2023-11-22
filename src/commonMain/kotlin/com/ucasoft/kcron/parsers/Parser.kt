@@ -2,6 +2,7 @@ package com.ucasoft.kcron.parsers
 
 import com.ucasoft.kcron.common.*
 import com.ucasoft.kcron.exceptions.*
+import com.ucasoft.kcron.settings.Version
 
 class Parser {
 
@@ -28,19 +29,27 @@ class Parser {
         CombinationRule(CronPart.DaysOfWeek, DayOfWeekGroups.OfMonth, listOf(CombinationRule(CronPart.Days, DayGroups.Any)))
     )
 
-    fun parse(expression: String): ParseResult {
-        val expressionParts = splitExpression(expression)
+    fun parse(expression: String, version: Version = Version.Auto): ParseResult {
+        val expressionParts = splitExpression(expression, version)
         val parseResult = parsePartsAndEnsureValid(expressionParts)
         ensureCombinationRules(parseResult.parts)
         return parseResult
     }
 
-    private fun splitExpression(expression: String): List<String> {
+    private fun splitExpression(expression: String, version: Version): List<String> {
         val expressionParts = expression.split(' ')
-        if (expressionParts.size != 7) {
-            throw WrongCronExpression(expression)
+        if (expressionParts.size == 5 && (version == Version.Auto || version == Version.Classic)) {
+            return expressionParts.toMutableList().also {
+                it.add(0, "0")
+                it.add("*")
+            }
         }
-        return expressionParts
+
+        if (expressionParts.size == 7 && (version == Version.Auto || version == Version.Modern)) {
+            return expressionParts
+        }
+
+        throw WrongCronExpression(expression, version)
     }
 
     private fun parsePartsAndEnsureValid(expressionParts: List<String>): ParseResult {
