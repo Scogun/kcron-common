@@ -1,9 +1,9 @@
 package com.ucasoft.kcron.builders
 
 import com.ucasoft.kcron.common.TimeGroups
+import io.kotest.matchers.collections.shouldContainExactly
 import kotlin.test.BeforeTest
 import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class SecondsBuilderTests {
 
@@ -17,14 +17,14 @@ class SecondsBuilderTests {
     @Test
     fun buildSeconds() {
         builder.build(TimeGroups.Any, "*")
-        assertEquals(listOf(0..59).flatten(), builder.seconds)
+        builder.seconds.shouldContainExactly(listOf(0..59).flatten())
         builder.build(TimeGroups.Specific, "0,5,10,15,20,30,45,59")
-        assertEquals(listOf(0, 5, 10, 15, 20, 30, 45, 59), builder.seconds)
+        builder.seconds.shouldContainExactly(0, 5, 10, 15, 20, 30, 45, 59)
         builder.build(TimeGroups.EveryStartingAt, "13/17")
-        assertEquals(listOf(13, 30, 47), builder.seconds)
+        builder.seconds.shouldContainExactly(13, 30, 47)
         builder.build(TimeGroups.EveryBetween, "29-37")
-        assertEquals(listOf(29..37).flatten(), builder.seconds)
+        builder.seconds.shouldContainExactly(listOf(29..37).flatten())
         builder.build(TimeGroups.Any, "*")
-        assertEquals(listOf(0..59).flatten(), builder.seconds)
+        builder.seconds.shouldContainExactly(listOf(0..59).flatten())
     }
 }
