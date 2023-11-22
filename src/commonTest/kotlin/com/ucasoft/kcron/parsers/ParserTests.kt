@@ -4,8 +4,9 @@ import com.ucasoft.kcron.exceptions.WrongCronExpression
 import com.ucasoft.kcron.exceptions.WrongPartCombinations
 import com.ucasoft.kcron.exceptions.WrongPartExpression
 import com.ucasoft.kcron.exceptions.WrongPartsExpression
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.assertions.throwables.shouldThrowWithMessage
 import kotlin.test.Test
-import kotlin.test.assertFailsWith
 
 class ParserTests {
 
@@ -21,20 +22,20 @@ class ParserTests {
 
     @Test
     fun badExpressions() {
-        assertFailsWith<WrongCronExpression> { parser.parse("* * *") }
-        assertFailsWith<WrongCronExpression> { parser.parse("* * * ? ? * * *") }
+        shouldThrowWithMessage<WrongCronExpression>("Expression * * * is not Cron one!") { parser.parse("* * *") }
+        shouldThrow<WrongCronExpression> { parser.parse("* * * ? ? * * *") }
     }
 
     @Test
     fun badExpressionParts() {
-        assertFailsWith<WrongPartExpression>{ parser.parse("62 * * ? * * *") }
-        assertFailsWith<WrongPartExpression> { parser.parse("* * * ? * MON#6 *") }
-        assertFailsWith<WrongPartsExpression> { parser.parse("62 * 25 ? * * *") }
+        shouldThrow<WrongPartExpression>{ parser.parse("62 * * ? * * *") }
+        shouldThrow<WrongPartExpression> { parser.parse("* * * ? * MON#6 *") }
+        shouldThrow<WrongPartsExpression> { parser.parse("62 * 25 ? * * *") }
     }
 
     @Test
     fun badCombinationParts() {
-        assertFailsWith<WrongPartCombinations> { parser.parse("* * * 1/31 * 1/1 *") }
-        assertFailsWith<WrongPartCombinations> { parser.parse("* * * 31/31 * SUN *") }
+        shouldThrow<WrongPartCombinations> { parser.parse("* * * 1/31 * 1/1 *") }
+        shouldThrow<WrongPartCombinations> { parser.parse("* * * 31/31 * SUN *") }
     }
 }
