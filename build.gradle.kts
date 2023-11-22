@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.ucasoft.kcron"
-version = "0.7.3"
+version = "0.8.0"
 
 repositories {
     mavenCentral()
@@ -36,6 +36,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
+                implementation("io.kotest:kotest-assertions-core:5.8.0")
             }
         }
         val jsTest by getting {

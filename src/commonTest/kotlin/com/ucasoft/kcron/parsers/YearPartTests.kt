@@ -1,6 +1,10 @@
 package com.ucasoft.kcron.parsers
 
 import com.ucasoft.kcron.common.YearGroups
+import io.kotest.assertions.withClue
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.shouldBe
 import kotlin.test.*
 
 class YearPartTests {
@@ -46,8 +50,11 @@ class YearPartTests {
     fun allowedValues() {
         for (value in allowedValues) {
             parser.parse(value.value)
-            assertTrue(parser.isValid, value.value)
-            assertEquals(value.group, parser.group)
+            parser.parse(value.value)
+            withClue(value.value) {
+                parser.isValid.shouldBeTrue()
+            }
+            parser.group.shouldBe(value.group)
         }
     }
 
@@ -55,8 +62,8 @@ class YearPartTests {
     fun deniedValues() {
         for (value in deniedValues) {
             parser.parse(value)
-            assertFalse(parser.isValid)
-            assertEquals(YearGroups.Unknown, parser.group)
+            parser.isValid.shouldBeFalse()
+            parser.group.shouldBe(YearGroups.Unknown)
         }
     }
 }

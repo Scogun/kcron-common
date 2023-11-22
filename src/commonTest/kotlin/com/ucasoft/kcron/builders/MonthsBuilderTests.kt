@@ -1,9 +1,9 @@
 package com.ucasoft.kcron.builders
 
 import com.ucasoft.kcron.common.MonthGroups
+import io.kotest.matchers.collections.shouldContainExactly
 import kotlin.test.BeforeTest
 import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class MonthsBuilderTests {
 
@@ -17,16 +17,16 @@ class MonthsBuilderTests {
     @Test
     fun buildMonths() {
         builder.build(MonthGroups.Any, "*")
-        assertEquals(listOf(1..12).flatten(), builder.months)
+        builder.months.shouldContainExactly(listOf(1..12).flatten())
         builder.build(MonthGroups.Specific, "1,2,6,10,12")
-        assertEquals(listOf(1, 2, 6, 10, 12), builder.months)
+        builder.months.shouldContainExactly(1, 2, 6, 10, 12)
         builder.build(MonthGroups.Specific, "JAN,FEB,JUN,OCT,DEC")
-        assertEquals(listOf(1, 2, 6, 10, 12), builder.months)
+        builder.months.shouldContainExactly(1, 2, 6, 10, 12)
         builder.build(MonthGroups.EveryStartingAt, "3/2")
-        assertEquals(listOf(3, 5, 7, 9, 11), builder.months)
+        builder.months.shouldContainExactly(3, 5, 7, 9, 11)
         builder.build(MonthGroups.EveryBetween, "6-8")
-        assertEquals(listOf(6, 7, 8), builder.months)
+        builder.months.shouldContainExactly(6, 7, 8)
         builder.build(MonthGroups.Any, "*")
-        assertEquals(listOf(1..12).flatten(), builder.months)
+        builder.months.shouldContainExactly(listOf(1..12).flatten())
     }
 }

@@ -1,6 +1,10 @@
 package com.ucasoft.kcron.parsers
 
 import com.ucasoft.kcron.common.DayGroups
+import io.kotest.assertions.withClue
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.shouldBe
 import kotlin.test.*
 
 class DaysPartTests {
@@ -58,8 +62,11 @@ class DaysPartTests {
     fun allowedValues() {
         for (value in allowedValues) {
             parser.parse(value.value)
-            assertTrue(parser.isValid, value.value)
-            assertEquals(value.group, parser.group)
+            parser.parse(value.value)
+            withClue(value.value) {
+                parser.isValid.shouldBeTrue()
+            }
+            parser.group.shouldBe(value.group)
         }
     }
 
@@ -67,8 +74,8 @@ class DaysPartTests {
     fun deniedValues() {
         for (value in deniedValues) {
             parser.parse(value)
-            assertFalse(parser.isValid)
-            assertEquals(DayGroups.Unknown, parser.group)
+            parser.isValid.shouldBeFalse()
+            parser.group.shouldBe(DayGroups.Unknown)
         }
     }
 }
