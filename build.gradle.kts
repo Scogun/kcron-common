@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.ucasoft.kcron"
-version = "0.7.3"
+version = "0.8.0"
 
 repositories {
     mavenCentral()
