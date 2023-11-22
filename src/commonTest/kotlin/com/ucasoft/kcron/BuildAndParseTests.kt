@@ -15,6 +15,8 @@ class BuildAndParseTests {
 
     private var currentYear : Int = 2023
     
+    private val modernCronExpression = "30 * * ? * * 2050"
+
     @BeforeTest
     fun setupOnce() {
         currentYear = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).year
@@ -26,8 +28,8 @@ class BuildAndParseTests {
         builder.expression.shouldBe("0 * 12 ? * * *")
         builder.nextRun.shouldNotBeNull()
             .year.shouldBe(currentYear)
-        builder = KCron.parseAndBuild("30 * * ? * * 2050")
-        builder.expression.shouldBe("30 * * ? * * 2050")
+        builder = KCron.parseAndBuild(modernCronExpression)
+        builder.expression.shouldBe(modernCronExpression)
         builder.nextRun.shouldNotBeNull()
             .year.shouldBe(2050)
         shouldThrowWithMessage<WrongCronExpression>("Expression * * * ? * * is not Cron one!") {
@@ -52,10 +54,10 @@ class BuildAndParseTests {
     
     @Test
     fun parseAndBuildModern() {
-        val builder = KCron.parseAndBuild("30 * * ? * * 2050") {
+        val builder = KCron.parseAndBuild(modernCronExpression) {
             it.version = Version.Modern
         }
-        builder.expression.shouldBe("30 * * ? * * 2050")
+        builder.expression.shouldBe(modernCronExpression)
         builder.nextRun.shouldNotBeNull()
             .year.shouldBe(2050)
         shouldThrowWithMessage<WrongCronExpression>("Expression * * ? * * is not Modern Cron one!") {

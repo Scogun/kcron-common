@@ -13,17 +13,21 @@ class ParserTests {
 
     private val parser = Parser()
 
+    private val allAnyClassicCronExpression = "* * ? * *"
+
+    private val allAnyModernCronExpression = "* * * ? * * *"
+
     @Test
     fun goodAutoExpressions() {
-        parser.parse("* * * ? * * *")
-        parser.parse("* * ? * *")
+        parser.parse(allAnyModernCronExpression)
+        parser.parse(allAnyClassicCronExpression)
         parser.parse("* * * 29 * ? *")
         parser.parse("* * ? * ?")
     }
 
     @Test
     fun goodClassicExpressions() {
-        parser.parse("* * ? * *", Version.Classic)
+        parser.parse(allAnyClassicCronExpression, Version.Classic)
         parser.parse("* * 29 * ?", Version.Classic)
         parser.parse("* * ? * 1L", Version.Classic)
         parser.parse("* * ? * MON/1", Version.Classic)
@@ -31,7 +35,7 @@ class ParserTests {
 
     @Test
     fun goodModernExpressions() {
-        parser.parse("* * * ? * * *", Version.Modern)
+        parser.parse(allAnyModernCronExpression, Version.Modern)
         parser.parse("* * * 29 * ? *", Version.Modern)
         parser.parse("* * * ? * 1L *", Version.Modern)
         parser.parse("* * * ? * MON/1 *", Version.Modern)
@@ -46,12 +50,12 @@ class ParserTests {
     @Test
     fun badClassicExpressions() {
         shouldThrow<WrongCronExpression> { parser.parse("* * ? * * *", Version.Classic) }
-        shouldThrowWithMessage<WrongCronExpression>("Expression * * * ? * * * is not Classic Cron one!") { parser.parse("* * * ? * * *", Version.Classic) }
+        shouldThrowWithMessage<WrongCronExpression>("Expression $allAnyModernCronExpression is not Classic Cron one!") { parser.parse(allAnyModernCronExpression, Version.Classic) }
     }
 
     @Test
     fun badModernExpressions() {
-        shouldThrow<WrongCronExpression> { parser.parse("* * ? * *", Version.Modern) }
+        shouldThrow<WrongCronExpression> { parser.parse(allAnyClassicCronExpression, Version.Modern) }
         shouldThrowWithMessage<WrongCronExpression>("Expression * * * ? ? * * * is not Modern Cron one!") { parser.parse("* * * ? ? * * *", Version.Modern) }
     }
 
