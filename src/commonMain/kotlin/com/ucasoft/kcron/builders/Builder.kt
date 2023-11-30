@@ -86,16 +86,11 @@ class Builder(firstDayOfWeek: WeekDays = WeekDays.Monday) {
         val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
         val result = mutableListOf<LocalDateTime>()
         for (year in (partBuilders.getValue(CronPart.Years) as YearsBuilder).years.filter { y -> y >= now.year }) {
-            val isFutureYear = year > now.year
-            for (month in (partBuilders.getValue(CronPart.Months) as MonthsBuilder).months.filter { m -> m >= now.monthNumber || isFutureYear}) {
-                val isFutureMonth = isFutureYear || month > now.monthNumber
+            for (month in (partBuilders.getValue(CronPart.Months) as MonthsBuilder).months.filter { m -> m >= now.monthNumber || year > now.year}) {
                 for (day in calculateDays(year, month, (partBuilders.getValue(CronPart.DaysOfWeek) as DaysOfWeekBuilder).daysOfWeek, (partBuilders.getValue(CronPart.Days) as DaysBuilder).days, now)) {
-                    val isFutureDay = isFutureMonth|| day > now.dayOfMonth
-                    for (hour in (partBuilders.getValue(CronPart.Hours) as HoursBuilder).hours.filter { h -> h >= now.hour || isFutureDay }) {
-                        val isFutureHour = isFutureDay || hour > now.hour
-                        for (minute in (partBuilders.getValue(CronPart.Minutes) as MinutesBuilder).minutes.filter { m -> m >= now.minute || isFutureHour }) {
-                            val isFutureMinute = isFutureHour || minute > now.minute
-                            for (seconds in (partBuilders.getValue(CronPart.Seconds) as SecondsBuilder).seconds.filter { s -> s > now.second || isFutureMinute }) {
+                    for (hour in (partBuilders.getValue(CronPart.Hours) as HoursBuilder).hours.filter { h -> h >= now.hour || day > now.dayOfMonth || month > now.monthNumber || year > now.year }) {
+                        for (minute in (partBuilders.getValue(CronPart.Minutes) as MinutesBuilder).minutes.filter { m -> m >= now.minute || hour > now.hour || day > now.dayOfMonth || month > now.monthNumber || year > now.year }) {
+                            for (seconds in (partBuilders.getValue(CronPart.Seconds) as SecondsBuilder).seconds.filter { s -> s > now.second || minute > now.minute || hour > now.hour || day > now.dayOfMonth || month > now.monthNumber || year > now.year }) {
                                 result.add(LocalDateTime(year, month, day, hour, minute, seconds))
                                 if (result.size == maxCount) {
                                     return result
