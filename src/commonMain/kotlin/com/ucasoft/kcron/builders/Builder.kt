@@ -82,6 +82,7 @@ class Builder(firstDayOfWeek: WeekDays = WeekDays.Monday) {
         return this
     }
 
+    @DelicateIterableApi
     fun asIterable(start: LocalDateTime): Iterable<LocalDateTime> {
         return Iterable {
             iterator {
@@ -110,6 +111,7 @@ class Builder(firstDayOfWeek: WeekDays = WeekDays.Monday) {
             ]
         )
     )
+    @OptIn(DelicateIterableApi::class)
     fun asIterable(maxCount: Int) : Iterable<LocalDateTime> {
         // TODO: This function is left for compatibility with 'nextRunList()' and should be removed in future releases.
         val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
