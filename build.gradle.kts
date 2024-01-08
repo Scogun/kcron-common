@@ -88,6 +88,11 @@ publishing {
                         name.set("Sergey Antonov")
                         email.set("SAntonov@ucasoft.com")
                     }
+                    developer {
+                        id.set("Myshkouski")
+                        name.set("Alexei Myshkouski")
+                        email.set("alexeimyshkouski@gmail.com")
+                    }
                 }
                 scm {
                     connection.set("scm:git:git://github.com/Scogun/kcron-common.git")
