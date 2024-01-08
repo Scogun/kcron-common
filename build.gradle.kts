@@ -18,8 +18,10 @@ kotlin {
         }
     }
     linuxX64()
+    linuxArm64()
     mingwX64()
     macosX64()
+    macosArm64()
     js(IR) {
         browser()
         nodejs()
