@@ -26,8 +26,9 @@ class Builder(firstDayOfWeek: WeekDays = WeekDays.Monday) {
         years(YearGroups.Any, "*")
     }
 
+    @OptIn(DelicateIterableApi::class)
     val nextRun : LocalDateTime?
-        get() = nextRunList(1).firstOrNull()
+        get() = asIterable().firstOrNull()
 
     val expression: String
         get() = partBuilders.values.joinToString(" ") { builder -> builder.value }
