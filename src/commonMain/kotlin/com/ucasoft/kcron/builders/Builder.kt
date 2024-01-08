@@ -102,34 +102,25 @@ class Builder(firstDayOfWeek: WeekDays = WeekDays.Monday) {
             }
         }
     }
-    @Deprecated(
-        message = "Use asIterable(start: LocalDateTime) instead.",
-        replaceWith = ReplaceWith(
-            expression = "asIterable(start = TODO()).take(maxCount)",
-            imports = [
-                "kotlin.collections.take",
-            ]
-        )
-    )
-    @OptIn(DelicateIterableApi::class)
-    fun asIterable(maxCount: Int) : Iterable<LocalDateTime> {
-        // TODO: This function is left for compatibility with 'nextRunList()' and should be removed in future releases.
+
+    @DelicateIterableApi
+    fun asIterable(): Iterable<LocalDateTime> {
         val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-        val result = asIterable(now).take(maxCount)
-        return result
+        return asIterable(start = now)
     }
 
     @Deprecated(
-        message = "Use asIterable() instead.",
+        message = "Use asIterable(maxCount) instead.",
         replaceWith = ReplaceWith(
-            expression = "asIterable(maxCount).toList()",
+            expression = "asIterable().take(maxCount)",
             imports = [
                 "kotlin.collections.toList",
             ]
         ),
     )
+    @OptIn(DelicateIterableApi::class)
     fun nextRunList(maxCount: Int = 10) : List<LocalDateTime> {
-        return asIterable(maxCount).toList()
+        return asIterable().take(maxCount)
     }
 
     private fun calculateDays(year: Int, month: Int, daysOfWeek: List<Int>, days: List<Int>, now: LocalDateTime): List<Int> {
