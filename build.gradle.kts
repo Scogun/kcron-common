@@ -2,6 +2,7 @@ plugins {
     kotlin("multiplatform") version "1.9.22"
     id("maven-publish")
     id("signing")
+    id("net.saliman.properties") version("1.5.2")
 }
 
 group = "com.ucasoft.kcron"
@@ -17,8 +18,10 @@ kotlin {
         }
     }
     linuxX64()
+    linuxArm64()
     mingwX64()
     macosX64()
+    macosArm64()
     js(IR) {
         browser()
         nodejs()
@@ -115,6 +118,14 @@ publishing {
 
 signing {
     sign(publishing.publications)
+}
+
+tasks.withType<Sign>().configureEach {
+    val propName = "signing.skip"
+    onlyIf("$propName is set") {
+        val skipSigning = project.extra.properties[propName]?.toString()?.toBooleanStrict() ?: false
+        !skipSigning
+    }
 }
 
 tasks.withType<AbstractPublishToMaven>().configureEach {
