@@ -103,6 +103,6 @@ builder.years(2021..2025)
 println(builder.expression) // 0/10 5-25 5,12 ? * SUN#5 2021-2025
 ``` 
 ### Current status
-This library is on beta version `0.8.0`.
+This library is on beta version `0.9.0`.
 However, it will be a part of another cool library.
 Check the news! 
