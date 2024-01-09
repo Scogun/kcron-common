@@ -121,7 +121,7 @@ signing {
 tasks.withType<Sign>().configureEach {
     val propName = "signing.skip"
     onlyIf("$propName is set") {
-        val skipSigning = project.extra.properties[propName]?.toString()?.toBooleanStrict() ?: false
+        val skipSigning = project.extra[propName]?.toString()?.toBooleanStrict() ?: false
         !skipSigning
     }
 }
