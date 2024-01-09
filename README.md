@@ -63,7 +63,8 @@ println(builder.expression) // 0/10 5-25 5,12 ? * 7#5 2050
 val builder = KCron.parseAndBuild("0/10 5-25 5,12 ? * 7#5 2050") {
     it.firstDayOfWeek = WeekDays.Sunday
 }
-println(builder.nextRunList()) // 10 is a default list size
+@OptIn(DelicateIterableApi::class)
+println(builder.asIterable().take(10))
 /* Result:
 [
     2050-01-29T05:05,
