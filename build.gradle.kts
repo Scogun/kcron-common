@@ -1,11 +1,11 @@
 plugins {
-    kotlin("multiplatform") version "1.9.20"
+    kotlin("multiplatform") version "1.9.22"
     id("maven-publish")
     id("signing")
 }
 
 group = "com.ucasoft.kcron"
-version = "0.8.0"
+version = "0.9.0"
 
 repositories {
     mavenCentral()
@@ -17,8 +17,10 @@ kotlin {
         }
     }
     linuxX64()
+    linuxArm64()
     mingwX64()
     macosX64()
+    macosArm64()
     js(IR) {
         browser()
         nodejs()
@@ -86,6 +88,11 @@ publishing {
                         id.set("Scogun")
                         name.set("Sergey Antonov")
                         email.set("SAntonov@ucasoft.com")
+                    }
+                    developer {
+                        id.set("Myshkouski")
+                        name.set("Alexei Myshkouski")
+                        email.set("alexeimyshkouski@gmail.com")
                     }
                 }
                 scm {

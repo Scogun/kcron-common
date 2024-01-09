@@ -26,8 +26,9 @@ class Builder(firstDayOfWeek: WeekDays = WeekDays.Monday) {
         years(YearGroups.Any, "*")
     }
 
+    @OptIn(DelicateIterableApi::class)
     val nextRun : LocalDateTime?
-        get() = nextRunList(1).firstOrNull()
+        get() = asIterable().firstOrNull()
 
     val expression: String
         get() = partBuilders.values.joinToString(" ") { builder -> builder.value }
@@ -82,18 +83,18 @@ class Builder(firstDayOfWeek: WeekDays = WeekDays.Monday) {
         return this
     }
 
-    fun nextRunList(maxCount: Int = 10) : List<LocalDateTime> {
-        val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-        val result = mutableListOf<LocalDateTime>()
-        for (year in (partBuilders.getValue(CronPart.Years) as YearsBuilder).years.filter { y -> y >= now.year }) {
-            for (month in (partBuilders.getValue(CronPart.Months) as MonthsBuilder).months.filter { m -> m >= now.monthNumber || year > now.year}) {
-                for (day in calculateDays(year, month, (partBuilders.getValue(CronPart.DaysOfWeek) as DaysOfWeekBuilder).daysOfWeek, (partBuilders.getValue(CronPart.Days) as DaysBuilder).days, now)) {
-                    for (hour in (partBuilders.getValue(CronPart.Hours) as HoursBuilder).hours.filter { h -> h >= now.hour || day > now.dayOfMonth || month > now.monthNumber || year > now.year }) {
-                        for (minute in (partBuilders.getValue(CronPart.Minutes) as MinutesBuilder).minutes.filter { m -> m >= now.minute || hour > now.hour || day > now.dayOfMonth || month > now.monthNumber || year > now.year }) {
-                            for (seconds in (partBuilders.getValue(CronPart.Seconds) as SecondsBuilder).seconds.filter { s -> s > now.second || minute > now.minute || hour > now.hour || day > now.dayOfMonth || month > now.monthNumber || year > now.year }) {
-                                result.add(LocalDateTime(year, month, day, hour, minute, seconds))
-                                if (result.size == maxCount) {
-                                    return result
+    @DelicateIterableApi
+    fun asIterable(start: LocalDateTime): Iterable<LocalDateTime> {
+        return Iterable {
+            iterator {
+                for (year in (partBuilders.getValue(CronPart.Years) as YearsBuilder).years.filter { y -> y >= start.year }) {
+                    for (month in (partBuilders.getValue(CronPart.Months) as MonthsBuilder).months.filter { m -> m >= start.monthNumber || year > start.year}) {
+                        for (day in calculateDays(year, month, (partBuilders.getValue(CronPart.DaysOfWeek) as DaysOfWeekBuilder).daysOfWeek, (partBuilders.getValue(CronPart.Days) as DaysBuilder).days, start)) {
+                            for (hour in (partBuilders.getValue(CronPart.Hours) as HoursBuilder).hours.filter { h -> h >= start.hour || day > start.dayOfMonth || month > start.monthNumber || year > start.year }) {
+                                for (minute in (partBuilders.getValue(CronPart.Minutes) as MinutesBuilder).minutes.filter { m -> m >= start.minute || hour > start.hour || day > start.dayOfMonth || month > start.monthNumber || year > start.year }) {
+                                    for (seconds in (partBuilders.getValue(CronPart.Seconds) as SecondsBuilder).seconds.filter { s -> s > start.second || minute > start.minute || hour > start.hour || day > start.dayOfMonth || month > start.monthNumber || year > start.year }) {
+                                        yield(LocalDateTime(year, month, day, hour, minute, seconds))
+                                    }
                                 }
                             }
                         }
@@ -101,8 +102,26 @@ class Builder(firstDayOfWeek: WeekDays = WeekDays.Monday) {
                 }
             }
         }
+    }
 
-        return result
+    @DelicateIterableApi
+    fun asIterable(): Iterable<LocalDateTime> {
+        val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+        return asIterable(start = now)
+    }
+
+    @Deprecated(
+        message = "Use asIterable(maxCount) instead.",
+        replaceWith = ReplaceWith(
+            expression = "asIterable().take(maxCount)",
+            imports = [
+                "kotlin.collections.toList",
+            ]
+        ),
+    )
+    @OptIn(DelicateIterableApi::class)
+    fun nextRunList(maxCount: Int = 10) : List<LocalDateTime> {
+        return asIterable().take(maxCount)
     }
 
     private fun calculateDays(year: Int, month: Int, daysOfWeek: List<Int>, days: List<Int>, now: LocalDateTime): List<Int> {
