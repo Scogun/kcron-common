@@ -1,5 +1,5 @@
 plugins {
-    kotlin("multiplatform") version "1.9.22"
+    alias(libs.plugins.multiplatform)
     id("maven-publish")
     id("signing")
 }
@@ -31,14 +31,14 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
+                implementation(libs.kotlinx.datetime)
             }
         }
         commonTest {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
-                implementation("io.kotest:kotest-assertions-core:5.8.0")
+                implementation(libs.kotest.assetions)
             }
         }
         val jsTest by getting {
