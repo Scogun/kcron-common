@@ -46,7 +46,7 @@ kotlin {
 ```
 ***Build Cron expression***
 ```kotlin
-val builder = KCron.builder()
+val builder = Cron.builder()
 // By default, builder contains any expression for every part
 println(builder.expression) // * * * ? * * *
 builder
@@ -60,7 +60,7 @@ println(builder.expression) // 0/10 5-25 5,12 ? * 7#5 2050
 ***Parse as Classic as well as Modern Cron expressions***
 ```kotlin
 // Auto detect
-val builder = KCron.parseAndBuild("0/10 5-25 5,12 ? * 7#5 2050") {
+val builder = Cron.parseAndBuild("0/10 5-25 5,12 ? * 7#5 2050") {
     it.firstDayOfWeek = WeekDays.Sunday
 }
 @OptIn(DelicateIterableApi::class)
@@ -81,7 +81,7 @@ println(builder.asIterable().take(10))
 */
 // OR Force to parse only Classic expressions
 try {
-    val builder = KCron.parseAndBuild("0/10 5-25 5,12 ? * 7#5 2050") {
+    val builder = Cron.parseAndBuild("0/10 5-25 5,12 ? * 7#5 2050") {
         it.version = Version.Classic
     }
 } catch(e: WrongCronExpression) {
@@ -90,15 +90,15 @@ try {
 ```
 ***Days of week and months can be defined in a parsed expression as numbers as well as short names***
 ```kotlin
-builder = KCron.parseAndBuild("15/10 5-25 5 ? JAN,MAR 2,3,4,5 2050")
+builder = Cron.parseAndBuild("15/10 5-25 5 ? JAN,MAR 2,3,4,5 2050")
 println(builder.nextRun) // 2050-01-04T05:05:15
 // OR
-builder = KCron.parseAndBuild("15/10 5-25 5 ? 2-4 MON 2050")
+builder = Cron.parseAndBuild("15/10 5-25 5 ? 2-4 MON 2050")
 println(builder.nextRun) // 2050-02-07T05:05:15
 ```
 ***Easy change any part of expression***
 ```kotlin
-val builder = KCron.parseAndBuild("0/10 5-25 5,12 ? * SUN#5 2050")
+val builder = Cron.parseAndBuild("0/10 5-25 5,12 ? * SUN#5 2050")
 builder.years(2021..2025)
 println(builder.expression) // 0/10 5-25 5,12 ? * SUN#5 2021-2025
 ``` 
