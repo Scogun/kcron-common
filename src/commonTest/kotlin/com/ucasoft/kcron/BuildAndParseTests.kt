@@ -24,29 +24,29 @@ class BuildAndParseTests {
     
     @Test
     fun parseAndBuildAuto() {
-        var builder = KCron.parseAndBuild("* 12 ? * *")
+        var builder = Cron.parseAndBuild("* 12 ? * *")
         builder.expression.shouldBe("0 * 12 ? * * *")
         builder.nextRun.shouldNotBeNull()
             .year.shouldBe(currentYear)
-        builder = KCron.parseAndBuild(modernCronExpression)
+        builder = Cron.parseAndBuild(modernCronExpression)
         builder.expression.shouldBe(modernCronExpression)
         builder.nextRun.shouldNotBeNull()
             .year.shouldBe(2050)
         shouldThrowWithMessage<WrongCronExpression>("Expression * * * ? * * is not Cron one!") {
-            KCron.parseAndBuild("* * * ? * *")
+            Cron.parseAndBuild("* * * ? * *")
         }
     }
     
     @Test
     fun parseAndBuildClassic() {
-        val builder = KCron.parseAndBuild("* 12 ? * *") {
+        val builder = Cron.parseAndBuild("* 12 ? * *") {
             it.version = Version.Classic
         }
         builder.expression.shouldBe("0 * 12 ? * * *")
         builder.nextRun.shouldNotBeNull()
             .year.shouldBe(currentYear)
         shouldThrowWithMessage<WrongCronExpression>("Expression * * * ? * * * is not Classic Cron one!") {
-            KCron.parseAndBuild("* * * ? * * *") {
+            Cron.parseAndBuild("* * * ? * * *") {
                 it.version = Version.Classic
             }
         }
@@ -54,17 +54,16 @@ class BuildAndParseTests {
     
     @Test
     fun parseAndBuildModern() {
-        val builder = KCron.parseAndBuild(modernCronExpression) {
+        val builder = Cron.parseAndBuild(modernCronExpression) {
             it.version = Version.Modern
         }
         builder.expression.shouldBe(modernCronExpression)
         builder.nextRun.shouldNotBeNull()
             .year.shouldBe(2050)
         shouldThrowWithMessage<WrongCronExpression>("Expression * * ? * * is not Modern Cron one!") {
-            KCron.parseAndBuild("* * ? * *") {
+            Cron.parseAndBuild("* * ? * *") {
                 it.version = Version.Modern
             }
         }
     }
-    
 }

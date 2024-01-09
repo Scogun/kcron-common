@@ -9,6 +9,7 @@ abstract class PartBuilder<T: CronGroups> {
 
     abstract fun build(type: T, value: String)
 
+    @Suppress("UNCHECKED_CAST")
     fun commonBuild(type: CronGroups, value: String) {
         build(type as T, value)
         this.value = value

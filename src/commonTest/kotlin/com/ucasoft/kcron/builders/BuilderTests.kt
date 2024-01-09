@@ -6,6 +6,7 @@ import com.ucasoft.kcron.extensions.*
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldBeSingleton
 import io.kotest.matchers.collections.shouldHaveElementAt
+import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.equals.shouldBeEqual
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
@@ -148,7 +149,7 @@ class BuilderTests {
 
     @Test
     fun iterableShouldStartFromFirstDatetimeDefinedByCronWhenStartDateTimeIsBeforeSpecifiedRange() {
-        // setup cron to run every day at 12:00:00
+        // setup cron to run every day at 12:00:00 from 2050 to 2070
         val builder = Builder().years(2050..2070).hours(12).minutes(0).seconds(0)
         // set start datetime for iterable to 1 Jan 2010 00:00:00
         val start = LocalDate(2010, 1, 1).atTime(0, 0, 0)
@@ -161,19 +162,19 @@ class BuilderTests {
 
     @Test
     fun iterableShouldBeEmptyWhenStartDateTimeIsAfterSpecifiedRange() {
-        // setup cron to run every day at 12:00:00
+        // setup cron to run every day at 12:00:00 from 2050 to 2070
         val builder = Builder().years(2050..2070).hours(12).minutes(0).seconds(0)
         // set start datetime for iterable to 1 Jan 2080 00:00:00
         val start = LocalDate(2080, 1, 1).atTime(0, 0, 0)
 
-        val actual = builder.asIterable(start).take(999)
+        val actual = builder.asIterable(start).take(2)
         // expect actual value to be empty because 2080 is out of 2050..2070 range
         actual.shouldBeEmpty()
     }
 
     @Test
     fun iterableShouldBeFiniteForCronWithSpecifiedRange() {
-        // setup cron to run every day at 12:00:00
+        // setup cron to run every day at 12:00:00 from 2050 to 2070
         val builder = Builder().years(2050..2070).hours(12).minutes(0).seconds(0)
         // set start datetime for iterable to 1 Jan 2070 00:00:00
         val start = LocalDate(2070, 1, 1).atTime(0, 0, 0)
@@ -181,6 +182,6 @@ class BuilderTests {
         val expected = 365
 
         val actual = builder.asIterable(start).toList()
-        actual.size.shouldBeEqual(expected)
+        actual.shouldHaveSize(expected)
     }
 }
