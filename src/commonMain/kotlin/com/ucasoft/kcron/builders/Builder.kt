@@ -111,7 +111,7 @@ class Builder(firstDayOfWeek: WeekDays = WeekDays.Monday) {
     }
 
     @Deprecated(
-        message = "Use asIterable(maxCount) instead.",
+        message = "Use asIterable().take(maxCount) instead.",
         replaceWith = ReplaceWith(
             expression = "asIterable().take(maxCount)",
             imports = [
