@@ -1,128 +1,129 @@
 package com.ucasoft.kcron.extensions
 
 import com.ucasoft.kcron.builders.Builder
+import com.ucasoft.kcron.builders.CronDateTime
 import com.ucasoft.kcron.common.*
 
-fun Builder.anySeconds() : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.anySeconds() : Builder<T, C> {
     return seconds(TimeGroups.Any, "*")
 }
 
-fun Builder.seconds(vararg values: Int) : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.seconds(vararg values: Int) : Builder<T, C> {
     return seconds(TimeGroups.Specific, values.joinToString(","))
 }
 
-fun Builder.seconds(at: At) : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.seconds(at: At) : Builder<T, C> {
     return seconds(TimeGroups.EveryStartingAt, at.toString())
 }
 
-fun Builder.seconds(between: IntRange) : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.seconds(between: IntRange) : Builder<T, C> {
     return seconds(TimeGroups.EveryBetween, "${between.first}-${between.last}")
 }
 
-fun Builder.anyMinutes() : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.anyMinutes() : Builder<T, C> {
     return minutes(TimeGroups.Any, "*")
 }
 
-fun Builder.minutes(vararg values: Int) : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.minutes(vararg values: Int) : Builder<T, C> {
     return minutes(TimeGroups.Specific, values.joinToString(","))
 }
 
-fun Builder.minutes(at: At) : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.minutes(at: At) : Builder<T, C> {
     return minutes(TimeGroups.EveryStartingAt, at.toString())
 }
 
-fun Builder.minutes(between: IntRange) : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.minutes(between: IntRange) : Builder<T, C> {
     return minutes(TimeGroups.EveryBetween, "${between.first}-${between.last}")
 }
 
-fun Builder.anyHours() : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.anyHours() : Builder<T, C> {
     return hours(TimeGroups.Any, "*")
 }
 
-fun Builder.hours(vararg values: Int) : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.hours(vararg values: Int) : Builder<T, C> {
     return hours(TimeGroups.Specific, values.joinToString(","))
 }
 
-fun Builder.hours(at: At) : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.hours(at: At) : Builder<T, C> {
     return hours(TimeGroups.EveryStartingAt, at.toString())
 }
 
-fun Builder.hours(between: IntRange) : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.hours(between: IntRange) : Builder<T, C> {
     return hours(TimeGroups.EveryBetween, "${between.first}-${between.last}")
 }
 
-fun Builder.anyDays() : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.anyDays() : Builder<T, C> {
     return days(DayGroups.Any, "?")
 }
 
-fun Builder.days(vararg values: Int) : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.days(vararg values: Int) : Builder<T, C> {
     return days(DayGroups.Specific, values.joinToString(","))
 }
 
-fun Builder.days(at: At) : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.days(at: At) : Builder<T, C> {
     return days(DayGroups.EveryStartingAt, at.toString())
 }
 
-fun Builder.lastDay() : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.lastDay() : Builder<T, C> {
     return days(DayGroups.LastDay, "L")
 }
 
-fun Builder.lastWorkDay() : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.lastWorkDay() : Builder<T, C> {
     return days(DayGroups.LastWeekday, "LW")
 }
 
-fun Builder.nearestWorkDay(value: Int) : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.nearestWorkDay(value: Int) : Builder<T, C> {
     return days(DayGroups.NearestWeekday, "${value}W")
 }
 
-fun Builder.anyMonths() : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.anyMonths() : Builder<T, C> {
     return months(MonthGroups.Any, "*")
 }
 
-fun Builder.months(vararg values: Int) : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.months(vararg values: Int) : Builder<T, C> {
     return months(MonthGroups.Specific, values.joinToString(","))
 }
 
-fun Builder.months(at: At) : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.months(at: At) : Builder<T, C> {
     return months(MonthGroups.EveryStartingAt, at.toString())
 }
 
-fun Builder.months(between: IntRange) : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.months(between: IntRange) : Builder<T, C> {
     return months(MonthGroups.EveryBetween, "${between.first}-${between.last}")
 }
 
-fun Builder.anyDaysOfWeek(any: String = "*") : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.anyDaysOfWeek(any: String = "*") : Builder<T, C> {
     return daysOfWeek(DayOfWeekGroups.Any, any)
 }
 
-fun Builder.daysOfWeek(vararg values: Int) : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.daysOfWeek(vararg values: Int) : Builder<T, C> {
     return daysOfWeek(DayOfWeekGroups.Specific, values.joinToString(",") )
 }
 
-fun Builder.daysOfWeek(at: At) : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.daysOfWeek(at: At) : Builder<T, C> {
     return daysOfWeek(DayOfWeekGroups.EveryStartingAt, at.toString())
 }
 
-fun Builder.lastDayOfWeek(value: Int) : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.lastDayOfWeek(value: Int) : Builder<T, C> {
     return daysOfWeek(DayOfWeekGroups.Last, "${value}L")
 }
 
-fun Builder.daysOfWeek(on: On) : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.daysOfWeek(on: On) : Builder<T, C> {
     return daysOfWeek(DayOfWeekGroups.OfMonth, on.toString())
 }
 
-fun Builder.anyYears() : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.anyYears() : Builder<T, C> {
     return years(YearGroups.Any, "*")
 }
 
-fun Builder.years(vararg values: Int): Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.years(vararg values: Int): Builder<T, C> {
     return years(YearGroups.Specific, values.joinToString(","))
 }
 
-fun Builder.years(at: At) : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.years(at: At) : Builder<T, C> {
     return years(YearGroups.EveryStartingAt, at.toString())
 }
 
-fun Builder.years(between: IntRange) : Builder {
+fun <T, C: CronDateTime<T>> Builder<T, C>.years(between: IntRange) : Builder<T, C> {
     return years(YearGroups.EveryBetween, "${between.first}-${between.last}")
 }
