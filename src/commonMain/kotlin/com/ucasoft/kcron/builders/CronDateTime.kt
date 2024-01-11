@@ -4,11 +4,11 @@ import com.ucasoft.kcron.extensions.minusDays
 import com.ucasoft.kcron.extensions.plusDays
 import kotlinx.datetime.*
 
-interface CronDateTime<T> {
+interface CronDateTime<out T> {
 
     val year: Int
 
-    val monthNumber: Int
+    val month: Int
 
     val dayOfMonth: Int
 
@@ -20,15 +20,27 @@ interface CronDateTime<T> {
 
     val second: Int
 
-    fun now() : CronDateTime<T>
-
     fun cast() : T
-
-    fun from(year: Int, month: Int, day: Int, hours: Int = 0, minutes: Int = 0, seconds: Int = 0): CronDateTime<T>
 
     fun plusDays(days: Int): CronDateTime<T>
 
     fun minusDays(days: Int): CronDateTime<T>
+}
+
+interface CronDateTimeProvider<T, out D> where D: CronDateTime<T> {
+
+    fun now(): D
+
+    fun from(
+        year: Int,
+        month: Int,
+        day: Int,
+        hours: Int = 0,
+        minutes: Int = 0,
+        seconds: Int = 0
+    ): D
+
+    fun from(original: T) : D
 }
 
 class CronLocalDateTime: CronDateTime<LocalDateTime> {
@@ -52,7 +64,7 @@ class CronLocalDateTime: CronDateTime<LocalDateTime> {
     override val year: Int
         get() = dateTime.year
 
-    override val monthNumber: Int
+    override val month: Int
         get() = dateTime.monthNumber
 
     override val dayOfMonth: Int
@@ -66,9 +78,16 @@ class CronLocalDateTime: CronDateTime<LocalDateTime> {
     override val second: Int
         get() = dateTime.second
 
-    override fun now() = CronLocalDateTime()
-
     override fun cast() = dateTime
+
+    override fun plusDays(days: Int) = dateTime.plusDays(days).toCronLocalDateTime()
+
+    override fun minusDays(days: Int) = dateTime.minusDays(days).toCronLocalDateTime()
+}
+
+class CronLocalDateTimeProvider : CronDateTimeProvider<LocalDateTime, CronLocalDateTime> {
+
+    override fun now() = CronLocalDateTime()
 
     override fun from(
         year: Int,
@@ -79,9 +98,8 @@ class CronLocalDateTime: CronDateTime<LocalDateTime> {
         seconds: Int
     ) = CronLocalDateTime(year, month, day, hours, minutes, seconds)
 
-    override fun plusDays(days: Int) = dateTime.plusDays(days).toCronLocalDateTime()
+    override fun from(original: LocalDateTime) = original.toCronLocalDateTime()
 
-    override fun minusDays(days: Int) = dateTime.minusDays(days).toCronLocalDateTime()
 }
 
 fun LocalDateTime.toCronLocalDateTime() = CronLocalDateTime(this.year, this.monthNumber, this.dayOfMonth, this.hour, this.minute, this.second)

@@ -2,7 +2,7 @@ package com.ucasoft.kcron.builders
 
 import com.ucasoft.kcron.common.*
 
-class Builder<T, C: CronDateTime<T>>(firstDayOfWeek: WeekDays = WeekDays.Monday, private val dateTimeInstance: C) {
+class Builder<T, D: CronDateTime<T>, P: CronDateTimeProvider<T, D>>(firstDayOfWeek: WeekDays = WeekDays.Monday, private val dateTimeProvider: P) {
 
     private val partBuilders = mapOf(
         CronPart.Seconds to SecondsBuilder(),
@@ -33,27 +33,27 @@ class Builder<T, C: CronDateTime<T>>(firstDayOfWeek: WeekDays = WeekDays.Monday,
 
     private val firstDayOfWeekIndex = WeekDays.entries.indexOf(firstDayOfWeek)
 
-    fun build(parts: Map<CronPart, PartValue>): Builder<T, C> {
+    fun build(parts: Map<CronPart, PartValue>): Builder<T, D, P> {
         parts.forEach { entry -> partBuilders[entry.key]?.commonBuild(entry.value.type, entry.value.value) }
         return this
     }
 
-    fun seconds(type: TimeGroups, value: String) : Builder<T, C> {
+    fun seconds(type: TimeGroups, value: String) : Builder<T, D, P> {
         partBuilders.getValue(CronPart.Seconds).commonBuild(type, value)
         return this
     }
 
-    fun minutes(type: TimeGroups, value: String) : Builder<T, C> {
+    fun minutes(type: TimeGroups, value: String) : Builder<T, D, P> {
         partBuilders.getValue(CronPart.Minutes).commonBuild(type, value)
         return this
     }
 
-    fun hours(type: TimeGroups, value: String) : Builder<T, C> {
+    fun hours(type: TimeGroups, value: String) : Builder<T, D, P> {
         partBuilders.getValue(CronPart.Hours).commonBuild(type, value)
         return this
     }
 
-    fun days(type: DayGroups, value: String) : Builder<T, C> {
+    fun days(type: DayGroups, value: String) : Builder<T, D, P> {
         if (type != DayGroups.Any) {
             daysOfWeek(DayOfWeekGroups.Any, "?")
         } else if (partBuilders.getValue(CronPart.DaysOfWeek).value == "?") {
@@ -63,12 +63,12 @@ class Builder<T, C: CronDateTime<T>>(firstDayOfWeek: WeekDays = WeekDays.Monday,
         return this
     }
 
-    fun months(type: MonthGroups, value: String) : Builder<T, C> {
+    fun months(type: MonthGroups, value: String) : Builder<T, D, P> {
         partBuilders.getValue(CronPart.Months).commonBuild(type, value)
         return this
     }
 
-    fun daysOfWeek(type: DayOfWeekGroups, value: String) : Builder<T, C> {
+    fun daysOfWeek(type: DayOfWeekGroups, value: String) : Builder<T, D, P> {
         if (type != DayOfWeekGroups.Any) {
             days(DayGroups.Any, "?")
         }
@@ -76,22 +76,23 @@ class Builder<T, C: CronDateTime<T>>(firstDayOfWeek: WeekDays = WeekDays.Monday,
         return this
     }
 
-    fun years(type: YearGroups, value: String) : Builder<T, C> {
+    fun years(type: YearGroups, value: String) : Builder<T, D, P> {
         partBuilders.getValue(CronPart.Years).commonBuild(type, value)
         return this
     }
 
     @DelicateIterableApi
-    fun asIterable(start: C): Iterable<T> {
+    fun asIterable(start: T): Iterable<T> {
+        val internalStart = dateTimeProvider.from(start)
         return Iterable {
             iterator {
-                for (year in (partBuilders.getValue(CronPart.Years) as YearsBuilder).years.filter { y -> y >= start.year }) {
-                    for (month in (partBuilders.getValue(CronPart.Months) as MonthsBuilder).months.filter { m -> m >= start.monthNumber || year > start.year}) {
-                        for (day in calculateDays(year, month, (partBuilders.getValue(CronPart.DaysOfWeek) as DaysOfWeekBuilder).daysOfWeek, (partBuilders.getValue(CronPart.Days) as DaysBuilder).days, start)) {
-                            for (hour in (partBuilders.getValue(CronPart.Hours) as HoursBuilder).hours.filter { h -> h >= start.hour || day > start.dayOfMonth || month > start.monthNumber || year > start.year }) {
-                                for (minute in (partBuilders.getValue(CronPart.Minutes) as MinutesBuilder).minutes.filter { m -> m >= start.minute || hour > start.hour || day > start.dayOfMonth || month > start.monthNumber || year > start.year }) {
-                                    for (seconds in (partBuilders.getValue(CronPart.Seconds) as SecondsBuilder).seconds.filter { s -> s > start.second || minute > start.minute || hour > start.hour || day > start.dayOfMonth || month > start.monthNumber || year > start.year }) {
-                                        yield(dateTimeInstance.from(year, month, day, hour, minute, seconds).cast())
+                for (year in (partBuilders.getValue(CronPart.Years) as YearsBuilder).years.filter { y -> y >= internalStart.year }) {
+                    for (month in (partBuilders.getValue(CronPart.Months) as MonthsBuilder).months.filter { m -> m >= internalStart.month || year > internalStart.year}) {
+                        for (day in calculateDays(year, month, (partBuilders.getValue(CronPart.DaysOfWeek) as DaysOfWeekBuilder).daysOfWeek, (partBuilders.getValue(CronPart.Days) as DaysBuilder).days, internalStart)) {
+                            for (hour in (partBuilders.getValue(CronPart.Hours) as HoursBuilder).hours.filter { h -> h >= internalStart.hour || day > internalStart.dayOfMonth || month > internalStart.month || year > internalStart.year }) {
+                                for (minute in (partBuilders.getValue(CronPart.Minutes) as MinutesBuilder).minutes.filter { m -> m >= internalStart.minute || hour > internalStart.hour || day > internalStart.dayOfMonth || month > internalStart.month || year > internalStart.year }) {
+                                    for (seconds in (partBuilders.getValue(CronPart.Seconds) as SecondsBuilder).seconds.filter { s -> s > internalStart.second || minute > internalStart.minute || hour > internalStart.hour || day > internalStart.dayOfMonth || month > internalStart.month || year > internalStart.year }) {
+                                        yield(dateTimeProvider.from(year, month, day, hour, minute, seconds).cast())
                                     }
                                 }
                             }
@@ -103,10 +104,7 @@ class Builder<T, C: CronDateTime<T>>(firstDayOfWeek: WeekDays = WeekDays.Monday,
     }
 
     @DelicateIterableApi
-    fun asIterable(): Iterable<T> {
-        //val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-        return asIterable(dateTimeInstance.now() as C)
-    }
+    fun asIterable() = asIterable(dateTimeProvider.now().cast())
 
     @Deprecated(
         message = "Use asIterable().take(maxCount) instead.",
@@ -148,7 +146,7 @@ class Builder<T, C: CronDateTime<T>>(firstDayOfWeek: WeekDays = WeekDays.Monday,
                 }
             }
         }
-        return days.filter { d -> (d >= now.dayOfMonth || month > now.monthNumber || year > now.year) && (d <= lastDayInt) }
+        return days.filter { d -> (d >= now.dayOfMonth || month > now.month || year > now.year) && (d <= lastDayInt) }
     }
 
     private fun calculateDaysBasedOnDaysOfWeek(
@@ -168,8 +166,8 @@ class Builder<T, C: CronDateTime<T>>(firstDayOfWeek: WeekDays = WeekDays.Monday,
             return listOf(lastMonthDay.minusDays(difference).dayOfMonth)
         }
         val lastDayInt = lastMonthDay.dayOfMonth
-        val firstInMonth = dateTimeInstance.from(year, month, 1)
-        val startDay = if (now.monthNumber == month && now.year == year) { now } else { firstInMonth }
+        val firstInMonth = dateTimeProvider.from(year, month, 1)
+        val startDay = if (now.month == month && now.year == year) { now } else { firstInMonth }
         if (firstValue >= 10) {
             val dayOfWeek = toIsoDayOfWeek(firstValue / 10)
             val index = daysOfWeek[1] / 10
@@ -206,19 +204,20 @@ class Builder<T, C: CronDateTime<T>>(firstDayOfWeek: WeekDays = WeekDays.Monday,
         return null
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun nearestWorkDayTo(year: Int, month: Int, lastMonthDay: Int, day: Int) : Int {
-        var checkingDay = dateTimeInstance.from(year, month, day)
+        var checkingDay = dateTimeProvider.from(year, month, day)
         if (checkingDay.isoDayOfWeek >= 6) {
             checkingDay = if (checkingDay.isoDayOfWeek == 6) {
                 if (checkingDay.dayOfMonth > 1) {
-                    checkingDay.minusDays(1)
+                    checkingDay.minusDays(1) as D
                 } else {
-                    checkingDay.plusDays(2)
+                    checkingDay.plusDays(2) as D
                 }
             } else if (checkingDay.dayOfMonth < lastMonthDay) {
-                checkingDay.plusDays(1)
+                checkingDay.plusDays(1) as D
             } else {
-                checkingDay.minusDays(2)
+                checkingDay.minusDays(2) as D
             }
         }
         return checkingDay.dayOfMonth
@@ -239,7 +238,7 @@ class Builder<T, C: CronDateTime<T>>(firstDayOfWeek: WeekDays = WeekDays.Monday,
             nextYear += 1
             nextMonth = 1
         }
-        val firstDayNextMonth = dateTimeInstance.from(nextYear, nextMonth, 1)
+        val firstDayNextMonth = dateTimeProvider.from(nextYear, nextMonth, 1)
         return firstDayNextMonth.minusDays(1)
     }
 }
