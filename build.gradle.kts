@@ -7,4 +7,10 @@ allprojects {
     repositories {
         mavenCentral()
     }
+
+    tasks.withType<Test> {
+        reports {
+            junitXml.required.set(true)
+        }
+    }
 }
