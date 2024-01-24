@@ -4,6 +4,7 @@ import com.ucasoft.kcron.core.exceptions.WrongCronExpression
 import com.ucasoft.kcron.core.exceptions.WrongPartCombinations
 import com.ucasoft.kcron.core.exceptions.WrongPartExpression
 import com.ucasoft.kcron.core.exceptions.WrongPartsExpression
+import com.ucasoft.kcron.core.settings.Version
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.assertions.throwables.shouldThrowWithMessage
 import kotlin.test.Test
@@ -26,18 +27,18 @@ class ParserTests {
 
     @Test
     fun goodClassicExpressions() {
-        parser.parse(allAnyClassicCronExpression, com.ucasoft.kcron.core.settings.Version.Classic)
-        parser.parse("* * 29 * ?", com.ucasoft.kcron.core.settings.Version.Classic)
-        parser.parse("* * ? * 1L", com.ucasoft.kcron.core.settings.Version.Classic)
-        parser.parse("* * ? * MON/1", com.ucasoft.kcron.core.settings.Version.Classic)
+        parser.parse(allAnyClassicCronExpression, Version.Classic)
+        parser.parse("* * 29 * ?", Version.Classic)
+        parser.parse("* * ? * 1L", Version.Classic)
+        parser.parse("* * ? * MON/1", Version.Classic)
     }
 
     @Test
     fun goodModernExpressions() {
-        parser.parse(allAnyModernCronExpression, com.ucasoft.kcron.core.settings.Version.Modern)
-        parser.parse("* * * 29 * ? *", com.ucasoft.kcron.core.settings.Version.Modern)
-        parser.parse("* * * ? * 1L *", com.ucasoft.kcron.core.settings.Version.Modern)
-        parser.parse("* * * ? * MON/1 *", com.ucasoft.kcron.core.settings.Version.Modern)
+        parser.parse(allAnyModernCronExpression, Version.Modern)
+        parser.parse("* * * 29 * ? *", Version.Modern)
+        parser.parse("* * * ? * 1L *", Version.Modern)
+        parser.parse("* * * ? * MON/1 *", Version.Modern)
     }
 
     @Test
@@ -48,14 +49,14 @@ class ParserTests {
 
     @Test
     fun badClassicExpressions() {
-        shouldThrow<WrongCronExpression> { parser.parse("* * ? * * *", com.ucasoft.kcron.core.settings.Version.Classic) }
-        shouldThrowWithMessage<WrongCronExpression>("Expression $allAnyModernCronExpression is not Classic Cron one!") { parser.parse(allAnyModernCronExpression, com.ucasoft.kcron.core.settings.Version.Classic) }
+        shouldThrow<WrongCronExpression> { parser.parse("* * ? * * *", Version.Classic) }
+        shouldThrowWithMessage<WrongCronExpression>("Expression $allAnyModernCronExpression is not Classic Cron one!") { parser.parse(allAnyModernCronExpression, Version.Classic) }
     }
 
     @Test
     fun badModernExpressions() {
-        shouldThrow<WrongCronExpression> { parser.parse(allAnyClassicCronExpression, com.ucasoft.kcron.core.settings.Version.Modern) }
-        shouldThrowWithMessage<WrongCronExpression>("Expression * * * ? ? * * * is not Modern Cron one!") { parser.parse("* * * ? ? * * *", com.ucasoft.kcron.core.settings.Version.Modern) }
+        shouldThrow<WrongCronExpression> { parser.parse(allAnyClassicCronExpression, Version.Modern) }
+        shouldThrowWithMessage<WrongCronExpression>("Expression * * * ? ? * * * is not Modern Cron one!") { parser.parse("* * * ? ? * * *", Version.Modern) }
     }
 
     @Test

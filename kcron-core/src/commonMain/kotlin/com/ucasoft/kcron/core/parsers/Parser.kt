@@ -82,16 +82,10 @@ class Parser {
         for (part in parts) {
             val rule = combinationRules.firstOrNull { r -> r.part == part.key && r.type == part.value.type }
             if (rule != null) {
-                for (dependency in rule.dependencies!!) {
+                for (dependency in rule.dependencies) {
                     val secondPart = parts[dependency.part]
                     if (secondPart!!.type != dependency.type) {
-                        combinationExceptions.add(
-                            WrongPartCombination(
-                                part,
-                                dependency,
-                                secondPart
-                            )
-                        )
+                        combinationExceptions.add(WrongPartCombination(part, dependency, secondPart))
                     }
                 }
             }

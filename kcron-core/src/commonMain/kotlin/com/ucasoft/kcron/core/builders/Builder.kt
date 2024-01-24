@@ -35,24 +35,20 @@ class Builder<T, D: CronDateTime<T>, P: CronDateTimeProvider<T, D>>(private val 
 
     private val firstDayOfWeekIndex = WeekDays.entries.indexOf(firstDayOfWeek)
 
-    fun build(parts: Map<CronPart, PartValue>): Builder<T, D, P> {
+    fun build(parts: Map<CronPart, PartValue>) = apply {
         parts.forEach { entry -> partBuilders[entry.key]?.commonBuild(entry.value.type, entry.value.value) }
-        return this
     }
 
-    fun seconds(type: TimeGroups, value: String) : Builder<T, D, P> {
+    fun seconds(type: TimeGroups, value: String) = apply {
         partBuilders.getValue(CronPart.Seconds).commonBuild(type, value)
-        return this
     }
 
-    fun minutes(type: TimeGroups, value: String) : Builder<T, D, P> {
+    fun minutes(type: TimeGroups, value: String) = apply {
         partBuilders.getValue(CronPart.Minutes).commonBuild(type, value)
-        return this
     }
 
-    fun hours(type: TimeGroups, value: String) : Builder<T, D, P> {
+    fun hours(type: TimeGroups, value: String) = apply {
         partBuilders.getValue(CronPart.Hours).commonBuild(type, value)
-        return this
     }
 
     fun days(type: DayGroups, value: String) : Builder<T, D, P> {
@@ -65,9 +61,8 @@ class Builder<T, D: CronDateTime<T>, P: CronDateTimeProvider<T, D>>(private val 
         return this
     }
 
-    fun months(type: MonthGroups, value: String) : Builder<T, D, P> {
+    fun months(type: MonthGroups, value: String) = apply {
         partBuilders.getValue(CronPart.Months).commonBuild(type, value)
-        return this
     }
 
     fun daysOfWeek(type: DayOfWeekGroups, value: String) : Builder<T, D, P> {
@@ -78,9 +73,8 @@ class Builder<T, D: CronDateTime<T>, P: CronDateTimeProvider<T, D>>(private val 
         return this
     }
 
-    fun years(type: YearGroups, value: String) : Builder<T, D, P> {
+    fun years(type: YearGroups, value: String) = apply {
         partBuilders.getValue(CronPart.Years).commonBuild(type, value)
-        return this
     }
 
     @DelicateIterableApi

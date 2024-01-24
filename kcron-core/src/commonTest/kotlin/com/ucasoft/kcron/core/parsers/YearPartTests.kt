@@ -9,7 +9,7 @@ import kotlin.test.*
 
 class YearPartTests {
 
-    private lateinit var parser: com.ucasoft.kcron.core.parsers.YearsParser
+    private lateinit var parser: YearsParser
 
     private val allowedValues = listOf(
         YearValueGroup("*", YearGroups.Any),
@@ -43,7 +43,7 @@ class YearPartTests {
 
     @BeforeTest
     fun setupOnce() {
-        parser = com.ucasoft.kcron.core.parsers.YearsParser()
+        parser = YearsParser()
     }
 
     @Test

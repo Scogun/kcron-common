@@ -12,20 +12,20 @@ class MonthPartTests {
     private lateinit var parser: MonthsParser
 
     private val allowedValues = listOf(
-        com.ucasoft.kcron.core.parsers.MonthValueGroup("*", MonthGroups.Any),
-        com.ucasoft.kcron.core.parsers.MonthValueGroup("1", MonthGroups.Specific),
-        com.ucasoft.kcron.core.parsers.MonthValueGroup("6", MonthGroups.Specific),
-        com.ucasoft.kcron.core.parsers.MonthValueGroup("12", MonthGroups.Specific),
-        com.ucasoft.kcron.core.parsers.MonthValueGroup("JAN", MonthGroups.Specific),
-        com.ucasoft.kcron.core.parsers.MonthValueGroup("JUN", MonthGroups.Specific),
-        com.ucasoft.kcron.core.parsers.MonthValueGroup("DEC", MonthGroups.Specific),
-        com.ucasoft.kcron.core.parsers.MonthValueGroup("1,12", MonthGroups.Specific),
-        com.ucasoft.kcron.core.parsers.MonthValueGroup("JAN,DEC", MonthGroups.Specific),
-        com.ucasoft.kcron.core.parsers.MonthValueGroup("1-12", MonthGroups.EveryBetween),
-        com.ucasoft.kcron.core.parsers.MonthValueGroup("6-8", MonthGroups.EveryBetween),
-        com.ucasoft.kcron.core.parsers.MonthValueGroup("1/1", MonthGroups.EveryStartingAt),
-        com.ucasoft.kcron.core.parsers.MonthValueGroup("9/6", MonthGroups.EveryStartingAt),
-        com.ucasoft.kcron.core.parsers.MonthValueGroup("12/12", MonthGroups.EveryStartingAt)
+        MonthValueGroup("*", MonthGroups.Any),
+        MonthValueGroup("1", MonthGroups.Specific),
+        MonthValueGroup("6", MonthGroups.Specific),
+        MonthValueGroup("12", MonthGroups.Specific),
+        MonthValueGroup("JAN", MonthGroups.Specific),
+        MonthValueGroup("JUN", MonthGroups.Specific),
+        MonthValueGroup("DEC", MonthGroups.Specific),
+        MonthValueGroup("1,12", MonthGroups.Specific),
+        MonthValueGroup("JAN,DEC", MonthGroups.Specific),
+        MonthValueGroup("1-12", MonthGroups.EveryBetween),
+        MonthValueGroup("6-8", MonthGroups.EveryBetween),
+        MonthValueGroup("1/1", MonthGroups.EveryStartingAt),
+        MonthValueGroup("9/6", MonthGroups.EveryStartingAt),
+        MonthValueGroup("12/12", MonthGroups.EveryStartingAt)
     )
 
     private val deniedValues = listOf(
