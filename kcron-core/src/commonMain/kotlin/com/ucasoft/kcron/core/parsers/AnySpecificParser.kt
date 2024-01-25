@@ -1,0 +1,21 @@
+package com.ucasoft.kcron.core.parsers
+
+import com.ucasoft.kcron.core.common.CronGroups
+
+abstract class AnySpecificParser<T>(
+    private val anyPattern: String,
+    protected val specificNumberPattern: String,
+    protected val specificNamePattern: String = "") : BaseParser<T>() where T: Enum<T>, T: CronGroups {
+
+    abstract val additionalParts: String
+
+    override val pattern: String
+        get() {
+            val specificPattern = if (specificNamePattern.isNotEmpty()) {
+                "((?:(?:$specificNumberPattern)(?:,(?:$specificNumberPattern))*)|(?:(?:$specificNamePattern)(?:,(?:$specificNamePattern))*))"
+            } else {
+                "((?:$specificNumberPattern)(?:,(?:$specificNumberPattern))*)"
+            }
+            return "^(?:($anyPattern)|$specificPattern$additionalParts)$"
+        }
+}
