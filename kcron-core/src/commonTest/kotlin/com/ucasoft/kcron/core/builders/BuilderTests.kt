@@ -10,6 +10,7 @@ import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldBeSingleton
 import io.kotest.matchers.collections.shouldHaveElementAt
 import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.equals.shouldBeEqual
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
@@ -144,11 +145,11 @@ class BuilderTests {
         // setup cron to run every day at 12:00:00 from 2050 to 2070
         val builder = Builder(dateTimeProvider).years(2050..2070).hours(12).minutes(0).seconds(0)
         // set start datetime for iterable to 1 Jan 2060 00:00:00
-        val start = LocalDate(2060, 1, 1).atTime(0, 0, 0)
+        val from = LocalDate(2060, 1, 1).atTime(0, 0, 0)
         // expect first run in 1 Jan 2060 12:00:00
         val expected = LocalDate(2060, 1, 1).atTime(12, 0, 0)
 
-        val actual = builder.asIterable(start).first()
+        val actual = builder.asIterable(from).first()
         actual.shouldBeEqual(expected)
     }
 
@@ -157,11 +158,11 @@ class BuilderTests {
         // setup cron to run every day at 12:00:00 from 2050 to 2070
         val builder = Builder(dateTimeProvider).years(2050..2070).hours(12).minutes(0).seconds(0)
         // set start datetime for iterable to 1 Jan 2010 00:00:00
-        val start = LocalDate(2010, 1, 1).atTime(0, 0, 0)
+        val from = LocalDate(2010, 1, 1).atTime(0, 0, 0)
         // expect first run in 1 Jan 2050 12:00:00 (as defined in cron)
         val expected = LocalDate(2050, 1, 1).atTime(12, 0, 0)
 
-        val actual = builder.asIterable(start).first()
+        val actual = builder.asIterable(from).first()
         actual.shouldBeEqual(expected)
     }
 
@@ -170,9 +171,9 @@ class BuilderTests {
         // setup cron to run every day at 12:00:00 from 2050 to 2070
         val builder = Builder(dateTimeProvider).years(2050..2070).hours(12).minutes(0).seconds(0)
         // set start datetime for iterable to 1 Jan 2080 00:00:00
-        val start = LocalDate(2080, 1, 1).atTime(0, 0, 0)
+        val from = LocalDate(2080, 1, 1).atTime(0, 0, 0)
 
-        val actual = builder.asIterable(start).take(2)
+        val actual = builder.asIterable(from).take(2)
         // expect actual value to be empty because 2080 is out of 2050..2070 range
         actual.shouldBeEmpty()
     }
@@ -182,11 +183,22 @@ class BuilderTests {
         // setup cron to run every day at 12:00:00 from 2050 to 2070
         val builder = Builder(dateTimeProvider).years(2050..2070).hours(12).minutes(0).seconds(0)
         // set start datetime for iterable to 1 Jan 2070 00:00:00
-        val start = LocalDate(2070, 1, 1).atTime(0, 0, 0)
+        val from = LocalDate(2070, 1, 1).atTime(0, 0, 0)
         // set expected runs count to be exactly 365 (once per day)
         val expected = 365
 
-       val actual = builder.asIterable(start).toList()
+        val actual = builder.asIterable(from).toList()
         actual.shouldHaveSize(expected)
+    }
+
+    @Test
+    fun iterableShouldStartFromExactProvidedStartDateTime() {
+        // setup cron to run every day at 00:00:00 from 2050 to 2070
+        val builder = Builder(dateTimeProvider).years(2050..2070).hours(0).minutes(0).seconds(0)
+        // set start datetime for iterable to 1 Jan 2050 00:00:00 (exact the same as cron's start)
+        val from = LocalDate(2050, 1, 1).atTime(0, 0, 0)
+        // expected iterable's first run will be equal to start
+        val actual = builder.asIterable(from).first()
+        actual.shouldBeGreaterThan(from)
     }
 }
