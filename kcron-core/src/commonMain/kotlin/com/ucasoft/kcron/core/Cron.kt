@@ -27,3 +27,9 @@ object Cron {
         return Builder(provider, firstDayOfWeek)
     }
 }
+
+fun <T, D : CronDateTime<T>, P : CronDateTimeProvider<T, D>> cron(
+    provider: P,
+    firstDayOfWeek: WeekDays = WeekDays.Monday,
+    body: Builder<T, D, P>.() -> Unit
+) = Cron.builder(provider, firstDayOfWeek).apply(body)

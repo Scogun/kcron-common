@@ -1,7 +1,7 @@
 # KCron
 Cron realization for Kotlin Multiplatform
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Scogun_kcron-common&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Scogun_kcron-common) ![GitHub](https://img.shields.io/github/license/Scogun/kcron-common?color=blue) ![Publish workflow](https://github.com/Scogun/kcron-common/actions/workflows/publish.yml/badge.svg) [![Maven Central with version prefix filter](https://img.shields.io/maven-central/v/com.ucasoft.kcron/kcron-common/0.10.1?color=blue)](https://search.maven.org/artifact/com.ucasoft.kcron/kcron-common/0.10.1/jar)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Scogun_kcron-common&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Scogun_kcron-common) ![GitHub](https://img.shields.io/github/license/Scogun/kcron-common?color=blue) ![Publish workflow](https://github.com/Scogun/kcron-common/actions/workflows/publish.yml/badge.svg) [![Maven Central with version prefix filter](https://img.shields.io/maven-central/v/com.ucasoft.kcron/kcron-common/0.10.2?color=blue)](https://search.maven.org/artifact/com.ucasoft.kcron/kcron-common/0.10.2/jar)
 
 ### Features
 * Kotlin Multiplatform library
@@ -15,6 +15,16 @@ builder
     .hours(5, 12) // Specific hours: 5 and 12
     .daysOfWeek(7 on 5) // On the 5th Sunday of the month
     .years(2050) // Specific year: 2050
+```
+* Build Cron expression via Kotlin style function:
+```kotlin
+cron {
+    seconds(10 at 0)//Every 10 seconds starting at 0 seconds
+    minutes(5..25) // Every minute between 5 and 25
+    hours(5, 12) // Specific hours: 5 and 12
+    daysOfWeek(7 on 5) // On the 5th Sunday of the month
+    years(2050) // Specific year: 2050
+}
 ```
 * Support custom first week day
 ```kotlin
@@ -40,7 +50,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation 'com.ucasoft.kcron:kcron-common:0.10.1'
+                implementation 'com.ucasoft.kcron:kcron-common:0.10.2'
             }
         }
     }
@@ -105,6 +115,6 @@ builder.years(2021..2025)
 println(builder.expression) // 0/10 5-25 5,12 ? * SUN#5 2021-2025
 ``` 
 ### Current status
-This library is on beta version `0.10.1`.
+This library is on beta version `0.10.2`.
 It is continuing to develop.
 Check the news!
