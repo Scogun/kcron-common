@@ -11,7 +11,7 @@ jobs:
   build-and-test:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [macos-latest, ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -24,7 +24,7 @@ jobs:
           cache: gradle
 
       - name: "Grant execute permission for gradlew"
-        if: ${{ matrix.os == 'ubuntu-latest' }}
+        if: ${{ matrix.os != 'windows-latest' }}
         run: chmod +x gradlew
 
       - name: "Build with Gradle"
@@ -37,7 +37,11 @@ jobs:
 
       - name: "Tests"
         if: ${{ matrix.os == 'windows-latest' }}
-        run: ./gradlew cleanMingwX64Test mingwX64Tes --tests "com.ucasoft.kcron.*"
+        run: ./gradlew cleanMingwX64Test mingwX64Test --tests "com.ucasoft.kcron.*"
+
+      - name: "Tests"
+        if: ${{ matrix.os == 'macos-latest' }}
+        run: ./gradlew cleanMacosX64Test macosX64Test --tests "com.ucasoft.kcron.*"
 
       - name: "Tests Report"
         uses: dorny/test-reporter@v1
