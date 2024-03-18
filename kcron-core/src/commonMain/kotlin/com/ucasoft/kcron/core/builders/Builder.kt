@@ -82,13 +82,13 @@ class Builder<T, D: CronDateTime<T>, P: CronDateTimeProvider<T, D>>(private val 
         val internalStart = dateTimeProvider.from(from)
         return Iterable {
             iterator {
-                for (year in (partBuilders.getValue(CronPart.Years) as YearsBuilder<*>).years.filter { y -> y >= internalStart.year }) {
-                    for (month in (partBuilders.getValue(CronPart.Months) as MonthsBuilder).months.filter { m -> m >= internalStart.month || year > internalStart.year}) {
-                        for (day in calculateDays(year, month, (partBuilders.getValue(CronPart.DaysOfWeek) as DaysOfWeekBuilder).daysOfWeek, (partBuilders.getValue(CronPart.Days) as DaysBuilder).days, internalStart)) {
-                            for (hour in (partBuilders.getValue(CronPart.Hours) as HoursBuilder).hours.filter { h -> h >= internalStart.hour || day > internalStart.dayOfMonth || month > internalStart.month || year > internalStart.year }) {
-                                for (minute in (partBuilders.getValue(CronPart.Minutes) as MinutesBuilder).minutes.filter { m -> m >= internalStart.minute || hour > internalStart.hour || day > internalStart.dayOfMonth || month > internalStart.month || year > internalStart.year }) {
-                                    for (seconds in (partBuilders.getValue(CronPart.Seconds) as SecondsBuilder).seconds.filter { s -> s > internalStart.second || minute > internalStart.minute || hour > internalStart.hour || day > internalStart.dayOfMonth || month > internalStart.month || year > internalStart.year }) {
-                                        yield(dateTimeProvider.from(year, month, day, hour, minute, seconds).cast())
+                getYears(internalStart) { year ->
+                    getMonths(internalStart, year) { month ->
+                        getDays(internalStart, year, month) { day ->
+                            getHours(internalStart, year, month, day) { hour ->
+                                getMinutes(internalStart, year, month, day, hour) { minute ->
+                                    getSeconds(internalStart, year, month, day, hour, minute) {
+                                        yield(dateTimeProvider.from(year, month, day, hour, minute, it).cast())
                                     }
                                 }
                             }
@@ -114,6 +114,37 @@ class Builder<T, D: CronDateTime<T>, P: CronDateTimeProvider<T, D>>(private val 
     @OptIn(DelicateIterableApi::class)
     fun nextRunList(maxCount: Int = 10) : List<T> {
         return asIterable().take(maxCount)
+    }
+
+    private inline fun getYears(from: D, block: (Int) -> Unit) {
+        val yearsBuilder = partBuilders.getValue(CronPart.Years) as YearsBuilder<*>
+        yearsBuilder.years.filter { it >= from.year }.forEach(block)
+    }
+
+    private inline fun getMonths(from: D, year: Int, block: (Int) -> Unit) {
+        val monthsBuilder = partBuilders.getValue(CronPart.Months) as MonthsBuilder
+        monthsBuilder.months.filter { it >= from.month || year > from.year }.forEach(block)
+    }
+
+    private inline fun getDays(from: D, year: Int, month: Int, block: (Int) -> Unit) {
+        val daysOfWeekBuilder = partBuilders.getValue(CronPart.DaysOfWeek) as DaysOfWeekBuilder
+        val daysBuilder = partBuilders.getValue(CronPart.Days) as DaysBuilder
+        calculateDays(year, month, daysOfWeekBuilder.daysOfWeek, daysBuilder.days, from).forEach(block)
+    }
+
+    private inline fun getHours(from: D, year: Int, month: Int, day: Int, block: (Int) -> Unit) {
+        val hoursBuilder = partBuilders.getValue(CronPart.Hours) as HoursBuilder
+        hoursBuilder.hours.filter { it >= from.hour || day > from.dayOfMonth || month > from.month || year > from.year }.forEach(block)
+    }
+
+    private inline fun getMinutes(from: D, year: Int, month: Int, day: Int, hour: Int, block: (Int) -> Unit) {
+        val minutesBuilder = partBuilders.getValue(CronPart.Minutes) as MinutesBuilder
+        minutesBuilder.minutes.filter { it >= from.minute || hour > from.hour || day > from.dayOfMonth || month > from.month || year > from.year }.forEach(block)
+    }
+
+    private inline fun getSeconds(from: D, year: Int, month: Int, day: Int, hour: Int, minute: Int, block: (Int) -> Unit) {
+        val secondsBuilder = partBuilders.getValue(CronPart.Seconds) as SecondsBuilder
+        secondsBuilder.seconds.filter { it > from.second || minute > from.minute || hour > from.hour || day > from.dayOfMonth || month > from.month || year > from.year }.forEach(block)
     }
 
     private fun calculateDays(year: Int, month: Int, daysOfWeek: List<Int>, days: List<Int>, now: CronDateTime<T>): List<Int> {
