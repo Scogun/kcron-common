@@ -8,5 +8,6 @@ include(
     "kcron-abstractions",
     "kcron-common",
     "kcron-core",
+    "kcron-islandtime",
     "kcron-kotlinx-datetime"
 )
