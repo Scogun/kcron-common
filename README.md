@@ -45,12 +45,24 @@ builder
 ### Usage
 #### KCron-Common library as default implementation uses [Kotlinx-DateTime](https://github.com/Kotlin/kotlinx-datetime) library
 ***Add with Gradle***
-```groovy
+```kotlin
 kotlin {
     sourceSets {
         commonMain {
             dependencies {
                 implementation 'com.ucasoft.kcron:kcron-common:0.11.0'
+            }
+        }
+    }
+}
+```
+***Alternative [Island Time](https://github.com/erikc5000/island-time) library:***
+```kotlin
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation 'com.ucasoft.kcron:kcron-islandtime:0.11.0'
             }
         }
     }
