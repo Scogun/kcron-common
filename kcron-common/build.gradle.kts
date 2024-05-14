@@ -24,8 +24,8 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(project(":kcron-core"))
-                implementation(project(":kcron-kotlinx-datetime"))
+                api(project(":kcron-core"))
+                api(project(":kcron-kotlinx-datetime"))
             }
         }
         commonTest {
