@@ -1,8 +1,7 @@
 plugins {
     alias(libs.plugins.multiplatform)
-    id("publish")
+    alias(libs.plugins.benchmark)
     alias(libs.plugins.kover) apply false
-    alias(libs.plugins.benchmark) apply false
 }
 
 kotlin {
@@ -12,28 +11,28 @@ kotlin {
         }
     }
     linuxX64()
-    linuxArm64()
     mingwX64()
     macosX64()
-    macosArm64()
     js(IR) {
         browser()
         nodejs()
     }
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
     sourceSets {
         commonMain {
             dependencies {
-                implementation(project(":kcron-abstractions"))
-                api(libs.kotlinx.datetime)
+                implementation(project(":kcron-common"))
+                implementation(libs.kotlinx.benchmark)
             }
         }
     }
 }
 
-libraryData {
-    name.set("KCron Kotlinx DateTime")
-    description.set("Kotlinx DateTime Provider for Kotlin Multiplatform Cron realization")
+benchmark {
+    targets {
+        register("jvm")
+        register("js")
+        register("linuxX64")
+        register("mingwX64")
+        register("macosX64")
+    }
 }
