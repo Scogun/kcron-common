@@ -50,3 +50,19 @@ jobs:
           name: jUnit Tests
           path: '**/build/test-results/*Test/TEST-*.xml'
           reporter: java-junit
+
+      - name: "Run Coverage"
+        if: ${{ github.event_name == 'pull_request' }}
+        run: ./gradlew koverXmlReport
+        shell: bash
+
+      - name: "Coverage Report"
+        uses: mi-kas/kover-report@v1
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          path: |
+            ./kcron-common/build/reports/kover/report.xml
+            ./kcron-core/build/reports/kover/report.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: "Coverage Report"
+          update-comment: true

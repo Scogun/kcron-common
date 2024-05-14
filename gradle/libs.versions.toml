@@ -2,6 +2,7 @@
 kotlin = "1.9.23"
 kotlinx-datetime = "0.6.0"
 kotest = "5.9.0"
+kover = "0.7.6"
 
 [libraries]
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
@@ -10,3 +11,4 @@ kotest-assetions = { group = "io.kotest", name = "kotest-assertions-core", versi
 
 [plugins]
 multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }

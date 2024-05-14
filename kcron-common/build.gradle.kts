@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.multiplatform)
     id("publish")
+    alias(libs.plugins.kover)
 }
 
 kotlin {
