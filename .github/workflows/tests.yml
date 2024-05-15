@@ -11,7 +11,7 @@ jobs:
   build-and-test:
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [macos-13, ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -40,7 +40,7 @@ jobs:
         run: ./gradlew cleanMingwX64Test mingwX64Test --tests "com.ucasoft.kcron.*"
 
       - name: "Tests"
-        if: ${{ matrix.os == 'macos-latest' }}
+        if: ${{ matrix.os == 'macos-13' }}
         run: ./gradlew cleanMacosX64Test macosX64Test --tests "com.ucasoft.kcron.*"
 
       - name: "Tests Report"
