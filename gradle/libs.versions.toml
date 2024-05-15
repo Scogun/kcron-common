@@ -1,12 +1,17 @@
 [versions]
 kotlin = "1.9.23"
-kotlinx-datetime = "0.5.0"
-kotest = "5.8.1"
+kotlinx-datetime = "0.6.0"
+kotest = "5.9.0"
+kover = "0.7.6"
+benchmark = "0.4.10"
 
 [libraries]
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
+kotlinx-benchmark = { group = "org.jetbrains.kotlinx", name = "kotlinx-benchmark-runtime", version.ref = "benchmark" }
 kotest-assetions = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
 
 
 [plugins]
 multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
+benchmark = { id = "org.jetbrains.kotlinx.benchmark", version.ref = "benchmark" }

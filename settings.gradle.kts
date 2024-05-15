@@ -7,6 +7,7 @@ rootProject.name = "kcron"
 include(
     "kcron-abstractions",
     "kcron-common",
+    "kcron-common-benchmark",
     "kcron-core",
     "kcron-kotlinx-datetime"
 )
