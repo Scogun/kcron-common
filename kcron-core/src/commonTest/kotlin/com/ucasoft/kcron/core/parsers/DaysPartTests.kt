@@ -12,6 +12,7 @@ class DaysPartTests {
     private lateinit var parser: DaysParser
 
     private val allowedValues = listOf(
+        DayValueGroup("*", DayGroups.Any),
         DayValueGroup("?", DayGroups.Any),
         DayValueGroup("1", DayGroups.Specific),
         DayValueGroup("15", DayGroups.Specific),
@@ -32,7 +33,7 @@ class DaysPartTests {
     )
 
     private val deniedValues = listOf(
-        "*",
+        "**",
         "??",
         "0",
         "32",

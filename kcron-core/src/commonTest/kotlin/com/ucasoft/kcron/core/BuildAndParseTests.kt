@@ -24,7 +24,9 @@ class BuildAndParseTests {
     
     @Test
     fun parseAndBuildAuto() {
-        var builder = Cron.parseAndBuild("* 12 ? * *", dateTimeProvider)
+        var builder = Cron.parseAndBuild("* 12 * * *", dateTimeProvider)
+        builder.expression.shouldBe("0 * 12 * * * *")
+        builder = Cron.parseAndBuild("* 12 ? * *", dateTimeProvider)
         builder.expression.shouldBe("0 * 12 ? * * *")
         builder.nextRun.shouldNotBeNull()
             .year.shouldBe(currentYear)
@@ -39,10 +41,10 @@ class BuildAndParseTests {
     
     @Test
     fun parseAndBuildClassic() {
-        val builder = Cron.parseAndBuild("* 12 ? * *", dateTimeProvider) {
+        val builder = Cron.parseAndBuild("* 12 * * *", dateTimeProvider) {
             it.version = Version.Classic
         }
-        builder.expression.shouldBe("0 * 12 ? * * *")
+        builder.expression.shouldBe("0 * 12 * * * *")
         builder.nextRun.shouldNotBeNull()
             .year.shouldBe(currentYear)
         shouldThrowWithMessage<WrongCronExpression>("Expression * * * ? * * * is not Classic Cron one!") {
