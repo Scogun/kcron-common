@@ -1,9 +1,9 @@
 [versions]
-kotlin = "1.9.23"
+kotlin = "1.9.24"
 kotlinx-datetime = "0.6.0"
-kotest = "5.9.0"
+kotest = "5.9.1"
 kover = "0.7.6"
-benchmark = "0.4.10"
+benchmark = "0.4.11"
 
 [libraries]
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
