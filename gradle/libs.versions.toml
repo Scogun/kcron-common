@@ -1,8 +1,8 @@
 [versions]
 kotlin = "2.0.20"
-kotlinx-datetime = "0.6.0"
+kotlinx-datetime = "0.6.1"
 kotest = "5.9.1"
-kover = "0.7.6"
+kover = "0.8.3"
 benchmark = "0.4.11"
 
 [libraries]
