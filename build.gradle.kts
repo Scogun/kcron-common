@@ -9,7 +9,7 @@ allprojects {
 
     group = "com.ucasoft.kcron"
 
-    version = "0.14.4"
+    version = "0.20.2"
 
     repositories {
         mavenCentral()
