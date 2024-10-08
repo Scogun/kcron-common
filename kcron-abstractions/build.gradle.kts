@@ -1,8 +1,6 @@
 plugins {
     alias(libs.plugins.multiplatform)
     id("publish")
-    alias(libs.plugins.kover) apply false
-    alias(libs.plugins.benchmark) apply false
 }
 
 kotlin {

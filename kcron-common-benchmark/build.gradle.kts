@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.multiplatform)
     alias(libs.plugins.benchmark)
-    alias(libs.plugins.kover) apply false
 }
 
 kotlin {
