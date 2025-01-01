@@ -2,15 +2,11 @@ plugins {
     alias(libs.plugins.multiplatform)
     id("publish")
     alias(libs.plugins.kover)
-    alias(libs.plugins.benchmark) apply false
 }
 
 kotlin {
-    jvm {
-        compilations.all {
-            kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
-        }
-    }
+    jvmToolchain(8)
+    jvm()
     linuxX64()
     linuxArm64()
     mingwX64()
