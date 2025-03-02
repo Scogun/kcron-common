@@ -40,6 +40,7 @@ builder
   * Windows (mingwX64)
   * macOS
   * Javascript
+  * Wasm
   * iOS
 * Support different DateTime libraries (via DateTime Provider Abstractions)
 ### Usage
