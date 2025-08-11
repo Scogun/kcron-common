@@ -5,11 +5,12 @@ import com.ucasoft.kcron.core.settings.Version
 import io.kotest.assertions.throwables.shouldThrowWithMessage
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.test.BeforeTest
 import kotlin.test.Test
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 class BuildAndParseTests {
 
@@ -17,6 +18,7 @@ class BuildAndParseTests {
     
     private val modernCronExpression = "30 * * ? * * 2050"
 
+    @OptIn(ExperimentalTime::class)
     @BeforeTest
     fun setupOnce() {
         currentYear = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).year
