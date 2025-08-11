@@ -4,6 +4,7 @@ kotlinx-datetime = "0.7.1"
 kotest = "5.9.1"
 kover = "0.9.1"
 benchmark = "0.4.14"
+compose = "1.8.2"
 
 [libraries]
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
@@ -15,3 +16,5 @@ kotest-assetions = { group = "io.kotest", name = "kotest-assertions-core", versi
 multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 benchmark = { id = "org.jetbrains.kotlinx.benchmark", version.ref = "benchmark" }
+compose = { id = "org.jetbrains.compose", version.ref = "compose" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

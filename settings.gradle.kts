@@ -9,5 +9,6 @@ include(
     "kcron-common",
     "kcron-common-benchmark",
     "kcron-core",
-    "kcron-kotlinx-datetime"
+    "kcron-kotlinx-datetime",
+    "kcron-ui-builder"
 )
