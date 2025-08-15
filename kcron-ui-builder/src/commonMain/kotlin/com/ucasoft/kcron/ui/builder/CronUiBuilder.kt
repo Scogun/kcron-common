@@ -1,7 +1,6 @@
 package com.ucasoft.kcron.ui.builder
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,36 +10,26 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.ucasoft.kcron.core.common.CronPart
+import com.ucasoft.kcron.core.common.PartValue
 import com.ucasoft.kcron.core.common.WeekDays
+import com.ucasoft.kcron.core.exceptions.WrongPartCombinations
 import com.ucasoft.kcron.core.exceptions.WrongPartExpression
 import com.ucasoft.kcron.core.parsers.Parser
-import com.ucasoft.kcron.core.settings.Version
 import com.ucasoft.kcron.kcron_ui_builder.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 
-private data class Expression(
-    val minutes: String = "*",
-    val hours: String = "*",
-    val dayOfMonth: String = "?",
-    val month: String = "*",
-    val dayOfWeek: String = "*",
-) {
-    override fun toString(): String {
-        return "$minutes $hours $dayOfMonth $month $dayOfWeek"
-    }
-}
-
 @Composable
 fun CronUiBuilder(
+    expression: String = "* * * * *",
     modifier: Modifier = Modifier,
     allowCustom: Boolean = true,
     firstDayOfWeek: WeekDays = WeekDays.Monday
 ) {
     val parser = Parser()
-    var expression by remember { mutableStateOf(Expression()) }
+    var parts by remember { mutableStateOf(parser.parse(expression).parts) }
 
     Card(
         modifier = modifier.padding(12.dp)
@@ -49,9 +38,8 @@ fun CronUiBuilder(
             modifier = Modifier.fillMaxWidth().padding(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CronField(
-                stringResource(Res.string.minute),
-                listOf(
+           listOf(
+                Res.string.minute to listOf(
                     "Every" to "*",
                     "Hour start" to "0",
                     "15" to "15",
@@ -61,20 +49,7 @@ fun CronUiBuilder(
                     "Every 15" to "0/15",
                     "Every 30" to "0/30"
                 ),
-                allowCustom
-            ) {
-                try {
-                    val copy = expression.copy(minutes = it)
-                    parser.parse(copy.toString(), Version.Classic)
-                    expression = copy
-                }
-                catch (wrong: WrongPartExpression) {
-                    println(wrong)
-                }
-            }
-            CronField(
-                stringResource(Res.string.hour),
-                listOf(
+                Res.string.hour to listOf(
                     "Every" to "*",
                     "Midnight" to "0",
                     "6 AM" to "6",
@@ -86,35 +61,18 @@ fun CronUiBuilder(
                     "Every 6" to "0/6",
                     "Every 12" to "0/12"
                 ),
-                allowCustom
-            ) {
-                try {
-                    val copy = expression.copy(hours = it)
-                    parser.parse(copy.toString(), Version.Classic)
-                    expression = copy
-                }
-                catch (wrong: WrongPartExpression) {
-                    println(wrong)
-                }
-            }
-            CronField(
-                stringResource(Res.string.day_of_month),
-                listOf(
+                Res.string.day_of_month to listOf(
                     "Every" to "*",
                     "1st" to "1",
                     "15th" to "15",
                     "Last" to "L",
                     "First Weekday" to "1W",
                     "Last Weekday" to "LW",
-                    "Every 2" to "*/2",
-                    "Every 7" to "*/7",
-                    "Every 14" to "*/14"
+                    "Every 2" to "1/2",
+                    "Every 7" to "1/7",
+                    "Every 14" to "1/14"
                 ),
-                allowCustom
-            )
-            CronField(
-                stringResource(Res.string.month),
-                listOf(
+                Res.string.month to listOf(
                     "Every" to "*",
                     "January" to "1",
                     "February" to "2",
@@ -129,11 +87,7 @@ fun CronUiBuilder(
                     "November" to "11",
                     "December" to "12"
                 ),
-                allowCustom
-            )
-            CronField(
-                stringResource(Res.string.day_of_week),
-                listOf(
+                Res.string.day_of_week to listOf(
                     "Every" to "*",
                     "Monday" to "1",
                     "Tuesday" to "2",
@@ -144,14 +98,53 @@ fun CronUiBuilder(
                     "Sunday" to "7",
                     "Weekdays" to "1-5",
                     "Weekends" to "6-7"
-                ),
-                allowCustom
-            )
+                )
+            ).map {
+               it.first to if (allowCustom)
+                   it.second + ("Custom" to "")
+               else
+                   it.second
+           }.map {
+                (labelRes, options) ->
+                var isError by remember { mutableStateOf(false) }
+                CronField(
+                    stringResource(labelRes),
+                    when(labelRes) {
+                        Res.string.minute -> parts[CronPart.Minutes]!!.value
+                        Res.string.hour -> parts[CronPart.Hours]!!.value
+                        Res.string.day_of_month -> parts[CronPart.Days]!!.value
+                        Res.string.month -> parts[CronPart.Months]!!.value
+                        Res.string.day_of_week -> parts[CronPart.DaysOfWeek]!!.value
+                        else -> ""
+                    },
+                    options,
+                    isError = isError
+                ) {
+                    try {
+                        val copy = when (labelRes) {
+                            Res.string.minute -> copyParts(parts, minutes = it)
+                            Res.string.hour -> copyParts(parts, hours = it)
+                            Res.string.day_of_month -> copyParts(parts, dayOfMonth = it)
+                            Res.string.month -> copyParts(parts, month = it)
+                            Res.string.day_of_week -> copyParts(parts, dayOfWeek = it)
+                            else -> parts
+                        }
+                        parser.parse(copy.entries.joinToString(" ") { it.value.value })
+                        parts = copy
+                        isError = false
+                    } catch (wrong: WrongPartExpression) {
+                        println(wrong)
+                        isError = true
+                    } catch (wrong: WrongPartCombinations) {
+                        throw wrong
+                    }
+                }
+            }
             Spacer(
                 Modifier.weight(1f)
             )
             OutlinedTextField(
-                expression.toString(),
+                parts.entries.drop(1).take(5).joinToString(" ") { it.value.value },
                 onValueChange = {},
                 readOnly = true,
                 modifier = Modifier.background(MaterialTheme.colorScheme.primary),
@@ -162,80 +155,22 @@ fun CronUiBuilder(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CronField(
-    label: String,
-    options: List<Pair<String, String>> = emptyList(),
-    allowCustom: Boolean = false,
-    customPlaceholder: String = "Enter custom value",
-    onValueChanged: (String) -> Unit = {}
-) {
-    var open by remember { mutableStateOf(false) }
-    var prebuildPattern by remember { mutableStateOf(options.firstOrNull()) }
-    val customPattern = "Custom" to ""
-    var selectedPattern by remember { mutableStateOf("") }
-
-    Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Text(
-            label,
-            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
-        )
-        ExposedDropdownMenuBox(
-            expanded = open,
-            onExpandedChange = { open = it },
-        ) {
-            OutlinedTextField(
-                prebuildPattern?.first ?: "",
-                onValueChange = {},
-                readOnly = true,
-                trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(open)
-                },
-                modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable)
-            )
-            if(options.isNotEmpty()) {
-                ExposedDropdownMenu(
-                    expanded = open,
-                    onDismissRequest = { open = false }
-                ) {
-                    options.map {
-                        DropdownMenuItem(
-                            text = { Text(it.first) },
-                            onClick = {
-                                prebuildPattern = it
-                                selectedPattern = it.second
-                                onValueChanged(it.second)
-                                open = false
-                            }
-                        )
-                    }
-                    if (allowCustom) {
-                        DropdownMenuItem(
-                            text = { Text(customPattern.first) },
-                            onClick = {
-                                prebuildPattern = customPattern
-                                selectedPattern = customPattern.second
-                                open = false
-                            }
-                        )
-                    }
-                }
-            }
-        }
-        if (prebuildPattern == customPattern) {
-            OutlinedTextField(
-                selectedPattern,
-                onValueChange = {
-                    selectedPattern = it
-                    onValueChanged(it)
-                },
-                placeholder = { Text(customPlaceholder) }
-            )
+private fun copyParts(
+    parts: Map<CronPart, PartValue>,
+    minutes: String? = null,
+    hours: String? = null,
+    dayOfMonth: String? = null,
+    month: String? = null,
+    dayOfWeek: String? = null
+) : Map<CronPart, PartValue> {
+    return parts.entries.associate {
+        it.key to when (it.key) {
+            CronPart.Minutes -> PartValue(it.value.type, minutes ?: it.value.value)
+            CronPart.Hours -> PartValue(it.value.type, hours ?: it.value.value)
+            CronPart.Days -> PartValue(it.value.type, dayOfMonth ?: it.value.value)
+            CronPart.Months -> PartValue(it.value.type, month ?: it.value.value)
+            CronPart.DaysOfWeek -> PartValue(it.value.type, dayOfWeek ?: it.value.value)
+            else -> it.value
         }
     }
 }
