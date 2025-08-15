@@ -1,7 +1,9 @@
 package com.ucasoft.kcron.ui.builder
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.ucasoft.kcron.Cron
+import com.ucasoft.kcron.core.builders.Builder
 import com.ucasoft.kcron.core.common.CronPart
 import com.ucasoft.kcron.core.common.PartValue
 import com.ucasoft.kcron.core.common.WeekDays
@@ -26,7 +30,8 @@ fun CronUiBuilder(
     expression: String = "* * * * *",
     modifier: Modifier = Modifier,
     allowCustom: Boolean = true,
-    firstDayOfWeek: WeekDays = WeekDays.Monday
+    firstDayOfWeek: WeekDays = WeekDays.Monday,
+    onBuild: (Builder<*, *, *>) -> Unit = {},
 ) {
     val parser = Parser()
     var parts by remember { mutableStateOf(parser.parse(expression).parts) }
@@ -151,6 +156,35 @@ fun CronUiBuilder(
                 colors = OutlinedTextFieldDefaults.colors(focusedTextColor = MaterialTheme.colorScheme.onPrimary, unfocusedTextColor = MaterialTheme.colorScheme.onPrimary),
                 textStyle = TextStyle.Default.copy(textAlign = TextAlign.Center)
             )
+            Spacer(
+                Modifier.weight(1f)
+            )
+            Row {
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Button(
+                        onClick = {},
+                    ) {
+                        Text("Cancel")
+                    }
+                }
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Button(
+                        onClick = {
+                            onBuild(Cron.parseAndBuild(parts.entries.joinToString(" ") { it.value.value }) {
+                                it.firstDayOfWeek = firstDayOfWeek
+                            })
+                        },
+                    ) {
+                        Text("Ok")
+                    }
+                }
+            }
         }
     }
 }
