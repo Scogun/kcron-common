@@ -37,12 +37,12 @@ internal fun CronField(
 
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalAlignment = Alignment.Companion.CenterHorizontally,
-        modifier = Modifier.Companion.fillMaxWidth()
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxWidth()
     ) {
         Text(
             label,
-            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Companion.Bold)
+            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
         )
         ExposedDropdownMenuBox(
             expanded = open,
@@ -55,7 +55,7 @@ internal fun CronField(
                 trailingIcon = {
                     ExposedDropdownMenuDefaults.TrailingIcon(open)
                 },
-                modifier = Modifier.Companion.menuAnchor(MenuAnchorType.Companion.PrimaryNotEditable)
+                modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable)
             )
             if (options.isNotEmpty()) {
                 ExposedDropdownMenu(

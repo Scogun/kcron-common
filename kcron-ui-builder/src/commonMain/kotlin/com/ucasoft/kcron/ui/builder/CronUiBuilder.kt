@@ -23,6 +23,8 @@ import com.ucasoft.kcron.core.exceptions.WrongPartCombinations
 import com.ucasoft.kcron.core.exceptions.WrongPartExpression
 import com.ucasoft.kcron.core.parsers.Parser
 import com.ucasoft.kcron.kcron_ui_builder.generated.resources.*
+import org.jetbrains.compose.resources.pluralStringResource
+import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -43,64 +45,49 @@ fun CronUiBuilder(
             modifier = Modifier.fillMaxWidth().padding(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            var daysOfWeek = stringArrayResource(Res.array.days_of_week).withIndex().map { it.value to it.index }
+            daysOfWeek = daysOfWeek.drop(firstDayOfWeek.ordinal) + daysOfWeek.take(firstDayOfWeek.ordinal)
            listOf(
                 Res.string.minute to listOf(
-                    "Every" to "*",
+                    pluralStringResource(Res.plurals.every, 1) to "*",
                     "Hour start" to "0",
                     "15" to "15",
                     "30" to "30",
                     "45" to "45",
-                    "Every 5" to "0/5",
-                    "Every 15" to "0/15",
-                    "Every 30" to "0/30"
+                    pluralStringResource(Res.plurals.every, 5, 5) to "0/5",
+                    pluralStringResource(Res.plurals.every, 15, 15) to "0/15",
+                    pluralStringResource(Res.plurals.every, 30, 30) to "0/30"
                 ),
                 Res.string.hour to listOf(
-                    "Every" to "*",
+                    pluralStringResource(Res.plurals.every, 1) to "*",
                     "Midnight" to "0",
                     "6 AM" to "6",
                     "9 AM" to "9",
                     "Noon" to "12",
                     "6 PM" to "18",
                     "9 PM" to "21",
-                    "Every 2" to "0/2",
-                    "Every 6" to "0/6",
-                    "Every 12" to "0/12"
+                    pluralStringResource(Res.plurals.every, 2, 2) to "0/2",
+                    pluralStringResource(Res.plurals.every, 6, 6) to "0/6",
+                    pluralStringResource(Res.plurals.every, 12, 12) to "0/12"
                 ),
                 Res.string.day_of_month to listOf(
-                    "Every" to "*",
+                    pluralStringResource(Res.plurals.every, 1) to "*",
                     "1st" to "1",
                     "15th" to "15",
                     "Last" to "L",
                     "First Weekday" to "1W",
                     "Last Weekday" to "LW",
-                    "Every 2" to "1/2",
-                    "Every 7" to "1/7",
-                    "Every 14" to "1/14"
+                    pluralStringResource(Res.plurals.every, 2, 2) to "1/2",
+                    pluralStringResource(Res.plurals.every, 7, 7) to "1/7",
+                    pluralStringResource(Res.plurals.every, 14, 14) to "1/14"
                 ),
                 Res.string.month to listOf(
-                    "Every" to "*",
-                    "January" to "1",
-                    "February" to "2",
-                    "March" to "3",
-                    "April" to "4",
-                    "May" to "5",
-                    "June" to "6",
-                    "July" to "7",
-                    "August" to "8",
-                    "September" to "9",
-                    "October" to "10",
-                    "November" to "11",
-                    "December" to "12"
-                ),
+                    pluralStringResource(Res.plurals.every, 1) to "*"
+                ) + stringArrayResource(Res.array.months).withIndex().map { it.value to (it.index + 1).toString() },
                 Res.string.day_of_week to listOf(
-                    "Every" to "*",
-                    "Monday" to "1",
-                    "Tuesday" to "2",
-                    "Wednesday" to "3",
-                    "Thursday" to "4",
-                    "Friday" to "5",
-                    "Saturday" to "6",
-                    "Sunday" to "7",
+                    pluralStringResource(Res.plurals.every, 1) to "*"
+                ) + daysOfWeek.withIndex().map { (index, name) -> name.first to (index + 1).toString() } +
+                listOf(
                     "Weekdays" to "1-5",
                     "Weekends" to "6-7"
                 )

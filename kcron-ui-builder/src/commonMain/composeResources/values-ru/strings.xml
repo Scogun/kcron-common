@@ -1,0 +1,37 @@
+<resources>
+    <string name="minute">Минута</string>
+    <string name="hour">Час</string>
+    <string name="day_of_month">День месяца</string>
+    <string name="month">Месяц</string>
+    <string name="day_of_week">День недели</string>
+
+    <plurals name="every">
+        <item quantity="one">Каждый</item>
+        <item quantity="other">Каждые %1$d</item>
+    </plurals>
+
+    <string-array name="months">
+        <item>Январь</item>
+        <item>Февраль</item>
+        <item>Март</item>
+        <item>Апрель</item>
+        <item>Май</item>
+        <item>Июнь</item>
+        <item>Июль</item>
+        <item>Август</item>
+        <item>Сентябрь</item>
+        <item>Октябрь</item>
+        <item>Ноябрь</item>
+        <item>Декабрь</item>
+    </string-array>
+
+    <string-array name="days_of_week">
+        <item>Понедельник</item>
+        <item>Вторник</item>
+        <item>Среда</item>
+        <item>Четверг</item>
+        <item>Пятница</item>
+        <item>Суббота</item>
+        <item>Воскресенье</item>
+    </string-array>
+</resources>

@@ -4,4 +4,34 @@
     <string name="day_of_month">Day of Month</string>
     <string name="month">Month</string>
     <string name="day_of_week">Day of Week</string>
+
+    <plurals name="every">
+        <item quantity="one">Every</item>
+        <item quantity="other">Every %1$d</item>
+    </plurals>
+
+    <string-array name="months">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+
+    <string-array name="days_of_week">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
 </resources>
