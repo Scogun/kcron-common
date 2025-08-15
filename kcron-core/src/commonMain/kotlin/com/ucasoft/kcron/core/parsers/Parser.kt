@@ -70,14 +70,16 @@ class Parser {
             throw WrongPartsExpression(partExceptions)
         }
 
-        val result = ParseResult()
-        for ((index, parser) in partParsers.withIndex()) {
-            result.parts[parser.part] = PartValue(parser.group as CronGroups, expressionParts[index])
-        }
-        return result
+        return ParseResult(
+            partParsers.withIndex().associate { (index, part) ->
+                part.part to PartValue(
+                    part.group as CronGroups,
+                    expressionParts[index]
+                )
+            })
     }
 
-    private fun ensureCombinationRules(parts: MutableMap<CronPart, PartValue>) {
+    private fun ensureCombinationRules(parts: Map<CronPart, PartValue>) {
         val combinationExceptions = mutableListOf<WrongPartCombination>()
         for (part in parts) {
             val rule = combinationRules.firstOrNull { r -> r.part == part.key && r.type == part.value.type }
