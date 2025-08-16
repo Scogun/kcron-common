@@ -78,7 +78,7 @@ internal fun CronField(
                 }
             }
         }
-        if (prebuildPattern.first == "Custom") {
+        if (prebuildPattern.second == "") {
             OutlinedTextField(
                 selectedPattern,
                 onValueChange = {

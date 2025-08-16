@@ -5,10 +5,27 @@
     <string name="month">Месяц</string>
     <string name="day_of_week">День недели</string>
 
+    <string name="custom">Вручную</string>
+
     <plurals name="every">
         <item quantity="one">Каждый</item>
         <item quantity="other">Каждые %1$d</item>
     </plurals>
+
+    <string name="hour_start">Начало часа</string>
+
+    <string name="midnight">Полночь</string>
+    <string name="6_am">6</string>
+    <string name="9_am">9</string>
+    <string name="noon">Полдень</string>
+    <string name="6_pm">18</string>
+    <string name="9_pm">21</string>
+
+    <string name="first">1-е</string>
+    <string name="fifteenth">15-е</string>
+    <string name="last">Последний</string>
+    <string name="first_weekday">Первый будний день</string>
+    <string name="last_weekday">Последний будний день</string>
 
     <string-array name="months">
         <item>Январь</item>

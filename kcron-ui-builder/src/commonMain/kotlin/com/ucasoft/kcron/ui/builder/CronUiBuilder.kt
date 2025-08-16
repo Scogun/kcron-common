@@ -50,7 +50,7 @@ fun CronUiBuilder(
            listOf(
                 Res.string.minute to listOf(
                     pluralStringResource(Res.plurals.every, 1) to "*",
-                    "Hour start" to "0",
+                    stringResource(Res.string.hour_start) to "0",
                     "15" to "15",
                     "30" to "30",
                     "45" to "45",
@@ -60,23 +60,23 @@ fun CronUiBuilder(
                 ),
                 Res.string.hour to listOf(
                     pluralStringResource(Res.plurals.every, 1) to "*",
-                    "Midnight" to "0",
-                    "6 AM" to "6",
-                    "9 AM" to "9",
-                    "Noon" to "12",
-                    "6 PM" to "18",
-                    "9 PM" to "21",
+                    stringResource(Res.string.midnight) to "0",
+                    stringResource(Res.string._6_am) to "6",
+                    stringResource(Res.string._9_am) to "9",
+                    stringResource(Res.string.noon) to "12",
+                    stringResource(Res.string._6_pm) to "18",
+                    stringResource(Res.string._9_pm) to "21",
                     pluralStringResource(Res.plurals.every, 2, 2) to "0/2",
                     pluralStringResource(Res.plurals.every, 6, 6) to "0/6",
                     pluralStringResource(Res.plurals.every, 12, 12) to "0/12"
                 ),
                 Res.string.day_of_month to listOf(
                     pluralStringResource(Res.plurals.every, 1) to "*",
-                    "1st" to "1",
-                    "15th" to "15",
-                    "Last" to "L",
-                    "First Weekday" to "1W",
-                    "Last Weekday" to "LW",
+                    stringResource(Res.string.first) to "1",
+                    stringResource(Res.string.fifteenth) to "15",
+                    stringResource(Res.string.last) to "L",
+                    stringResource(Res.string.first_weekday) to "1W",
+                    stringResource(Res.string.last_weekday) to "LW",
                     pluralStringResource(Res.plurals.every, 2, 2) to "1/2",
                     pluralStringResource(Res.plurals.every, 7, 7) to "1/7",
                     pluralStringResource(Res.plurals.every, 14, 14) to "1/14"
@@ -86,14 +86,10 @@ fun CronUiBuilder(
                 ) + stringArrayResource(Res.array.months).withIndex().map { it.value to (it.index + 1).toString() },
                 Res.string.day_of_week to listOf(
                     pluralStringResource(Res.plurals.every, 1) to "*"
-                ) + daysOfWeek.withIndex().map { (index, name) -> name.first to (index + 1).toString() } +
-                listOf(
-                    "Weekdays" to "1-5",
-                    "Weekends" to "6-7"
-                )
+                ) + daysOfWeek.withIndex().map { (index, name) -> name.first to (index + 1).toString() }
             ).map {
                it.first to if (allowCustom)
-                   it.second + ("Custom" to "")
+                   it.second + (stringResource(Res.string.custom) to "")
                else
                    it.second
            }.map {
