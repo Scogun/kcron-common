@@ -12,6 +12,10 @@
         <item quantity="other">Каждые %1$d</item>
     </plurals>
 
+    <plurals name="every_feminine">
+        <item quantity="one">Каждая</item>
+    </plurals>
+
     <string name="hour_start">Начало часа</string>
 
     <string name="midnight">Полночь</string>
@@ -51,4 +55,6 @@
         <item>Суббота</item>
         <item>Воскресенье</item>
     </string-array>
+
+    <string name="cancel">Отмена</string>
 </resources>

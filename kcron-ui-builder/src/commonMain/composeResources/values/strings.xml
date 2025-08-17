@@ -12,6 +12,10 @@
         <item quantity="other">Every %1$d</item>
     </plurals>
 
+    <plurals name="every_feminine">
+        <item quantity="one">Every</item>
+    </plurals>
+
     <string name="hour_start">Hour Start</string>
 
     <string name="midnight">Midnight</string>
@@ -51,4 +55,7 @@
         <item>Saturday</item>
         <item>Sunday</item>
     </string-array>
+
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
 </resources>

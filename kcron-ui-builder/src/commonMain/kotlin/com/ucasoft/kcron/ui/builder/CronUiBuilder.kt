@@ -49,7 +49,7 @@ fun CronUiBuilder(
             daysOfWeek = daysOfWeek.drop(firstDayOfWeek.ordinal) + daysOfWeek.take(firstDayOfWeek.ordinal)
            listOf(
                 Res.string.minute to listOf(
-                    pluralStringResource(Res.plurals.every, 1) to "*",
+                    pluralStringResource(Res.plurals.every_feminine, 1) to "*",
                     stringResource(Res.string.hour_start) to "0",
                     "15" to "15",
                     "30" to "30",
@@ -150,7 +150,7 @@ fun CronUiBuilder(
                     Button(
                         onClick = {},
                     ) {
-                        Text("Cancel")
+                        Text(stringResource(Res.string.cancel))
                     }
                 }
                 Box(
@@ -164,7 +164,7 @@ fun CronUiBuilder(
                             })
                         },
                     ) {
-                        Text("Ok")
+                        Text(stringResource(Res.string.ok))
                     }
                 }
             }
