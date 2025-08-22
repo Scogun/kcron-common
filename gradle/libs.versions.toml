@@ -5,6 +5,7 @@ kotest = "5.9.1"
 kover = "0.9.1"
 benchmark = "0.4.14"
 compose = "1.8.2"
+maven-publish = "0.34.0"
 
 [libraries]
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
@@ -18,3 +19,4 @@ kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 benchmark = { id = "org.jetbrains.kotlinx.benchmark", version.ref = "benchmark" }
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }

@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.multiplatform)
-    id("publish")
+    alias(libs.plugins.maven.publish)
     alias(libs.plugins.compose)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kover)
@@ -41,5 +41,14 @@ kotlin {
                 implementation(compose.uiTest)
             }
         }
+    }
+}
+
+mavenPublishing {
+    publishToMavenCentral()
+    signAllPublications()
+
+    pom {
+        configurePom("KCron UI Builder", "UI Builder for KCron using JetBrains Compose Multiplatform", this)
     }
 }
