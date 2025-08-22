@@ -23,6 +23,7 @@ import com.ucasoft.kcron.core.exceptions.WrongPartCombinations
 import com.ucasoft.kcron.core.exceptions.WrongPartExpression
 import com.ucasoft.kcron.core.parsers.Parser
 import com.ucasoft.kcron.kcron_ui_builder.generated.resources.*
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
@@ -45,9 +46,10 @@ fun CronUiBuilder(
             modifier = Modifier.fillMaxWidth().padding(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            var daysOfWeek = stringArrayResource(Res.array.days_of_week).withIndex().map { it.value to it.index }
-            daysOfWeek = daysOfWeek.drop(firstDayOfWeek.ordinal) + daysOfWeek.take(firstDayOfWeek.ordinal)
-           listOf(
+            val daysOfWeek = stringArrayResource(Res.array.days_of_week).let {
+                it.drop(firstDayOfWeek.ordinal) + it.take(firstDayOfWeek.ordinal)
+            }
+            val fields = listOf(
                 Res.string.minute to listOf(
                     pluralStringResource(Res.plurals.every_feminine, 1) to "*",
                     stringResource(Res.string.hour_start) to "0",
@@ -86,37 +88,24 @@ fun CronUiBuilder(
                 ) + stringArrayResource(Res.array.months).withIndex().map { it.value to (it.index + 1).toString() },
                 Res.string.day_of_week to listOf(
                     pluralStringResource(Res.plurals.every, 1) to "*"
-                ) + daysOfWeek.withIndex().map { (index, name) -> name.first to (index + 1).toString() }
-            ).map {
-               it.first to if (allowCustom)
-                   it.second + (stringResource(Res.string.custom) to "")
-               else
-                   it.second
-           }.map {
-                (labelRes, options) ->
+                ) + daysOfWeek.withIndex().map { (index, name) -> name to (index + 1).toString() }
+            ).map { (label, options) ->
+                label to if (allowCustom)
+                    options + (stringResource(Res.string.custom) to "")
+                else
+                    options
+            }
+
+            fields.map { (labelRes, options) ->
                 var isError by remember { mutableStateOf(false) }
                 CronField(
                     stringResource(labelRes),
-                    when(labelRes) {
-                        Res.string.minute -> parts[CronPart.Minutes]!!.value
-                        Res.string.hour -> parts[CronPart.Hours]!!.value
-                        Res.string.day_of_month -> parts[CronPart.Days]!!.value
-                        Res.string.month -> parts[CronPart.Months]!!.value
-                        Res.string.day_of_week -> parts[CronPart.DaysOfWeek]!!.value
-                        else -> ""
-                    },
+                    getPartsValue(parts, labelRes),
                     options,
                     isError = isError
                 ) {
                     try {
-                        val copy = when (labelRes) {
-                            Res.string.minute -> copyParts(parts, minutes = it)
-                            Res.string.hour -> copyParts(parts, hours = it)
-                            Res.string.day_of_month -> copyParts(parts, dayOfMonth = it)
-                            Res.string.month -> copyParts(parts, month = it)
-                            Res.string.day_of_week -> copyParts(parts, dayOfWeek = it)
-                            else -> parts
-                        }
+                        val copy = copyParts(parts, labelRes, it)
                         parser.parse(copy.entries.joinToString(" ") { it.value.value })
                         parts = copy
                         isError = false
@@ -136,7 +125,10 @@ fun CronUiBuilder(
                 onValueChange = {},
                 readOnly = true,
                 modifier = Modifier.background(MaterialTheme.colorScheme.primary),
-                colors = OutlinedTextFieldDefaults.colors(focusedTextColor = MaterialTheme.colorScheme.onPrimary, unfocusedTextColor = MaterialTheme.colorScheme.onPrimary),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = MaterialTheme.colorScheme.onPrimary,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onPrimary
+                ),
                 textStyle = TextStyle.Default.copy(textAlign = TextAlign.Center)
             )
             Spacer(
@@ -170,6 +162,24 @@ fun CronUiBuilder(
             }
         }
     }
+}
+
+private fun getPartsValue(parts: Map<CronPart, PartValue>, labelRes: StringResource) = when (labelRes) {
+    Res.string.minute -> parts[CronPart.Minutes]!!.value
+    Res.string.hour -> parts[CronPart.Hours]!!.value
+    Res.string.day_of_month -> parts[CronPart.Days]!!.value
+    Res.string.month -> parts[CronPart.Months]!!.value
+    Res.string.day_of_week -> parts[CronPart.DaysOfWeek]!!.value
+    else -> ""
+}
+
+private fun copyParts(parts: Map<CronPart, PartValue>, labelRes: StringResource, newValue: String) = when (labelRes) {
+    Res.string.minute -> copyParts(parts, minutes = newValue)
+    Res.string.hour -> copyParts(parts, hours = newValue)
+    Res.string.day_of_month -> copyParts(parts, dayOfMonth = newValue)
+    Res.string.month -> copyParts(parts, month = newValue)
+    Res.string.day_of_week -> copyParts(parts, dayOfWeek = newValue)
+    else -> parts
 }
 
 private fun copyParts(
