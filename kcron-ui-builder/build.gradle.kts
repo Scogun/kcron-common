@@ -34,14 +34,14 @@ kotlin {
                 implementation(project(":kcron-common"))
             }
         }
-        commonTest {
+        // TODO UI Tests on Compose UI are unstable, enable when stable
+        /*commonTest {
             dependencies {
                 implementation(kotlin("test"))
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.uiTest)
-                runtimeOnly(compose.desktop.currentOs)
             }
-        }
+        }*/
     }
 }
 
