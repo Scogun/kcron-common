@@ -2,12 +2,15 @@ package com.ucasoft.kcron.kotlinx.datetime
 
 import com.ucasoft.kcron.abstractions.CronDateTime
 import kotlinx.datetime.*
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 class CronLocalDateTime: CronDateTime<LocalDateTime> {
 
 
     private val dateTime: LocalDateTime
 
+    @OptIn(ExperimentalTime::class)
     constructor() {
         dateTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
     }
@@ -20,10 +23,10 @@ class CronLocalDateTime: CronDateTime<LocalDateTime> {
         get() = dateTime.year
 
     override val month: Int
-        get() = dateTime.monthNumber
+        get() = dateTime.month.number
 
     override val dayOfMonth: Int
-        get() = dateTime.dayOfMonth
+        get() = dateTime.day
 
     override val isoDayOfWeek: Int
         get() = dateTime.dayOfWeek.isoDayNumber

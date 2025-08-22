@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.multiplatform)
-    id("publish")
+    alias(libs.plugins.maven.publish)
 }
 
 kotlin {
@@ -33,7 +33,11 @@ kotlin {
     }
 }
 
-libraryData {
-    name.set("KCron Kotlinx DateTime")
-    description.set("Kotlinx DateTime Provider for Kotlin Multiplatform Cron realization")
+mavenPublishing {
+    publishToMavenCentral()
+    signAllPublications()
+
+    pom {
+        configurePom("KCron Kotlinx DateTime", "Kotlinx DateTime Provider for Kotlin Multiplatform Cron realization", this)
+    }
 }

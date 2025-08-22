@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.multiplatform)
-    id("publish")
+    alias(libs.plugins.maven.publish)
 }
 
 kotlin {
@@ -28,7 +28,11 @@ kotlin {
     }
 }
 
-libraryData {
-    name.set("KCron Abstractions")
-    description.set("Abstractions for Kotlin Multiplatform Cron realization")
+mavenPublishing {
+    publishToMavenCentral()
+    signAllPublications()
+
+    pom {
+        configurePom("KCron Abstractions", "Abstractions for Kotlin Multiplatform Cron realization", this)
+    }
 }
