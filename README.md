@@ -45,7 +45,8 @@ builder
 * Support different DateTime libraries (via DateTime Provider Abstractions)
 * Provide UI builder for JVM, macOS, JavaScript and iOS on Compose UI multiplatform
   * Multilanguage support (English and Russian now)
-<p><img src="docs/images/CronUIBuilderEn.png" alt="KCron Compose UI" width="300"/></p>
+
+<img src="docs/images/CronUiBuilderEn.png" alt="KCron Compose UI" width="300"/>
 
 ### Usage
 #### KCron-Common library as default implementation uses [Kotlinx-DateTime](https://github.com/Kotlin/kotlinx-datetime) library
