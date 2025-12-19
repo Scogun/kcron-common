@@ -10,7 +10,7 @@ jobs:
   tests:
     uses: ./.github/workflows/tests.yml
     secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      token: ${{ secrets.GITHUB_TOKEN }}
 
   build-and-publish:
     needs: tests
