@@ -13,7 +13,7 @@ allprojects {
         google()
         mavenCentral()
     }
-    version = "0.27.4"
+    version = "0.31.7"
 
     tasks.withType<Test> {
         reports {

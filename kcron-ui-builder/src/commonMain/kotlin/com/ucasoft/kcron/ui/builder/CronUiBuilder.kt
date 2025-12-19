@@ -22,6 +22,7 @@ import com.ucasoft.kcron.core.common.WeekDays
 import com.ucasoft.kcron.core.exceptions.WrongPartCombinations
 import com.ucasoft.kcron.core.exceptions.WrongPartExpression
 import com.ucasoft.kcron.core.parsers.Parser
+import com.ucasoft.kcron.core.settings.Version
 import com.ucasoft.kcron.kcron_ui_builder.generated.resources.*
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.pluralStringResource
@@ -34,6 +35,7 @@ fun CronUiBuilder(
     modifier: Modifier = Modifier,
     allowCustom: Boolean = true,
     firstDayOfWeek: WeekDays = WeekDays.Monday,
+    onDismiss: (() -> Unit)? = null,
     onBuild: (Builder<*, *, *>) -> Unit = {},
 ) {
     val parser = Parser()
@@ -96,7 +98,7 @@ fun CronUiBuilder(
                     options
             }
 
-            fields.map { (labelRes, options) ->
+            fields.forEach { (labelRes, options) ->
                 var isError by remember { mutableStateOf(false) }
                 CronField(
                     stringResource(labelRes),
@@ -140,7 +142,9 @@ fun CronUiBuilder(
                     contentAlignment = Alignment.Center
                 ) {
                     Button(
-                        onClick = {},
+                        onClick = {
+                            onDismiss?.invoke()
+                        },
                     ) {
                         Text(stringResource(Res.string.cancel))
                     }

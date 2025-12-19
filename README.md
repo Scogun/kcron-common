@@ -1,7 +1,7 @@
 # KCron
 Cron realization for Kotlin Multiplatform
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Scogun_kcron-common&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Scogun_kcron-common) ![GitHub](https://img.shields.io/github/license/Scogun/kcron-common?color=blue) ![Publish workflow](https://github.com/Scogun/kcron-common/actions/workflows/publish.yml/badge.svg) [![Maven Central with version prefix filter](https://img.shields.io/maven-central/v/com.ucasoft.kcron/kcron-common/0.27.4?color=blue)](https://search.maven.org/artifact/com.ucasoft.kcron/kcron-common/0.27.4/jar)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Scogun_kcron-common&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Scogun_kcron-common) ![GitHub](https://img.shields.io/github/license/Scogun/kcron-common?color=blue) ![Publish workflow](https://github.com/Scogun/kcron-common/actions/workflows/publish.yml/badge.svg) [![Maven Central with version prefix filter](https://img.shields.io/maven-central/v/com.ucasoft.kcron/kcron-common/0.31.7?color=blue)](https://search.maven.org/artifact/com.ucasoft.kcron/kcron-common/0.31.7/jar)
 
 ### Features
 * Kotlin Multiplatform library
@@ -56,7 +56,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation 'com.ucasoft.kcron:kcron-common:0.27.4'
+                implementation 'com.ucasoft.kcron:kcron-common:0.31.7'
             }
         }
     }
@@ -121,6 +121,6 @@ builder.years(2021..2025)
 println(builder.expression) // 0/10 5-25 5,12 ? * SUN#5 2021-2025
 ``` 
 ### Current status
-This library is on beta version `0.27.4`.
+This library is on beta version `0.31.7`.
 It is continuing to develop.
 Check the news!
