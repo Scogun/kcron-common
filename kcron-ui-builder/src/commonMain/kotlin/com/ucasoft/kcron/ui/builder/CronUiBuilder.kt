@@ -22,7 +22,6 @@ import com.ucasoft.kcron.core.common.WeekDays
 import com.ucasoft.kcron.core.exceptions.WrongPartCombinations
 import com.ucasoft.kcron.core.exceptions.WrongPartExpression
 import com.ucasoft.kcron.core.parsers.Parser
-import com.ucasoft.kcron.core.settings.Version
 import com.ucasoft.kcron.kcron_ui_builder.generated.resources.*
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.pluralStringResource
