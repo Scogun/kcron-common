@@ -40,8 +40,8 @@ jobs:
         run: ./gradlew cleanMingwX64Test mingwX64Test --tests "com.ucasoft.kcron.*"
 
       - name: "Tests"
-        if: ${{ matrix.os == 'macos-13' }}
-        run: ./gradlew cleanMacosX64Test macosX64Test --tests "com.ucasoft.kcron.*"
+        if: ${{ matrix.os == 'macos-latest' }}
+        run: ./gradlew cleanMacosArm64Test macosArm64Test --tests "com.ucasoft.kcron.*"
 
       - name: "Tests Report"
         uses: dorny/test-reporter@v2
