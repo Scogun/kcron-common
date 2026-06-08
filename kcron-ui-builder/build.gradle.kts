@@ -9,9 +9,8 @@ plugins {
 kotlin {
     jvmToolchain(11)
     jvm()
-    macosX64()
     macosArm64()
-    js(IR) {
+    js {
         browser()
         nodejs()
     }
