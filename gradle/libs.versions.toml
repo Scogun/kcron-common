@@ -1,16 +1,21 @@
 [versions]
 kotlin = "2.4.0"
-kotlinx-datetime = "0.7.1"
-kotest = "6.0.7"
-kover = "0.9.4"
-benchmark = "0.4.15"
-compose = "1.9.3"
-maven-publish = "0.35.0"
+kotlinx-datetime = "0.8.0"
+kotest = "6.1.11"
+kover = "0.9.8"
+benchmark = "0.4.17"
+compose = "1.11.1"
+material3 = "1.9.0"
+maven-publish = "0.36.0"
 
 [libraries]
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlinx-benchmark = { group = "org.jetbrains.kotlinx", name = "kotlinx-benchmark-runtime", version.ref = "benchmark" }
 kotest-assetions = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
+compose-runtime = { group = "org.jetbrains.compose.runtime", name = "runtime", version.ref = "compose" }
+compose-foundation = { group = "org.jetbrains.compose.foundation", name = "foundation", version.ref = "compose" }
+compose-material3 = { group = "org.jetbrains.compose.material3", name = "material3", version.ref = "material3" }
+compose-components-resources = { group = "org.jetbrains.compose.components", name = "components-resources", version.ref = "compose"  }
 
 
 [plugins]
