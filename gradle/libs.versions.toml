@@ -1,5 +1,5 @@
 [versions]
-kotlin = "2.3.0"
+kotlin = "2.4.0"
 kotlinx-datetime = "0.7.1"
 kotest = "6.0.7"
 kover = "0.9.4"
