@@ -32,7 +32,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(project(":kcron-kotlinx-datetime"))
-                implementation(libs.kotest.assetions)
+                implementation(libs.kotest.assertions)
             }
         }
     }
