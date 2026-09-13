@@ -1,12 +1,12 @@
 [versions]
 kotlin = "2.4.20"
 kotlinx-datetime = "0.8.0"
-kotest = "6.1.11"
-kover = "0.9.8"
-benchmark = "0.4.17"
-compose = "1.11.1"
+kotest = "6.2.5"
+kover = "0.9.9"
+benchmark = "0.5.0"
+compose = "1.12.0"
 material3 = "1.9.0"
-maven-publish = "0.36.0"
+maven-publish = "0.37.0"
 
 [libraries]
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
