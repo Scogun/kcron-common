@@ -37,8 +37,8 @@ fun CronUiBuilder(
     onDismiss: (() -> Unit)? = null,
     onBuild: (Builder<*, *, *>) -> Unit = {},
 ) {
-    val parser = Parser()
-    var parts by remember { mutableStateOf(parser.parse(expression).parts) }
+    val parser = remember { Parser() }
+    var parts by remember(expression) { mutableStateOf(parser.parse(expression).parts) }
 
     Card(
         modifier = modifier.padding(12.dp)
