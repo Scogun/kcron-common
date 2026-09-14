@@ -13,6 +13,7 @@ kotlin {
     js {
         browser()
         nodejs()
+        binaries.executable()
     }
     @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
     wasmJs {
@@ -21,7 +22,6 @@ kotlin {
     }
     iosArm64()
     iosSimulatorArm64()
-
     sourceSets {
         commonMain {
             dependencies {
