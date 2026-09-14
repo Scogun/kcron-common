@@ -9,9 +9,8 @@ kotlin {
     linuxX64()
     linuxArm64()
     mingwX64()
-    macosX64()
     macosArm64()
-    js(IR) {
+    js {
         browser()
         nodejs()
     }
@@ -20,7 +19,6 @@ kotlin {
         browser()
         nodejs()
     }
-    iosX64()
     iosArm64()
     iosSimulatorArm64()
     sourceSets {

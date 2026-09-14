@@ -16,11 +16,14 @@ jobs:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
+    permissions:
+      checks: write
+      pull-requests: write
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: "Set Up JDK"
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: 17
@@ -47,7 +50,7 @@ jobs:
         run: ./gradlew cleanMacosArm64Test macosArm64Test --tests "com.ucasoft.kcron.*"
 
       - name: "Tests Report"
-        uses: dorny/test-reporter@ee446707ff3bdadb3c039ff1af4286a09acb79c6
+        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2
         if: success() || failure()
         with:
           name: jUnit Tests
@@ -60,12 +63,12 @@ jobs:
         shell: bash
 
       - name: "Coverage Report"
-        uses: mi-kas/kover-report@624c610e0c054a270ce07a40972c643261c513bb
+        uses: mi-kas/kover-report@94d69bc9d417de89b808cd5fe846bca2840911bb
         if: ${{ github.event_name == 'pull_request' }}
         with:
           path: |
             ./kcron-common/build/reports/kover/report.xml
             ./kcron-core/build/reports/kover/report.xml
-          token: ${{ secrets.token }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           title: "Coverage Report"
           update-comment: true

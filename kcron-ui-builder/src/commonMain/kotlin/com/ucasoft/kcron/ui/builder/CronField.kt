@@ -32,8 +32,10 @@ internal fun CronField(
     onValueChanged: (String) -> Unit = {}
 ) {
     var open by remember { mutableStateOf(false) }
-    var prebuildPattern by remember { mutableStateOf(options.firstOrNull { it.second == value } ?: options.last()) }
-    var selectedPattern by remember { mutableStateOf(value) }
+    var prebuildPattern by remember(value, options) {
+        mutableStateOf(options.firstOrNull { it.second == value } ?: options.last())
+    }
+    var selectedPattern by remember(value) { mutableStateOf(value) }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),

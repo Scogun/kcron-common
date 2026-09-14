@@ -9,9 +9,8 @@ plugins {
 kotlin {
     jvmToolchain(11)
     jvm()
-    macosX64()
     macosArm64()
-    js(IR) {
+    js {
         browser()
         nodejs()
     }
@@ -20,17 +19,16 @@ kotlin {
         browser()
         nodejs()
     }
-    iosX64()
     iosArm64()
     iosSimulatorArm64()
 
     sourceSets {
         commonMain {
             dependencies {
-                implementation(compose.runtime)
-                implementation(compose.foundation)
-                implementation(compose.material3)
-                implementation(compose.components.resources)
+                implementation(libs.compose.runtime)
+                implementation(libs.compose.foundation)
+                implementation(libs.compose.material3)
+                implementation(libs.compose.components.resources)
                 implementation(project(":kcron-common"))
             }
         }
